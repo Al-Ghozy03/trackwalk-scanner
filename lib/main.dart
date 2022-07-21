@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:track_walk_admin/screen/events.dart';
+import 'package:track_walk_admin/screen/qr_scanner.dart';
 
 void main() async {
   await GetStorage.init();
@@ -24,6 +25,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: "popin"
         ),
-        home: Event());
+        home: QR());
   }
 }
