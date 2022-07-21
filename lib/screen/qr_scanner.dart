@@ -69,7 +69,9 @@ class _QRState extends State<QR> {
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
                   return Icon(
-                      snapshot.data! ? Icons.flash_on : Icons.flash_off, color: Colors.white,);
+                    snapshot.data! ? Icons.flash_on : Icons.flash_off,
+                    color: Colors.white,
+                  );
                 } else {
                   return const SizedBox();
                 }
@@ -90,9 +92,9 @@ class _QRState extends State<QR> {
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
           borderColor: blueTheme,
-          borderRadius: 11,
-          borderWidth: 10,
-          borderLength: 20,
+          borderRadius: MediaQuery.of(context).size.width * 0.11,
+          borderWidth: MediaQuery.of(context).size.width * 0.1,
+          borderLength: MediaQuery.of(context).size.width * 0.2,
           cutOutSize: MediaQuery.of(context).size.width * 0.8,
         ),
       );
