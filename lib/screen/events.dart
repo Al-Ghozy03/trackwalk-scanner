@@ -13,7 +13,10 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: SingleChildScrollView()),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: Text("hai bodoh"),
+      )),
     );
   }
 }
