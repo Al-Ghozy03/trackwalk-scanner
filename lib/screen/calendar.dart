@@ -60,7 +60,10 @@ class _CalendarState extends State<Calendar> {
                     weekendStyle:
                         TextStyle(fontFamily: "popinsemi", color: Colors.red)),
                 headerStyle: HeaderStyle(
-                    formatButtonVisible: false, titleCentered: true),
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(
+                        fontFamily: "popinsemi", fontSize: width / 20)),
               ),
               SizedBox(height: width / 20),
               Container(
@@ -68,7 +71,7 @@ class _CalendarState extends State<Calendar> {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    elevation: 0,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(width / 40))),
                   child: Text(
