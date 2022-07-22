@@ -2,10 +2,11 @@
 
 import 'dart:async';
 import 'dart:io';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/screen/detail_tiket.dart';
 
 class QR extends StatefulWidget {
   const QR({super.key});
@@ -142,6 +143,7 @@ class _QRState extends State<QR> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((barcode) {
+      Get.to(DetailTiket(), transition: Transition.circularReveal);
       setState(() {
         this.barcode = barcode;
       });
