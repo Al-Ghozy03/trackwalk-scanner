@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'dart:io';
 
@@ -46,7 +48,6 @@ class _QRState extends State<QR> {
   @override
   void initState() {
     codeScan();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -59,8 +60,8 @@ class _QRState extends State<QR> {
           children: [
             buildQrView(context),
             Positioned(
-              child: buildResult(),
               bottom: 60,
+              child: buildResult(),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,

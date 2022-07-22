@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/events.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 
@@ -20,11 +21,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'Track Walk',
         theme: ThemeData(
-          fontFamily: "popin"
-        ),
+            fontFamily: "popin",
+            colorScheme: ThemeData().colorScheme.copyWith(primary: blueTheme)),
         home: Event());
   }
 }
