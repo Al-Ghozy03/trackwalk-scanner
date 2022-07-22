@@ -25,6 +25,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: "popin"
         ),
-        home: QR());
+        home: Event());
   }
 }
