@@ -301,7 +301,7 @@ class _EventState extends State<Event> {
   Widget _listEvents(width, int i, events) {
     return InkWell(
       onTap: () {
-        Get.to(Calendar(),transition: Transition.rightToLeftWithFade);
+        Get.to(Calendar(), transition: Transition.rightToLeftWithFade);
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: width / 35),

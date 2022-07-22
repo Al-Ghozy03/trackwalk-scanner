@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/screen/detail_tiket.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -69,7 +70,9 @@ class _CalendarState extends State<Calendar> {
               Container(
                 width: width,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(DetailTiket(),transition: Transition.rightToLeftWithFade);
+                  },
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
