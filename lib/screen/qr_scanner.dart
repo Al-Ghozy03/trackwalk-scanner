@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,6 +16,8 @@ class _QRState extends State<QR> {
   final qrkey = GlobalKey(debugLabel: "QR");
   Barcode? barcode;
   QRViewController? controller;
+  String? hasil;
+  late final Timer timer;
   @override
   void dispose() {
     controller?.dispose();
@@ -24,13 +25,29 @@ class _QRState extends State<QR> {
   }
 
   @override
-  void reassemble() async {
+  void reassemble() {
     super.reassemble();
-
     if (Platform.isAndroid) {
-      await controller!.pauseCamera();
+      controller!.pauseCamera();
     }
     controller!.resumeCamera();
+  }
+
+  void codeScan() {
+    setState(() {
+      if (barcode == null) {
+        hasil = "Scan A Code";
+      } else {
+        hasil = barcode?.code;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    codeScan();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -42,11 +59,32 @@ class _QRState extends State<QR> {
           children: [
             buildQrView(context),
             Positioned(
-              bottom: 10,
-              child: buildControlButtons(),
+              child: buildResult(),
+              bottom: 60,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                buildControlButtons(),
+              ],
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildResult() {
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white24,
+      ),
+      child: Text(
+        "$hasil",
+        style: TextStyle(color: Colors.white),
+        maxLines: 3,
       ),
     );
   }
@@ -55,7 +93,7 @@ class _QRState extends State<QR> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        // borderRadius: BorderRadius.circular(8),
         color: blueTheme,
       ),
       child: Row(
@@ -92,9 +130,9 @@ class _QRState extends State<QR> {
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
           borderColor: blueTheme,
-          borderRadius: MediaQuery.of(context).size.width * 0.11,
-          borderWidth: MediaQuery.of(context).size.width * 0.1,
-          borderLength: MediaQuery.of(context).size.width * 0.2,
+          borderRadius: 11,
+          borderWidth: 10,
+          borderLength: 20,
           cutOutSize: MediaQuery.of(context).size.width * 0.8,
         ),
       );
