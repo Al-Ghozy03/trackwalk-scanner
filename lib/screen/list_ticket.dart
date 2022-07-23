@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/models/Ticket_model.dart';
@@ -15,6 +16,116 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
+
+  void dialogDetails() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
+              topRight:
+                  Radius.circular(MediaQuery.of(context).size.width / 20))),
+      context: context,
+      builder: (context) {
+        final width = MediaQuery.of(context).size.width;
+        final height = MediaQuery.of(context).size.height;
+        List data = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(width / 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Details",
+                  style:
+                      TextStyle(fontSize: width / 15, fontFamily: "popinsemi"),
+                ),
+                SizedBox(height: width / 40),
+                Text("Domestic Visitor - Weekday"),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Location",
+                      style: TextStyle(color: grayText),
+                    ),
+                    SizedBox(width: width / 15),
+                    Flexible(
+                        child: Text(
+                            "Pertamina Mandalika, Internation Street Circuit")),
+                  ],
+                ),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Time Zone",
+                      style: TextStyle(color: grayText),
+                    ),
+                    SizedBox(width: width / 25),
+                    Flexible(child: Text("Asia/Singapore")),
+                  ],
+                ),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Slots",
+                      style: TextStyle(color: grayText),
+                    ),
+                    SizedBox(width: width / 7),
+                    Flexible(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Session 1 06.30 - 09.00 WITA",
+                          style: TextStyle(fontFamily: "popinsemi"),
+                        ),
+                        Column(
+                          children: data
+                              .map((e) => Row(
+                                    children: [
+                                      Text(
+                                        "July 04, 2022",
+                                        style: TextStyle(color: grayText),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(left: width / 40),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: width / 50,
+                                            vertical: width / 100),
+                                        decoration: BoxDecoration(
+                                            color: blueTheme,
+                                            borderRadius:
+                                                BorderRadius.circular(width)),
+                                        child: Text(
+                                          "10/10",
+                                          style: TextStyle(
+                                              fontSize: width / 50,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                    ],
+                                  ))
+                              .toList(),
+                        )
+                      ],
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void modalFilter() {
     showModalBottomSheet(
@@ -191,49 +302,62 @@ class _TicketState extends State<Ticket> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: AssetImage("assets/img/Visitor.jpeg"),
-                              fit: BoxFit.cover)),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
+              IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: Icon(Iconsax.arrow_left)),
+              SizedBox(height: width / 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: width / 4,
+                    height: width / 4,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(width / 30),
+                        image: DecorationImage(
+                            image: AssetImage("assets/img/Visitor.jpeg"),
+                            fit: BoxFit.cover)),
+                  ),
+                  SizedBox(
+                    width: width / 20,
+                  ),
+                  Flexible(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Domestic Visitor - Weekday",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w400),
+                              fontSize: width / 18, fontFamily: "popinsemi"),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
                         Text(
-                          "Bookable Events",
-                          style: TextStyle(fontSize: 16, color: grayText),
+                          "20 Juli 2022",
+                          style:
+                              TextStyle(fontSize: width / 27, color: grayText),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Expand Detail",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
+                        InkWell(
+                          onTap: () {
+                            dialogDetails();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                "Expand Details",
+                                style: TextStyle(fontSize: width / 27),
+                              ),
+                              Icon(Iconsax.arrow_down_1, size: width / 22)
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SizedBox(height: width / 20),
               _searchBar(width, height),
