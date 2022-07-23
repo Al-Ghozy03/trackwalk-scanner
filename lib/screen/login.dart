@@ -1,6 +1,9 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, unused_local_variable, avoid_print, deprecated_member_use, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:track_walk_admin/widget/customCheckBox.dart';
+import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/widget/custom_checkbox.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,14 +14,15 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool hidePassword = true;
-  late String Username, password, url;
+  late String Username, password;
+  
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-            padding: const EdgeInsets.symmetric(vertical: 70),
+            padding: EdgeInsets.symmetric(vertical: 70),
             child: Container(
               height: width * 0.3,
               child: Image(
@@ -30,37 +34,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildUrlRow() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: TextFormField(
-        keyboardType: TextInputType.url,
-        onChanged: (value) {
-          setState(() {
-            url = value;
-          });
-        },
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(width: 2, color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(width: 2, color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            prefixIcon: Icon(
-              Iconsax.global,
-              color: Colors.grey.shade300,
-            ),
-            labelText: 'URL'),
-      ),
-    );
-  }
-
-  Widget _buildUsernameRow() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+  Widget _usernameField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
@@ -72,29 +46,28 @@ class _LoginState extends State<Login> {
         },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(width: 2, color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(width: 2, color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
             ),
             prefixIcon: Icon(
               Iconsax.user,
-              color: Colors.grey.shade300,
+              color: grayText,
             ),
-            labelText: 'Username'),
+            labelStyle: TextStyle(color: grayText),
+            labelText: 'Username',
+            contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
     );
   }
 
-  Widget _buildPasswordRow() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+  Widget _passwordField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        
         keyboardType: TextInputType.text,
         obscureText: hidePassword,
         onChanged: (value) {
@@ -103,29 +76,35 @@ class _LoginState extends State<Login> {
           });
         },
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Colors.grey),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Colors.grey),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          suffixIcon: hidePassword
-          
-              ? IconButton(
-                  onPressed: _togglePassword, icon: Icon(Icons.visibility_off))
-              : IconButton(
-                  onPressed: _togglePassword, icon: Icon(Icons.visibility)),
-          
-          
-          border: InputBorder.none,
-          prefixIcon: Icon(
-            Iconsax.key,
-            color: Colors.grey.shade300,
-          ),
-          labelText: 'Password',
-        ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
+            ),
+            suffixIcon: hidePassword
+                ? IconButton(
+                    onPressed: _togglePassword,
+                    icon: Icon(
+                      Iconsax.eye_slash,
+                      color: grayText,
+                    ))
+                : IconButton(
+                    onPressed: _togglePassword,
+                    icon: Icon(
+                      Iconsax.eye,
+                      color: grayText,
+                    )),
+            border: InputBorder.none,
+            prefixIcon: Icon(
+              Iconsax.key,
+              color: grayText,
+            ),
+            labelStyle: TextStyle(color: grayText),
+            labelText: 'Password',
+            contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
     );
   }
@@ -137,45 +116,41 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Widget _buildRememberSettingButton() {
+  Widget _rememberSettings(width) {
     return Padding(
-      padding: const EdgeInsets.only(left:18.0),
+      padding: const EdgeInsets.only(left: 18.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Custom_check(),
-          TextButton(
-            onPressed: () {},
-            child: Text("Remember Settings"),
-          ),
+          CustomCheck(),
+          SizedBox(width: width / 30),
+          Text("Remember Settings"),
         ],
       ),
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _loginButton(width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          height: 1.4 * (MediaQuery.of(context).size.height / 20),
-          width: 5 * (MediaQuery.of(context).size.width / 10),
           margin: EdgeInsets.only(bottom: 20, top: 10),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.blue.shade800,
+              padding: EdgeInsets.symmetric(horizontal: width / 7),
+              elevation: 0,
+              primary: blueTheme,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(width),
               ),
             ),
             onPressed: () {},
             child: Text(
               "Sign in",
               style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 1.5,
-                  fontSize: MediaQuery.of(context).size.height / 40,
+                  fontSize: width/20,
                   fontFamily: "PopinSemi"),
             ),
           ),
@@ -187,42 +162,39 @@ class _LoginState extends State<Login> {
   Widget _buildContainer(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            width: MediaQuery.of(context).size.width * 0.8,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: width / 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(
+                vertical: width / 10, horizontal: width / 30),
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(width / 20),
               boxShadow: [
-                BoxShadow(color: Colors.black, spreadRadius: 3),
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 3,
+                    blurRadius: 15,
+                    offset: Offset(0, 1)),
               ],
               color: Colors.white,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ),
-                _buildUrlRow(),
-                _buildUsernameRow(),
-                _buildPasswordRow(),
+                _usernameField(width),
+                _passwordField(width),
                 SizedBox(
                   height: height * 0.01,
                 ),
-                _buildRememberSettingButton(),
-                _buildLoginButton(),
+                _rememberSettings(width),
+                _loginButton(width),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -231,8 +203,7 @@ class _LoginState extends State<Login> {
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        // resizeToAvoidBottomPadding: false,
-        backgroundColor: Color(0xfff2f3f7),
+        backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             Container(
@@ -244,15 +215,13 @@ class _LoginState extends State<Login> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.lightBlue.shade900,
-                      Colors.blue.shade800
-                      // Color(0x00000002f80ed),
-                      // Color(0x00000004E92),
+                      Color(0xff004E92),
+                      Color(0xff2F80ED),
                     ],
                   ),
                   borderRadius: BorderRadius.only(
-                    bottomLeft: const Radius.circular(70),
-                    bottomRight: const Radius.circular(70),
+                    bottomLeft: Radius.circular(width / 7),
+                    bottomRight: Radius.circular(width / 7),
                   ),
                 ),
               ),

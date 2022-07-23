@@ -8,7 +8,7 @@ import 'package:track_walk_admin/models/models/event_model.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
 
 class Event extends StatefulWidget {
-  // const Event({super.key});
+  const Event({super.key});
 
   @override
   State<Event> createState() => _EventState();

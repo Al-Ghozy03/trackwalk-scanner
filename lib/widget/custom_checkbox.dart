@@ -1,19 +1,17 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:alert/alert.dart';
+// ignore_for_file: prefer_const_constructors, file_names
 import 'package:flutter/material.dart';
 import 'package:track_walk_admin/colors.dart';
 
-class Custom_check extends StatefulWidget {
-  const Custom_check({
+class CustomCheck extends StatefulWidget {
+  const CustomCheck({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Custom_check> createState() => _Custom_checkState();
+  State<CustomCheck> createState() => _CustomCheckState();
 }
 
-class _Custom_checkState extends State<Custom_check> {
+class _CustomCheckState extends State<CustomCheck> {
   bool loading = false;
   bool isChecked = false;
   // late Future todoUpdate;
@@ -21,7 +19,6 @@ class _Custom_checkState extends State<Custom_check> {
 
   @override
   void initState() {
-    // TODO: implement initState
     // todoUpdate = ApiService().updateTodo(isChecked, id);
 
     super.initState();

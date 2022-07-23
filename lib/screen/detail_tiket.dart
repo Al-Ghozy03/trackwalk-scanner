@@ -12,6 +12,109 @@ class DetailTiket extends StatefulWidget {
 }
 
 class _DetailTiketState extends State<DetailTiket> {
+  void dialogDetails() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
+              topRight:
+                  Radius.circular(MediaQuery.of(context).size.width / 20))),
+      context: context,
+      builder: (context) {
+        final width = MediaQuery.of(context).size.width;
+        final height = MediaQuery.of(context).size.height;
+        List data = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(width / 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Details",
+                  style:
+                      TextStyle(fontSize: width / 15, fontFamily: "popinsemi"),
+                ),
+                SizedBox(height: width / 40),
+                Text("Domestic Visitor - Weekday"),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Location",
+                      style: TextStyle(color: grayText),
+                    ),
+                    SizedBox(width: width / 20),
+                    Flexible(
+                        child: Text(
+                            "Pertamina Mandalika, Internation Street Circuit")),
+                  ],
+                ),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Time Zone",
+                      style: TextStyle(color: grayText),
+                    ),
+                    SizedBox(width: width / 20),
+                    Flexible(child: Text("Asia/Singapore")),
+                  ],
+                ),
+                SizedBox(height: width / 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Slots",
+                      style: TextStyle(color: grayText),
+                    ),
+                    Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Session 1 06.30 - 09.00 WITA",
+                          style: TextStyle(fontFamily: "popinsemi"),
+                        ),
+                        Column(
+                          children: data
+                              .map((e) => Row(
+                                    children: [
+                                      Text(
+                                        "July 04, 2022",
+                                        style: TextStyle(color: grayText),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: blueTheme,
+                                            borderRadius:
+                                                BorderRadius.circular(width)),
+                                        child: Text(
+                                          "10/10",
+                                          style:
+                                              TextStyle(fontSize: width / 50),
+                                        ),
+                                      )
+                                    ],
+                                  ))
+                              .toList(),
+                        )
+                      ],
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -53,7 +156,29 @@ class _DetailTiketState extends State<DetailTiket> {
                         fontFamily: "popinsemi", fontSize: width / 24),
                   ),
                   SizedBox(height: width / 20),
-                  _info("Bookable Event", "Expand Detail", width),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Bookable Event",
+                        style: TextStyle(color: grayText, fontSize: width / 25),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          dialogDetails();
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "Expand Details",
+                              style: TextStyle(fontSize: width / 25),
+                            ),
+                            Icon(Iconsax.arrow_down_1, size: width / 20)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: width / 40),
                   _info("Ticket Number", "5432657", width),
                   SizedBox(height: width / 40),
