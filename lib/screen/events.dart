@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/models/event_model.dart';
+import 'package:track_walk_admin/screen/calendar.dart';
 
 class Event extends StatefulWidget {
   // const Event({super.key});
@@ -66,9 +68,10 @@ class _EventState extends State<Event> {
                                               : Colors.white,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
-                                              color: activeIndexFilter == data.key
-                                                  ? blueTheme
-                                                  : grayText),
+                                              color:
+                                                  activeIndexFilter == data.key
+                                                      ? blueTheme
+                                                      : grayText),
                                           borderRadius:
                                               BorderRadius.circular(width))),
                                   onPressed: () {
@@ -83,9 +86,10 @@ class _EventState extends State<Event> {
                                             ? blueTheme
                                             : grayText,
                                         fontSize: width / 25,
-                                        fontFamily: activeIndexFilter == data.key
-                                            ? "popinsemi"
-                                            : "popin"),
+                                        fontFamily:
+                                            activeIndexFilter == data.key
+                                                ? "popinsemi"
+                                                : "popin"),
                                   ))))
                           .toList(),
                     ),
@@ -132,6 +136,23 @@ class _EventState extends State<Event> {
                                   ))))
                           .toList(),
                     ),
+                    SizedBox(height: width / 20),
+                    Container(
+                      width: width,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(width / 40))),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Text("Apply",
+                              style: TextStyle(
+                                  fontFamily: "popinsemi",
+                                  fontSize: width / 25))),
+                    )
                   ],
                 );
               },
@@ -248,7 +269,6 @@ class _EventState extends State<Event> {
             ),
           )),
     ];
-
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -280,7 +300,9 @@ class _EventState extends State<Event> {
 
   Widget _listEvents(width, int i, events) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(Calendar(), transition: Transition.rightToLeftWithFade);
+      },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: width / 35),
         child: Row(
