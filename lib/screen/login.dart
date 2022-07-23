@@ -9,7 +9,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late String email, password, url;
+  late String Username, password, url;
   Widget _buildLogo() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -50,14 +50,14 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildEmailRow() {
+  Widget _buildUsernameRow() {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.text,
         onChanged: (value) {
           setState(() {
-            email = value;
+            Username = value;
           });
         },
         decoration: InputDecoration(
@@ -165,7 +165,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
                 _buildUrlRow(),
-                _buildEmailRow(),
+                _buildUsernameRow(),
                 _buildPasswordRow(),
                 _buildRememberSettingButton(),
                 SizedBox(
