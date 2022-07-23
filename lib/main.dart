@@ -26,6 +26,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Track Walk',
         theme: ThemeData(fontFamily: "popin"),
-        home: Ticket());
+        home: Login());
   }
 }

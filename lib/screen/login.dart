@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:track_walk_admin/widget/customCheckBox.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,15 +10,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool hidePassword = true;
   late String Username, password, url;
-  Widget _buildLogo() {
+  Widget _buildLogo(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 70),
             child: Container(
-              height: 200,
+              height: width * 0.3,
               child: Image(
                 image: AssetImage('assets/Mandalika.png'),
                 fit: BoxFit.fill,
@@ -39,8 +42,13 @@ class _LoginState extends State<Login> {
         },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 3, color: Colors.grey),
-                borderRadius: BorderRadius.circular(15)),
+              borderSide: const BorderSide(width: 2, color: Colors.grey),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(width: 2, color: Colors.grey),
+              borderRadius: BorderRadius.circular(15),
+            ),
             prefixIcon: Icon(
               Iconsax.global,
               color: Colors.grey.shade300,
@@ -51,6 +59,8 @@ class _LoginState extends State<Login> {
   }
 
   Widget _buildUsernameRow() {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
@@ -62,23 +72,31 @@ class _LoginState extends State<Login> {
         },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 3, color: Colors.grey),
-                borderRadius: BorderRadius.circular(15)),
+              borderSide: const BorderSide(width: 2, color: Colors.grey),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(width: 2, color: Colors.grey),
+              borderRadius: BorderRadius.circular(15),
+            ),
             prefixIcon: Icon(
-              Iconsax.profile,
+              Iconsax.user,
               color: Colors.grey.shade300,
             ),
-            labelText: 'E-mail'),
+            labelText: 'Username'),
       ),
     );
   }
 
   Widget _buildPasswordRow() {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
+        
         keyboardType: TextInputType.text,
-        obscureText: true,
+        obscureText: hidePassword,
         onChanged: (value) {
           setState(() {
             password = value;
@@ -86,8 +104,22 @@ class _LoginState extends State<Login> {
         },
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(width: 3, color: Colors.grey),
-              borderRadius: BorderRadius.circular(15)),
+            borderSide: const BorderSide(width: 2, color: Colors.grey),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 2, color: Colors.grey),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          suffixIcon: hidePassword
+          
+              ? IconButton(
+                  onPressed: _togglePassword, icon: Icon(Icons.visibility_off))
+              : IconButton(
+                  onPressed: _togglePassword, icon: Icon(Icons.visibility)),
+          
+          hintText: "Password",
+          border: InputBorder.none,
           prefixIcon: Icon(
             Iconsax.key,
             color: Colors.grey.shade300,
@@ -98,16 +130,27 @@ class _LoginState extends State<Login> {
     );
   }
 
+  void _togglePassword() {
+    print(hidePassword);
+    setState(() {
+      hidePassword = !hidePassword;
+    });
+  }
+
   Widget _buildRememberSettingButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        FlatButton(
-          onPressed: () {},
-          child: Text("Remember Settings"),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left:18.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Custom_check(),
+          TextButton(
+            onPressed: () {},
+            child: Text("Remember Settings"),
+          ),
+        ],
+      ),
     );
   }
 
@@ -118,12 +161,13 @@ class _LoginState extends State<Login> {
         Container(
           height: 1.4 * (MediaQuery.of(context).size.height / 20),
           width: 5 * (MediaQuery.of(context).size.width / 10),
-          margin: EdgeInsets.only(bottom: 20, top: 30),
-          child: RaisedButton(
-            elevation: 5.0,
-            color: Colors.blue.shade800,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+          margin: EdgeInsets.only(bottom: 20, top: 10),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue.shade800,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
             ),
             onPressed: () {},
             child: Text(
@@ -140,7 +184,9 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildContainer() {
+  Widget _buildContainer(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -167,10 +213,10 @@ class _LoginState extends State<Login> {
                 _buildUrlRow(),
                 _buildUsernameRow(),
                 _buildPasswordRow(),
-                _buildRememberSettingButton(),
                 SizedBox(
-                  height: 45,
+                  height: height * 0.01,
                 ),
+                _buildRememberSettingButton(),
                 _buildLoginButton(),
               ],
             ),
@@ -182,6 +228,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         // resizeToAvoidBottomPadding: false,
@@ -210,12 +257,14 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildLogo(),
-                _buildContainer(),
-              ],
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildLogo(context),
+                  _buildContainer(context),
+                ],
+              ),
             )
           ],
         ),
