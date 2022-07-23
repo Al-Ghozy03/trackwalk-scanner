@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
               : IconButton(
                   onPressed: _togglePassword, icon: Icon(Icons.visibility)),
           
-          hintText: "Password",
+          
           border: InputBorder.none,
           prefixIcon: Icon(
             Iconsax.key,
