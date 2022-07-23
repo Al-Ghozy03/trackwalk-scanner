@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -6,7 +6,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/models/Ticket_model.dart';
 
 class Ticket extends StatefulWidget {
-  // const Ticket({super.key});
+  const Ticket({super.key});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -148,7 +148,7 @@ class _TicketState extends State<Ticket> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    List<TicketModel> Tickets = [
+    List<TicketModel> tickets = [
       TicketModel(
           title: "Satrio Boyd",
           subTitle: "Status",
@@ -241,10 +241,10 @@ class _TicketState extends State<Ticket> {
               Container(
                 height: height * 0.75,
                 child: ListView.separated(
-                    itemBuilder: (_, i) => _listTickets(width, i, Tickets),
+                    itemBuilder: (_, i) => _listTickets(width, i, tickets),
                     separatorBuilder: (context, index) => SizedBox(
                         height: width / 15, child: Divider(thickness: 0.8)),
-                    itemCount: Tickets.length),
+                    itemCount: tickets.length),
               )
             ],
           ),
@@ -253,7 +253,7 @@ class _TicketState extends State<Ticket> {
     );
   }
 
-  Widget _listTickets(width, int i, Tickets) {
+  Widget _listTickets(width, int i, tickets) {
     return InkWell(
       onTap: () {},
       child: Container(
@@ -264,16 +264,16 @@ class _TicketState extends State<Ticket> {
             Flexible(
               child: Row(
                 children: [
-                  Tickets[i].icon,
+                  tickets[i].icon,
                   SizedBox(width: width / 30),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Tickets[i].title,
+                        tickets[i].title,
                         style: TextStyle(fontFamily: "popinsemi"),
                       ),
-                      Text(Tickets[i].subTitle,
+                      Text(tickets[i].subTitle,
                           style:
                               TextStyle(fontSize: width / 30, color: grayText))
                     ],

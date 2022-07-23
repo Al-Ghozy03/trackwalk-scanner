@@ -1,7 +1,6 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
-
 import 'package:alert/alert.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;

@@ -19,13 +19,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp();
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Track Walk',
         theme: ThemeData(fontFamily: "popin"),
-        home: Ticket());
+        home: Event());
   }
 }

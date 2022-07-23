@@ -9,7 +9,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 
 class QR extends StatefulWidget {
-  // const QR({super.key});
+  const QR({super.key});
 
   @override
   State<QR> createState() => _QRState();
