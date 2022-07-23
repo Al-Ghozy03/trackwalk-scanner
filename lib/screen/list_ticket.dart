@@ -150,7 +150,7 @@ class _TicketState extends State<Ticket> {
     final height = MediaQuery.of(context).size.height;
     List<TicketModel> Tickets = [
       TicketModel(
-          title: "Satrio Boyd" ,
+          title: "Satrio Boyd",
           subTitle: "Status",
           icon: Icon(
             Icons.circle,
@@ -191,9 +191,50 @@ class _TicketState extends State<Ticket> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Tickets",
-                  style:
-                      TextStyle(fontSize: width / 13, fontFamily: "popinsemi")),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: AssetImage("assets/Visitor.jpeg"),
+                              fit: BoxFit.cover)),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Domestic Visitor - Weekday",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Bookable Events",
+                          style: TextStyle(fontSize: 16, color: grayText),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Expand Detail",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: width / 20),
               _searchBar(width, height),
               SizedBox(height: width / 15),
