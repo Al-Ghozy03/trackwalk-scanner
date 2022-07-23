@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
+import 'package:track_walk_admin/screen/list_ticket.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -71,7 +72,7 @@ class _CalendarState extends State<Calendar> {
                 width: width,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.to(DetailTiket(),transition: Transition.rightToLeftWithFade);
+                    Get.to(Ticket(),transition: Transition.rightToLeftWithFade);
                   },
                   style: ElevatedButton.styleFrom(
                       elevation: 0,

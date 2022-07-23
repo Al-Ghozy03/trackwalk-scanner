@@ -12,6 +12,7 @@ class DetailTiket extends StatefulWidget {
 }
 
 class _DetailTiketState extends State<DetailTiket> {
+  
   void dialogDetails() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -46,7 +47,7 @@ class _DetailTiketState extends State<DetailTiket> {
                       "Location",
                       style: TextStyle(color: grayText),
                     ),
-                    SizedBox(width: width / 20),
+                    SizedBox(width: width / 15),
                     Flexible(
                         child: Text(
                             "Pertamina Mandalika, Internation Street Circuit")),
@@ -60,7 +61,7 @@ class _DetailTiketState extends State<DetailTiket> {
                       "Time Zone",
                       style: TextStyle(color: grayText),
                     ),
-                    SizedBox(width: width / 20),
+                    SizedBox(width: width / 25),
                     Flexible(child: Text("Asia/Singapore")),
                   ],
                 ),
@@ -72,6 +73,7 @@ class _DetailTiketState extends State<DetailTiket> {
                       "Slots",
                       style: TextStyle(color: grayText),
                     ),
+                    SizedBox(width: width/7),
                     Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,6 +91,8 @@ class _DetailTiketState extends State<DetailTiket> {
                                         style: TextStyle(color: grayText),
                                       ),
                                       Container(
+                                        margin: EdgeInsets.only(left: width/40),
+                                        padding: EdgeInsets.symmetric(horizontal: width/50,vertical: width/100),
                                         decoration: BoxDecoration(
                                             color: blueTheme,
                                             borderRadius:
@@ -96,7 +100,7 @@ class _DetailTiketState extends State<DetailTiket> {
                                         child: Text(
                                           "10/10",
                                           style:
-                                              TextStyle(fontSize: width / 50),
+                                              TextStyle(fontSize: width / 50,color: Colors.white),
                                         ),
                                       )
                                     ],
