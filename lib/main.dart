@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:track_walk_admin/screen/events.dart';
+import 'package:track_walk_admin/screen/list_ticket.dart';
+import 'package:track_walk_admin/screen/login.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 
 void main() async {
@@ -16,15 +18,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp();
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'Track Walk',
-        theme: ThemeData(
-          fontFamily: "popin"
-        ),
-        home: Event());
+        theme: ThemeData(fontFamily: "popin"),
+        home: Ticket());
   }
 }

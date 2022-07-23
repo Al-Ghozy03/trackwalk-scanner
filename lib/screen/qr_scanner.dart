@@ -6,7 +6,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 
 class QR extends StatefulWidget {
-  const QR({super.key});
+  // const QR({super.key});
 
   @override
   State<QR> createState() => _QRState();

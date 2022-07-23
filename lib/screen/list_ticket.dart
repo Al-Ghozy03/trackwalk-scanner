@@ -3,16 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/models/models/event_model.dart';
+import 'package:track_walk_admin/models/models/Ticket_model.dart';
 
-class Event extends StatefulWidget {
-  // const Event({super.key});
+class Ticket extends StatefulWidget {
+  // const Ticket({super.key});
 
   @override
-  State<Event> createState() => _EventState();
+  State<Ticket> createState() => _TicketState();
 }
 
-class _EventState extends State<Event> {
+class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
 
@@ -33,16 +33,16 @@ class _EventState extends State<Event> {
             child: StatefulBuilder(
               builder: (context, StateSetter stateSetter) {
                 List filter = [
-                  "All Events",
-                  "One-day Events",
-                  "Multi-day Events",
-                  "Bookable Events"
+                  "All Tickets",
+                  "One-day Tickets",
+                  "Multi-day Tickets",
+                  "Bookable Tickets"
                 ];
                 List sort = [
-                  "Event Name : A-Z",
-                  "Event Name : Z-A",
-                  "Event Name : New to Old",
-                  "Event Name : Old to New"
+                  "Ticket Name : A-Z",
+                  "Ticket Name : Z-A",
+                  "Ticket Name : New to Old",
+                  "Ticket Name : Old to New"
                 ];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,9 +66,10 @@ class _EventState extends State<Event> {
                                               : Colors.white,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
-                                              color: activeIndexFilter == data.key
-                                                  ? blueTheme
-                                                  : grayText),
+                                              color:
+                                                  activeIndexFilter == data.key
+                                                      ? blueTheme
+                                                      : grayText),
                                           borderRadius:
                                               BorderRadius.circular(width))),
                                   onPressed: () {
@@ -83,9 +84,10 @@ class _EventState extends State<Event> {
                                             ? blueTheme
                                             : grayText,
                                         fontSize: width / 25,
-                                        fontFamily: activeIndexFilter == data.key
-                                            ? "popinsemi"
-                                            : "popin"),
+                                        fontFamily:
+                                            activeIndexFilter == data.key
+                                                ? "popinsemi"
+                                                : "popin"),
                                   ))))
                           .toList(),
                     ),
@@ -146,106 +148,38 @@ class _EventState extends State<Event> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    List<EventModel> events = [
-      EventModel(
-          title: "Domestic Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "International Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Domestic Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "International Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Bicycle Pass",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Car Parking Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Podium Photoshoot Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Motorcycle / Bicycle Parking Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Bicycle Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
+    List<TicketModel> Tickets = [
+      TicketModel(
+          title: "Satrio Boyd" ,
+          subTitle: "Status",
+          icon: Icon(
+            Icons.circle,
+            size: width / 10,
+            color: Colors.green,
           )),
-      EventModel(
-          title: "Car Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
+      TicketModel(
+          title: "Satrio Boyd",
+          subTitle: "Status",
+          icon: Icon(
+            Icons.circle,
+            size: width / 10,
+            color: Colors.green,
           )),
-      EventModel(
-          title: "Motorcycle / Bicycle Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
+      TicketModel(
+          title: "Satrio Boyd",
+          subTitle: "Status",
+          icon: Icon(
+            Icons.circle,
+            size: width / 10,
+            color: Colors.green,
           )),
-      EventModel(
-          title: "Podium Photoshoot Ticket Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
+      TicketModel(
+          title: "Satrio Boyd",
+          subTitle: "Status",
+          icon: Icon(
+            Icons.circle,
+            size: width / 10,
+            color: Colors.green,
           )),
     ];
 
@@ -257,7 +191,7 @@ class _EventState extends State<Event> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Events",
+              Text("Tickets",
                   style:
                       TextStyle(fontSize: width / 13, fontFamily: "popinsemi")),
               SizedBox(height: width / 20),
@@ -266,10 +200,10 @@ class _EventState extends State<Event> {
               Container(
                 height: height * 0.75,
                 child: ListView.separated(
-                    itemBuilder: (_, i) => _listEvents(width, i, events),
+                    itemBuilder: (_, i) => _listTickets(width, i, Tickets),
                     separatorBuilder: (context, index) => SizedBox(
                         height: width / 15, child: Divider(thickness: 0.8)),
-                    itemCount: events.length),
+                    itemCount: Tickets.length),
               )
             ],
           ),
@@ -278,7 +212,7 @@ class _EventState extends State<Event> {
     );
   }
 
-  Widget _listEvents(width, int i, events) {
+  Widget _listTickets(width, int i, Tickets) {
     return InkWell(
       onTap: () {},
       child: Container(
@@ -289,16 +223,16 @@ class _EventState extends State<Event> {
             Flexible(
               child: Row(
                 children: [
-                  events[i].icon,
+                  Tickets[i].icon,
                   SizedBox(width: width / 30),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        events[i].title,
+                        Tickets[i].title,
                         style: TextStyle(fontFamily: "popinsemi"),
                       ),
-                      Text(events[i].subTitle,
+                      Text(Tickets[i].subTitle,
                           style:
                               TextStyle(fontSize: width / 30, color: grayText))
                     ],
