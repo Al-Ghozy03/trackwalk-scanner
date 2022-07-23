@@ -201,7 +201,7 @@ class _TicketState extends State<Ticket> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                              image: AssetImage("assets/Visitor.jpeg"),
+                              image: AssetImage("assets/img/Visitor.jpeg"),
                               fit: BoxFit.cover)),
                     ),
                     SizedBox(
