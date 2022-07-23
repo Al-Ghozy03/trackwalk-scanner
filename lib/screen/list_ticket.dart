@@ -166,7 +166,7 @@ class _TicketState extends State<Ticket> {
             color: Colors.green,
           )),
       TicketModel(
-          title: "Satrio Boyd",
+          title: "Andika",
           subTitle: "Status",
           icon: Icon(
             Icons.circle,
