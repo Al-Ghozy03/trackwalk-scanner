@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/models/models/event_model.dart';
+import 'package:track_walk_admin/models/api/event_model.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
+import 'package:track_walk_admin/service/api_service.dart';
+import 'package:track_walk_admin/widget/custom_shimmer.dart';
 
 class Event extends StatefulWidget {
   const Event({super.key});
@@ -17,6 +19,8 @@ class Event extends StatefulWidget {
 class _EventState extends State<Event> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
+  late Future event;
+  String keyword = "";
 
   void modalFilter() {
     showModalBottomSheet(
@@ -164,111 +168,15 @@ class _EventState extends State<Event> {
   }
 
   @override
+  void initState() {
+    event = ApiService().event();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    List<EventModel> events = [
-      EventModel(
-          title: "Domestic Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "International Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Domestic Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "International Visitor - Weekday",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Bicycle Pass",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Car Parking Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Podium Photoshoot Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Motorcycle / Bicycle Parking Ticket",
-          subTitle: "Bookable Events",
-          icon: Icon(Iconsax.calendar_tick, size: width / 10)),
-      EventModel(
-          title: "Bicycle Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
-          )),
-      EventModel(
-          title: "Car Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
-          )),
-      EventModel(
-          title: "Motorcycle / Bicycle Pass Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
-          )),
-      EventModel(
-          title: "Podium Photoshoot Ticket Add-on",
-          subTitle: "0:00 - 0:00",
-          icon: Container(
-            padding: EdgeInsets.all(width / 30),
-            decoration: BoxDecoration(
-                color: blueTheme,
-                borderRadius: BorderRadius.circular(width / 40)),
-            child: Column(
-              children: [
-                Text("22",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", color: Colors.white)),
-                Text("Jan", style: TextStyle(color: Colors.white))
-              ],
-            ),
-          )),
-    ];
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -283,13 +191,16 @@ class _EventState extends State<Event> {
               SizedBox(height: width / 20),
               _searchBar(width, height),
               SizedBox(height: width / 15),
-              Container(
-                height: height * 0.75,
-                child: ListView.separated(
-                    itemBuilder: (_, i) => _listEvents(width, i, events),
-                    separatorBuilder: (context, index) => SizedBox(
-                        height: width / 15, child: Divider(thickness: 0.8)),
-                    itemCount: events.length),
+              FutureBuilder(
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done)
+                    return _loadingState(width, height);
+                  if (snapshot.hasError) return Text("error");
+                  if (snapshot.hasData)
+                    return _listBuilder(width, height, snapshot.data);
+                  return Text("kosong");
+                },
+                future: event,
               )
             ],
           ),
@@ -298,40 +209,83 @@ class _EventState extends State<Event> {
     );
   }
 
-  Widget _listEvents(width, int i, events) {
-    return InkWell(
-      onTap: () {
-        Get.to(Calendar(), transition: Transition.rightToLeftWithFade);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: width / 35),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Row(
-                children: [
-                  events[i].icon,
-                  SizedBox(width: width / 30),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        events[i].title,
-                        style: TextStyle(fontFamily: "popinsemi"),
+  Widget _loadingState(width, height) {
+    return Container(
+      height: height * 0.75,
+      child: ListView.separated(
+          itemBuilder: (_, i) {
+            return Row(
+              children: [
+                CustomShimmer(
+                    width: width / 6, height: width / 6, radius: width / 30),
+                SizedBox(width: width / 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomShimmer(
+                        height: width / 30, width: width * 0.65, radius: width),
+                    SizedBox(height: width / 55),
+                    CustomShimmer(
+                        height: width / 30, width: width * 0.45, radius: width),
+                  ],
+                )
+              ],
+            );
+          },
+          separatorBuilder: (_, i) =>
+              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+          itemCount: 10),
+    );
+  }
+
+  Widget _listBuilder(width, height, List<EventModel> data) {
+    var filter = data.where((element) =>
+        element.name.toLowerCase().contains(keyword.toLowerCase()));
+    return Container(
+      height: height * 0.75,
+      child: ListView.separated(
+          itemBuilder: (_, i) {
+            return InkWell(
+              onTap: () {
+                Get.to(Calendar(), transition: Transition.rightToLeftWithFade);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: width / 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Icon(Iconsax.calendar_tick, size: width / 10),
+                          SizedBox(width: width / 30),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  filter.elementAt(i).name,
+                                  style: TextStyle(fontFamily: "popinsemi"),
+                                ),
+                                Text("Bookable Event",
+                                    style: TextStyle(
+                                        fontSize: width / 30, color: grayText))
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(events[i].subTitle,
-                          style:
-                              TextStyle(fontSize: width / 30, color: grayText))
-                    ],
-                  ),
-                ],
+                    ),
+                    Icon(Iconsax.arrow_right_3,
+                        size: width / 20, color: grayText)
+                  ],
+                ),
               ),
-            ),
-            Icon(Iconsax.arrow_right_3, size: width / 20, color: grayText)
-          ],
-        ),
-      ),
+            );
+          },
+          separatorBuilder: (context, index) =>
+              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+          itemCount: filter.length),
     );
   }
 
@@ -342,6 +296,11 @@ class _EventState extends State<Event> {
         Container(
           width: width * 0.75,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                keyword = value;
+              });
+            },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
                 prefixIcon: Icon(Iconsax.search_normal_1),
