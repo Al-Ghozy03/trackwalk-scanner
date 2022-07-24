@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/models/models/Ticket_model.dart';
+
+import '../models/api/ticket_model.dart';
+import '../service/api_service.dart';
+import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
   const Ticket({super.key});
@@ -16,6 +18,8 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
+  late Future ticket;
+  final arguments = Get.arguments;
 
   void dialogDetails() {
     showModalBottomSheet(
@@ -256,43 +260,15 @@ class _TicketState extends State<Ticket> {
   }
 
   @override
+  void initState() {
+    ticket = ApiService().ticket();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    List<TicketModel> tickets = [
-      TicketModel(
-          title: "Satrio Boyd",
-          subTitle: "Status",
-          icon: Icon(
-            Icons.circle,
-            size: width / 10,
-            color: Colors.green,
-          )),
-      TicketModel(
-          title: "Daffa",
-          subTitle: "Status",
-          icon: Icon(
-            Icons.circle,
-            size: width / 10,
-            color: Colors.green,
-          )),
-      TicketModel(
-          title: "Andika",
-          subTitle: "Status",
-          icon: Icon(
-            Icons.circle,
-            size: width / 10,
-            color: Colors.green,
-          )),
-      TicketModel(
-          title: "Satrio Boyd",
-          subTitle: "Status",
-          icon: Icon(
-            Icons.circle,
-            size: width / 10,
-            color: Colors.green,
-          )),
-    ];
 
     return Scaffold(
       body: SafeArea(
@@ -332,14 +308,11 @@ class _TicketState extends State<Ticket> {
                           style: TextStyle(
                               fontSize: width / 18, fontFamily: "popinsemi"),
                         ),
-                        // SizedBox(
-                        //   height: 10,
+                        // Text(
+                        //   "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                        //   style:
+                        //       TextStyle(fontSize: width / 27, color: grayText),
                         // ),
-                        Text(
-                          "20 Juli 2022",
-                          style:
-                              TextStyle(fontSize: width / 27, color: grayText),
-                        ),
                         InkWell(
                           onTap: () {
                             dialogDetails();
@@ -362,18 +335,61 @@ class _TicketState extends State<Ticket> {
               SizedBox(height: width / 20),
               _searchBar(width, height),
               SizedBox(height: width / 15),
-              Container(
-                height: height * 0.75,
-                child: ListView.separated(
-                    itemBuilder: (_, i) => _listTickets(width, i, tickets),
-                    separatorBuilder: (context, index) => SizedBox(
-                        height: width / 15, child: Divider(thickness: 0.8)),
-                    itemCount: tickets.length),
+              FutureBuilder(
+                future: ticket,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done)
+                    return _loadingState(width, height);
+                  if (snapshot.hasError) return Text("error");
+                  if (snapshot.hasData)
+                    return _listBuilder(width, height, snapshot.data);
+                  return Text("kosong");
+                },
               )
             ],
           ),
         ),
       )),
+    );
+  }
+
+  Widget _loadingState(width, height) {
+    return Container(
+      height: height * 0.75,
+      child: ListView.separated(
+          itemBuilder: (_, i) {
+            return Row(
+              children: [
+                CustomShimmer(
+                    width: width / 6, height: width / 6, radius: width / 30),
+                SizedBox(width: width / 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomShimmer(
+                        height: width / 30, width: width * 0.65, radius: width),
+                    SizedBox(height: width / 55),
+                    CustomShimmer(
+                        height: width / 30, width: width * 0.45, radius: width),
+                  ],
+                )
+              ],
+            );
+          },
+          separatorBuilder: (_, i) =>
+              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+          itemCount: 10),
+    );
+  }
+
+  Widget _listBuilder(height, width, List<TicketModel> data) {
+    return Container(
+      height: height * 0.75,
+      child: ListView.separated(
+          itemBuilder: (_, i) => _listTickets(width, i, data),
+          separatorBuilder: (context, index) =>
+              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+          itemCount: data.length),
     );
   }
 

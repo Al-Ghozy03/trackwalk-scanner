@@ -25,6 +25,16 @@ class ApiService {
     }
   }
 
+  Future ticket() async {
+    final res = await http.get(Uri.parse(
+        "$baseUrl/orders?consumer_key=$consumerKey&consumer_secret=$consumerSecret"));
+    if (res.statusCode == 200) {
+      return eventModelFromJson(res.body);
+    } else {
+      return false;
+    }
+  }
+
   Future login(String username, String password) async {
     Uri urlApi = Uri.parse(baseUrl + "/$_login");
     Map<String, String> requestHeaders = {
