@@ -22,7 +22,7 @@ class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
   late Future ticket;
-   String keyword = "";
+  String keyword = "";
   final arguments = Get.arguments;
 
   void dialogDetails() {
@@ -387,8 +387,9 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _listBuilder(height, width, List<TicketModel> data) {
-      var filter = data.where((element) =>
-        element.billing.firstName.toLowerCase().contains(keyword.toLowerCase()));
+    var filter = data.where((element) => element.billing.firstName
+        .toLowerCase()
+        .contains(keyword.toLowerCase()));
     return Container(
       height: height * 1,
       child: ListView.separated(
@@ -401,7 +402,6 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _listTickets(width, int i, tickets) {
-   
     return InkWell(
       onTap: () {},
       child: Container(
@@ -412,29 +412,40 @@ class _TicketState extends State<Ticket> {
             Flexible(
               child: Row(
                 children: [
-                  Icon(Icons.circle, size: width / 20, color: (tickets.elementAt(i).status != "completed") ? Colors.grey : Colors.green,),
+                  Icon(
+                    Icons.circle,
+                    size: width / 20,
+                    color: (tickets.elementAt(i).status != "completed")
+                        ? Colors.grey
+                        : Colors.green,
+                  ),
                   SizedBox(width: width / 30),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                         width: width * 0.3,
+                        width: width * 0.3,
                         child: (tickets.elementAt(i).billing.firstName != "")
                             ? AutoSizeText(
-                              overflow: TextOverflow.ellipsis,
+                                presetFontSizes: [16, 14, 12],
+                                overflow: TextOverflow.ellipsis,
                                 "${tickets.elementAt(i).billing.firstName}",
                                 style: TextStyle(fontFamily: "popinsemi"),
                               )
                             : AutoSizeText(
-                              overflow: TextOverflow.ellipsis,
+                                presetFontSizes: [16, 14, 12],
+                                overflow: TextOverflow.ellipsis,
                                 "${tickets.elementAt(i).id}",
                                 style: TextStyle(fontFamily: "popinsemi"),
                               ),
                       ),
                       Container(
                         child: AutoSizeText(
+                          presetFontSizes: [16, 14, 12],
                           overflow: TextOverflow.ellipsis,
-                          (tickets.elementAt(i).status != "completed") ? "Status : Check-in" : "Status : Check-in",
+                          (tickets.elementAt(i).status != "completed")
+                              ? "Status : Check-out"
+                              : "Status : Check-in",
                           style: TextStyle(color: grayText),
                         ),
                       )
