@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -21,6 +22,7 @@ class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
   late Future ticket;
+   String keyword = "";
   final arguments = Get.arguments;
 
   void dialogDetails() {
@@ -385,45 +387,63 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _listBuilder(height, width, List<TicketModel> data) {
+      var filter = data.where((element) =>
+        element.billing.firstName.toLowerCase().contains(keyword.toLowerCase()));
     return Container(
-      height: height * 0.75,
+      height: height * 1,
       child: ListView.separated(
-          itemBuilder: (_, i) => _listTickets(width, i, data),
-          separatorBuilder: (context, index) =>
-              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-          itemCount: data.length),
+        itemBuilder: (_, i) => _listTickets(width, i, filter),
+        separatorBuilder: (context, index) =>
+            SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+        itemCount: data.length,
+      ),
     );
   }
 
   Widget _listTickets(width, int i, tickets) {
+   
     return InkWell(
       onTap: () {},
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: width / 35),
+        // padding: EdgeInsets.symmetric(vertical: width / 105),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               child: Row(
                 children: [
-                  tickets[i].icon,
+                  Icon(Icons.circle, size: width / 20, color: (tickets.elementAt(i).status != "completed") ? Colors.grey : Colors.green,),
                   SizedBox(width: width / 30),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        tickets[i].title,
-                        style: TextStyle(fontFamily: "popinsemi"),
+                      Container(
+                         width: width * 0.3,
+                        child: (tickets.elementAt(i).billing.firstName != "")
+                            ? AutoSizeText(
+                              overflow: TextOverflow.ellipsis,
+                                "${tickets.elementAt(i).billing.firstName}",
+                                style: TextStyle(fontFamily: "popinsemi"),
+                              )
+                            : AutoSizeText(
+                              overflow: TextOverflow.ellipsis,
+                                "${tickets.elementAt(i).id}",
+                                style: TextStyle(fontFamily: "popinsemi"),
+                              ),
                       ),
-                      Text(tickets[i].subTitle,
-                          style:
-                              TextStyle(fontSize: width / 30, color: grayText))
+                      Container(
+                        child: AutoSizeText(
+                          overflow: TextOverflow.ellipsis,
+                          (tickets.elementAt(i).status != "completed") ? "Status : Check-in" : "Status : Check-in",
+                          style: TextStyle(color: grayText),
+                        ),
+                      )
                     ],
                   ),
                 ],
               ),
             ),
-            Icon(Iconsax.arrow_right_3, size: width / 20, color: grayText)
+            Icon(Iconsax.arrow_right_3, size: width / 30, color: grayText)
           ],
         ),
       ),

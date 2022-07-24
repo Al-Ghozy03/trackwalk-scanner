@@ -5,6 +5,7 @@ import 'package:alert/alert.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:track_walk_admin/models/api/event_model.dart';
+import 'package:track_walk_admin/models/api/ticket_model.dart';
 import 'getx_service.dart';
 
 final storage = GetStorage();
@@ -29,7 +30,7 @@ class ApiService {
     final res = await http.get(Uri.parse(
         "$baseUrl/orders?consumer_key=$consumerKey&consumer_secret=$consumerSecret"));
     if (res.statusCode == 200) {
-      return eventModelFromJson(res.body);
+      return ticketModelFromJson(res.body);
     } else {
       return false;
     }
