@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -308,11 +310,11 @@ class _TicketState extends State<Ticket> {
                           style: TextStyle(
                               fontSize: width / 18, fontFamily: "popinsemi"),
                         ),
-                        // Text(
-                        //   "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                        //   style:
-                        //       TextStyle(fontSize: width / 27, color: grayText),
-                        // ),
+                        Text(
+                          "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                          style:
+                              TextStyle(fontSize: width / 27, color: grayText),
+                        ),
                         InkWell(
                           onTap: () {
                             dialogDetails();

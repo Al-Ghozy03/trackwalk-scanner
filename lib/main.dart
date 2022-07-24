@@ -23,9 +23,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      defaultTransition: Transition.rightToLeftWithFade,
         debugShowCheckedModeBanner: false,
         title: 'Track Walk',
-        theme: ThemeData(fontFamily: "popin"),
+        theme: ThemeData(
+            fontFamily: "popin",
+            colorScheme: ThemeData().colorScheme.copyWith(primary: blueTheme)),
         home: Event());
   }
 }

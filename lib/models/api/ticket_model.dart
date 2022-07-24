@@ -1,4 +1,4 @@
-//To parse required this JSON data, do
+// To parse required this JSON data, do
 //
 //     final ticketModel = ticketModelFromJson(jsonString);
 

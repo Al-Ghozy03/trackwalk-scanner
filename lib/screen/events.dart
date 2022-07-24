@@ -24,6 +24,7 @@ class _EventState extends State<Event> {
 
   void modalFilter() {
     showModalBottomSheet(
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
         topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
@@ -155,7 +156,7 @@ class _EventState extends State<Event> {
                           child: Text("Apply",
                               style: TextStyle(
                                   fontFamily: "popinsemi",
-                                  fontSize: width / 25))),
+                                  fontSize: width / 20))),
                     )
                   ],
                 );
@@ -247,7 +248,9 @@ class _EventState extends State<Event> {
           itemBuilder: (_, i) {
             return InkWell(
               onTap: () {
-                Get.to(Calendar(), transition: Transition.rightToLeftWithFade);
+                Get.to(Calendar(),
+                    arguments: filter.elementAt(i).name,
+                    transition: Transition.rightToLeftWithFade);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: width / 35),
@@ -303,7 +306,7 @@ class _EventState extends State<Event> {
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1),
+                prefixIcon: Icon(Iconsax.search_normal_1, color: grayText),
                 hintText: "Search",
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(width / 40),
