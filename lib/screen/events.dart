@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -181,6 +182,9 @@ class _EventState extends State<Event> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
+        physics: GetPlatform.isIOS
+            ? BouncingScrollPhysics()
+            : ClampingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.all(width / 25),
           child: Column(
@@ -242,6 +246,61 @@ class _EventState extends State<Event> {
   Widget _listBuilder(width, height, List<EventModel> data) {
     var filter = data.where((element) =>
         element.name.toLowerCase().contains(keyword.toLowerCase()));
+    if (GetPlatform.isIOS)
+      return CupertinoScrollbar(
+          child: Container(
+        height: height * 0.75,
+        child: ListView.separated(
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (_, i) {
+              return InkWell(
+                onTap: () {
+                  Get.to(
+                      Calendar(
+                        image: filter.elementAt(i).images[0].src,
+                      ),
+                      arguments: filter.elementAt(i).name,
+                      transition: Transition.cupertino);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: width / 35),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Row(
+                          children: [
+                            Icon(Iconsax.calendar_tick, size: width / 10),
+                            SizedBox(width: width / 30),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    filter.elementAt(i).name,
+                                    style: TextStyle(fontFamily: "popinsemi"),
+                                  ),
+                                  Text("Bookable Event",
+                                      style: TextStyle(
+                                          fontSize: width / 30,
+                                          color: grayText))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(Iconsax.arrow_right_3,
+                          size: width / 20, color: grayText)
+                    ],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) =>
+                SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+            itemCount: filter.length),
+      ));
     return Container(
       height: height * 0.75,
       child: ListView.separated(
@@ -301,22 +360,32 @@ class _EventState extends State<Event> {
       children: [
         Container(
           width: width * 0.75,
-          child: TextField(
-            onChanged: (value) {
-              setState(() {
-                keyword = value;
-              });
-            },
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1, color: grayText),
-                hintText: "Search",
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40),
-                    borderSide: BorderSide(color: grayText)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40))),
-          ),
+          child: GetPlatform.isAndroid
+              ? TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      keyword = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      prefixIcon:
+                          Icon(Iconsax.search_normal_1, color: grayText),
+                      hintText: "Search",
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width / 40),
+                          borderSide: BorderSide(color: grayText)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width / 40))),
+                )
+              : CupertinoSearchTextField(
+                  onChanged: (value) {
+                    setState(() {
+                      keyword = value;
+                    });
+                  },
+                  padding: EdgeInsets.symmetric(vertical: width / 30),
+                ),
         ),
         InkWell(
           onTap: () {

@@ -1,4 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +36,9 @@ class _CalendarState extends State<Calendar> {
                   onPressed: () {
                     Get.back();
                   },
-                  icon: Icon(Iconsax.arrow_left)),
+                  icon: Icon(GetPlatform.isAndroid
+                      ? Iconsax.arrow_left
+                      : Icons.arrow_back_ios_rounded)),
               SizedBox(height: width / 20),
               TableCalendar(
                 selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
@@ -72,22 +75,39 @@ class _CalendarState extends State<Calendar> {
               SizedBox(height: width / 20),
               Container(
                 width: width,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(Ticket(),
-                        arguments: [arguments, _selectedDay, widget.image],
-                        transition: Transition.rightToLeftWithFade);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(width / 40))),
-                  child: Text(
-                    "Next",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", fontSize: width / 20),
-                  ),
-                ),
+                child: GetPlatform.isIOS
+                    ? CupertinoButton.filled(
+                        child: Text("Next"),
+                        onPressed: () {
+                          Get.to(Ticket(),
+                              arguments: [
+                                arguments,
+                                _selectedDay,
+                                widget.image
+                              ],
+                              transition: Transition.rightToLeftWithFade);
+                        })
+                    : ElevatedButton(
+                        onPressed: () {
+                          Get.to(Ticket(),
+                              arguments: [
+                                arguments,
+                                _selectedDay,
+                                widget.image
+                              ],
+                              transition: Transition.rightToLeftWithFade);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(width / 40))),
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                              fontFamily: "popinsemi", fontSize: width / 20),
+                        ),
+                      ),
               )
             ],
           ),

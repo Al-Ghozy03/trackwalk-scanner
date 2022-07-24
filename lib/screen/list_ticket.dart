@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -272,8 +272,8 @@ class _TicketState extends State<Ticket> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = Get.width;
+    final height = Get.height;
 
     return Scaffold(
       body: SafeArea(
@@ -298,6 +298,7 @@ class _TicketState extends State<Ticket> {
                         width: width / 4,
                         height: width / 4,
                         decoration: BoxDecoration(
+                            color: grayText,
                             borderRadius: BorderRadius.circular(width / 30),
                             image: DecorationImage(
                                 image: NetworkImage(arguments[2]),
@@ -357,43 +358,24 @@ class _TicketState extends State<Ticket> {
                 ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                builQrCode(),
-              ],
-            )
           ],
         ),
       )),
-    );
-  }
-
-  Widget builQrCode() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        // borderRadius: BorderRadius.circular(8),
-        color: blueTheme,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: Icon(
-              Iconsax.scan_barcode,
-              color: iconWhite,
-            ),
+      bottomNavigationBar: Container(
+        height: height / 10.5,
+        width: width,
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0))),
             onPressed: () {
               Get.to(QR(), transition: Transition.circularReveal);
             },
-          )
-        ],
+            child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),
     );
   }
+
 
   Widget _loadingState(width, height) {
     return Container(
@@ -443,7 +425,6 @@ class _TicketState extends State<Ticket> {
     return InkWell(
       onTap: () {},
       child: Container(
-        // padding: EdgeInsets.symmetric(vertical: width / 105),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -458,41 +439,35 @@ class _TicketState extends State<Ticket> {
                         : Colors.green,
                   ),
                   SizedBox(width: width / 30),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: width * 0.3,
-                        child: (tickets.elementAt(i).billing.firstName != "")
-                            ? AutoSizeText(
-                                presetFontSizes: [16, 14, 12],
-                                overflow: TextOverflow.ellipsis,
-                                "${tickets.elementAt(i).billing.firstName}",
-                                style: TextStyle(fontFamily: "popinsemi"),
-                              )
-                            : AutoSizeText(
-                                presetFontSizes: [16, 14, 12],
-                                overflow: TextOverflow.ellipsis,
-                                "${tickets.elementAt(i).id}",
-                                style: TextStyle(fontFamily: "popinsemi"),
-                              ),
-                      ),
-                      Container(
-                        child: AutoSizeText(
-                          presetFontSizes: [16, 14, 12],
-                          overflow: TextOverflow.ellipsis,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          presetFontSizes: [width / 45, 14, 12],
+                          tickets.elementAt(i).billing.firstName != ""
+                              ? tickets
+                                  .elementAt(i)
+                                  .billing
+                                  .firstName
+                                  .toString()
+                              : tickets.elementAt(i).id.toString(),
+                          style: TextStyle(fontFamily: "popinsemi"),
+                        ),
+                        AutoSizeText(
+                          presetFontSizes: [width / 55, 12, 10],
                           (tickets.elementAt(i).status != "completed")
                               ? "Status : Check-out"
                               : "Status : Check-in",
                           style: TextStyle(color: grayText),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            Icon(Iconsax.arrow_right_3, size: width / 30, color: grayText)
+            Icon(Iconsax.arrow_right_3, size: width / 40, color: grayText)
           ],
         ),
       ),
@@ -506,14 +481,14 @@ class _TicketState extends State<Ticket> {
         Container(
           width: width * 0.75,
           child: TextField(
-             onChanged: (value) {
+            onChanged: (value) {
               setState(() {
                 keyword = value;
               });
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1),
+                prefixIcon: Icon(Iconsax.search_normal_1,color: grayText),
                 hintText: "Search",
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(width / 40),
