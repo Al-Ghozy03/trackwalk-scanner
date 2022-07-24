@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/screen/qr_scanner.dart';
 
 import '../models/api/ticket_model.dart';
 import '../service/api_service.dart';
@@ -277,83 +278,120 @@ class _TicketState extends State<Ticket> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(width / 25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(Iconsax.arrow_left)),
-              SizedBox(height: width / 20),
-              Row(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(width / 25),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: width / 4,
-                    height: width / 4,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(width / 30),
-                        image: DecorationImage(
-                            image: AssetImage("assets/img/Visitor.jpeg"),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(
-                    width: width / 20,
-                  ),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Domestic Visitor - Weekday",
-                          style: TextStyle(
-                              fontSize: width / 18, fontFamily: "popinsemi"),
-                        ),
-                        Text(
-                          "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                          style:
-                              TextStyle(fontSize: width / 27, color: grayText),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            dialogDetails();
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                "Expand Details",
-                                style: TextStyle(fontSize: width / 27),
+                  IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(Iconsax.arrow_left)),
+                  SizedBox(height: width / 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: width / 4,
+                        height: width / 4,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(width / 30),
+                            image: DecorationImage(
+                                image: AssetImage("assets/img/Visitor.jpeg"),
+                                fit: BoxFit.cover)),
+                      ),
+                      SizedBox(
+                        width: width / 20,
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Domestic Visitor - Weekday",
+                              style: TextStyle(
+                                  fontSize: width / 18,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            Text(
+                              "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              style: TextStyle(
+                                  fontSize: width / 27, color: grayText),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                dialogDetails();
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Expand Details",
+                                    style: TextStyle(fontSize: width / 27),
+                                  ),
+                                  Icon(Iconsax.arrow_down_1, size: width / 22)
+                                ],
                               ),
-                              Icon(Iconsax.arrow_down_1, size: width / 22)
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: width / 20),
+                  _searchBar(width, height),
+                  SizedBox(height: width / 15),
+                  FutureBuilder(
+                    future: ticket,
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return _loadingState(width, height);
+                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasData)
+                        return _listBuilder(width, height, snapshot.data);
+                      return Text("kosong");
+                    },
                   ),
                 ],
               ),
-              SizedBox(height: width / 20),
-              _searchBar(width, height),
-              SizedBox(height: width / 15),
-              FutureBuilder(
-                future: ticket,
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done)
-                    return _loadingState(width, height);
-                  if (snapshot.hasError) return Text("error");
-                  if (snapshot.hasData)
-                    return _listBuilder(width, height, snapshot.data);
-                  return Text("kosong");
-                },
-              )
-            ],
-          ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                builQrCode(),
+              ],
+            )
+          ],
         ),
       )),
+    );
+  }
+
+  Widget builQrCode() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.circular(8),
+        color: blueTheme,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              Iconsax.scan_barcode,
+              color: iconWhite,
+            ),
+            onPressed: () {
+              Get.to(QR(), transition: Transition.circularReveal);
+            },
+          )
+        ],
+      ),
     );
   }
 
@@ -396,7 +434,7 @@ class _TicketState extends State<Ticket> {
         itemBuilder: (_, i) => _listTickets(width, i, filter),
         separatorBuilder: (context, index) =>
             SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-        itemCount: data.length,
+        itemCount: filter.length,
       ),
     );
   }
@@ -468,6 +506,11 @@ class _TicketState extends State<Ticket> {
         Container(
           width: width * 0.75,
           child: TextField(
+             onChanged: (value) {
+              setState(() {
+                keyword = value;
+              });
+            },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
                 prefixIcon: Icon(Iconsax.search_normal_1),
