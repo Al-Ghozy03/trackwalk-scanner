@@ -406,16 +406,16 @@ class _TicketState extends State<Ticket> {
             Flexible(
               child: Row(
                 children: [
-                  tickets[i].icon,
+                  // tickets[i].icon,
                   SizedBox(width: width / 30),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        tickets[i].title,
+                        "tickets[i].title",
                         style: TextStyle(fontFamily: "popinsemi"),
                       ),
-                      Text(tickets[i].subTitle,
+                      Text("tickets[i].subTitle",
                           style:
                               TextStyle(fontSize: width / 30, color: grayText))
                     ],
