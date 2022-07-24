@@ -22,6 +22,7 @@ class _EventState extends State<Event> {
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
+  
 
   void modalFilter() {
     showModalBottomSheet(
@@ -71,7 +72,7 @@ class _EventState extends State<Event> {
                                       backgroundColor:
                                           activeIndexFilter == data.key
                                               ? blueThemeOpacity
-                                              : Colors.white,
+                                              : null,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
                                               color:
@@ -116,7 +117,7 @@ class _EventState extends State<Event> {
                                       backgroundColor:
                                           activeIndexSort == data.key
                                               ? blueThemeOpacity
-                                              : Colors.white,
+                                              : null,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
                                               color: activeIndexSort == data.key
@@ -190,9 +191,26 @@ class _EventState extends State<Event> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Events",
-                  style:
-                      TextStyle(fontSize: width / 13, fontFamily: "popinsemi")),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Events",
+                    style: TextStyle(
+                      fontSize: width / 13,
+                      fontFamily: "popinsemi",
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Get.changeTheme(Get.isDarkMode
+                          ? ThemeData.light()
+                          : ThemeData.dark());
+                    },
+                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun),
+                  ),
+                ],
+              ),
               SizedBox(height: width / 20),
               _searchBar(width, height),
               SizedBox(height: width / 15),

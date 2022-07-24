@@ -183,7 +183,7 @@ class _TicketState extends State<Ticket> {
                                       backgroundColor:
                                           activeIndexFilter == data.key
                                               ? blueThemeOpacity
-                                              : Colors.white,
+                                              : null,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
                                               color:
@@ -228,7 +228,7 @@ class _TicketState extends State<Ticket> {
                                       backgroundColor:
                                           activeIndexSort == data.key
                                               ? blueThemeOpacity
-                                              : Colors.white,
+                                              : null,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
                                               color: activeIndexSort == data.key
