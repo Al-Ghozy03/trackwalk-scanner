@@ -51,7 +51,7 @@ class _TicketState extends State<Ticket> {
                       TextStyle(fontSize: width / 15, fontFamily: "popinsemi"),
                 ),
                 SizedBox(height: width / 40),
-                Text("Domestic Visitor - Weekday"),
+                Text(arguments[0]),
                 SizedBox(height: width / 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +300,7 @@ class _TicketState extends State<Ticket> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(width / 30),
                             image: DecorationImage(
-                                image: AssetImage("assets/img/Visitor.jpeg"),
+                                image: NetworkImage(arguments[2]),
                                 fit: BoxFit.cover)),
                       ),
                       SizedBox(
@@ -311,7 +311,7 @@ class _TicketState extends State<Ticket> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Domestic Visitor - Weekday",
+                              arguments[0],
                               style: TextStyle(
                                   fontSize: width / 18,
                                   fontFamily: "popinsemi"),

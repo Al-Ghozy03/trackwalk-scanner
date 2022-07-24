@@ -248,7 +248,10 @@ class _EventState extends State<Event> {
           itemBuilder: (_, i) {
             return InkWell(
               onTap: () {
-                Get.to(Calendar(),
+                Get.to(
+                    Calendar(
+                      image: filter.elementAt(i).images[0].src,
+                    ),
                     arguments: filter.elementAt(i).name,
                     transition: Transition.rightToLeftWithFade);
               },

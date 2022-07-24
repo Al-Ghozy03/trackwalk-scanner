@@ -7,7 +7,8 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/list_ticket.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+  final image;
+  const Calendar({super.key, required this.image});
 
   @override
   State<Calendar> createState() => _CalendarState();
@@ -74,7 +75,7 @@ class _CalendarState extends State<Calendar> {
                 child: ElevatedButton(
                   onPressed: () {
                     Get.to(Ticket(),
-                        arguments: [arguments, _selectedDay],
+                        arguments: [arguments, _selectedDay, widget.image],
                         transition: Transition.rightToLeftWithFade);
                   },
                   style: ElevatedButton.styleFrom(
