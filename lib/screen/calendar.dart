@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'package:track_walk_admin/screen/list_ticket.dart';
 
 class Calendar extends StatefulWidget {
@@ -18,6 +17,8 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
+  final arguments = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -72,7 +73,9 @@ class _CalendarState extends State<Calendar> {
                 width: width,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.to(Ticket(),transition: Transition.rightToLeftWithFade);
+                    Get.to(Ticket(),
+                        arguments: [arguments, _selectedDay],
+                        transition: Transition.rightToLeftWithFade);
                   },
                   style: ElevatedButton.styleFrom(
                       elevation: 0,

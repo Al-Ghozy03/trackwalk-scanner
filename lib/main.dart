@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Track Walk',
-        theme: ThemeData(fontFamily: "popin"),
+        theme: ThemeData(
+            fontFamily: "popin",
+            colorScheme: ThemeData().colorScheme.copyWith(primary: blueTheme)),
         home: Event());
   }
 }

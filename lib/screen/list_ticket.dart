@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/models/Ticket_model.dart';
 
@@ -16,6 +17,7 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
+  final arguments = Get.arguments;
 
   void dialogDetails() {
     showModalBottomSheet(
@@ -332,11 +334,8 @@ class _TicketState extends State<Ticket> {
                           style: TextStyle(
                               fontSize: width / 18, fontFamily: "popinsemi"),
                         ),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
                         Text(
-                          "20 Juli 2022",
+                          "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                           style:
                               TextStyle(fontSize: width / 27, color: grayText),
                         ),
