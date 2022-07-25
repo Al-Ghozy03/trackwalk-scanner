@@ -19,7 +19,7 @@ class ThemeProvider extends ChangeNotifier {
 
   initialize() async {
     var themeCurrent = storage.read("themeDatas");
-    themeDatas = storage.read("themeDatas")!;
+    themeDatas = storage.read("themeDatas");
     print(themeDatas);
     themeMode = themeCurrent == "dark" ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
