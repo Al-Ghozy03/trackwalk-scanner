@@ -22,7 +22,6 @@ class _EventState extends State<Event> {
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
-  
 
   void modalFilter() {
     showModalBottomSheet(
@@ -203,11 +202,12 @@ class _EventState extends State<Event> {
                   ),
                   IconButton(
                     onPressed: () {
+                      
                       Get.changeTheme(Get.isDarkMode
                           ? ThemeData.light()
                           : ThemeData.dark());
                     },
-                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun),
+                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun_1),
                   ),
                 ],
               ),

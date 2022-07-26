@@ -6,7 +6,6 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
   String themeDatas = "light";
   final storage = GetStorage();
-  // bool get isDarkMode => themeMode == ThemeMode.dark;
 
   void toggleTheme(bool isOn, BuildContext context) async {
     themeDatas = isOn ? "dark" : "light";
@@ -19,8 +18,7 @@ class ThemeProvider extends ChangeNotifier {
 
   initialize() async {
     var themeCurrent = storage.read("themeDatas");
-    themeDatas = storage.read("themeDatas")!;
-    print(themeDatas);
+    themeDatas = storage.read("themeDatas");
     themeMode = themeCurrent == "dark" ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
@@ -28,8 +26,6 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   static final darkTheme = ThemeData(
-    
-    // scaffoldBackgroundColor: ,
     primaryColor: blueTheme,
     fontFamily: "Poppins",
     colorScheme: const ColorScheme.dark(),
