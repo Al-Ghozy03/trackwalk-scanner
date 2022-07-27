@@ -6,27 +6,14 @@ import 'package:track_walk_admin/colors.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
-  String themeDatas = "light";
   final storage = GetStorage();
 
   void toggleTheme(bool isOn, BuildContext context) async {
-    themeDatas = isOn ? "dark" : "light";
-
-    storage.write("themeDatas", themeDatas);
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 
-  initialize() async {
-    var themeCurrent = storage.read("themeDatas");
-    if (themeCurrent == null) {
-      themeMode = ThemeMode.system;
-      storage.write("themeDatas", "dark");
-    } else {
-      themeMode = themeCurrent == "dark" ? ThemeMode.dark : ThemeMode.light;
-    }
-    notifyListeners();
-  }
+ 
 }
 
 class MyThemes {
