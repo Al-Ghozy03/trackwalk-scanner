@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/api/event_model.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
@@ -22,7 +23,6 @@ class _EventState extends State<Event> {
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
-  
 
   void modalFilter() {
     showModalBottomSheet(
@@ -178,8 +178,13 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    if (Get.isDarkMode) {
+      storage.write("isDark", true);
+    } else {
+      storage.write("isDark", false);
+    }
+    final width = Get.width;
+    final height = Get.height;
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -207,7 +212,7 @@ class _EventState extends State<Event> {
                           ? ThemeData.light()
                           : ThemeData.dark());
                     },
-                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun),
+                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun_1),
                   ),
                 ],
               ),
@@ -218,9 +223,25 @@ class _EventState extends State<Event> {
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState != ConnectionState.done)
                     return _loadingState(width, height);
-                  if (snapshot.hasError) return Text("error");
+                  if (snapshot.hasError)
+                    return Column(
+                      children: [
+                        LottieBuilder.asset("assets/json/94992-error-404.json"),
+                        Text(
+                          "Ooops, something went wrong",
+                          style: TextStyle(
+                              fontFamily: "popinsemi", fontSize: width / 17),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          "Please check your internet connection",
+                          style: TextStyle(color: grayText),
+                        )
+                      ],
+                    );
                   if (snapshot.hasData)
                     return _listBuilder(width, height, snapshot.data);
+
                   return Text("kosong");
                 },
                 future: event,
@@ -390,11 +411,18 @@ class _EventState extends State<Event> {
                       prefixIcon:
                           Icon(Iconsax.search_normal_1, color: grayText),
                       hintText: "Search",
+                      filled: storage.read("isDark"),
+                      fillColor: inputDark,
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(width / 40),
-                          borderSide: BorderSide(color: grayText)),
+                          borderSide: storage.read("isDark")
+                              ? BorderSide.none
+                              : BorderSide(color: grayText)),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(width / 40))),
+                          borderRadius: BorderRadius.circular(width / 40),
+                          borderSide: storage.read("isDark")
+                              ? BorderSide.none
+                              : BorderSide())),
                 )
               : CupertinoSearchTextField(
                   onChanged: (value) {
@@ -402,6 +430,9 @@ class _EventState extends State<Event> {
                       keyword = value;
                     });
                   },
+                  style: TextStyle(
+                      color:
+                          storage.read("isDark") ? Colors.white : Colors.black),
                   padding: EdgeInsets.symmetric(vertical: width / 30),
                 ),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 
@@ -289,7 +290,9 @@ class _TicketState extends State<Ticket> {
                       onPressed: () {
                         Get.back();
                       },
-                      icon: Icon(Iconsax.arrow_left)),
+                      icon: Icon(GetPlatform.isIOS
+                          ? Icons.arrow_back_ios_rounded
+                          : Iconsax.arrow_left)),
                   SizedBox(height: width / 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +352,24 @@ class _TicketState extends State<Ticket> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.connectionState != ConnectionState.done)
                         return _loadingState(width, height);
-                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasError)
+                        return Column(
+                          children: [
+                            LottieBuilder.asset(
+                                "assets/json/94992-error-404.json"),
+                            Text(
+                              "Ooops, something went wrong",
+                              style: TextStyle(
+                                  fontFamily: "popinsemi",
+                                  fontSize: width / 17),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Please check your internet connection",
+                              style: TextStyle(color: grayText),
+                            )
+                          ],
+                        );
                       if (snapshot.hasData)
                         return _listBuilder(width, height, snapshot.data);
                       return Text("kosong");
@@ -366,6 +386,7 @@ class _TicketState extends State<Ticket> {
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+                backgroundColor: blueTheme,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
@@ -375,7 +396,6 @@ class _TicketState extends State<Ticket> {
       ),
     );
   }
-
 
   Widget _loadingState(width, height) {
     return Container(
@@ -488,13 +508,20 @@ class _TicketState extends State<Ticket> {
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1,color: grayText),
+                prefixIcon: Icon(Iconsax.search_normal_1, color: grayText),
                 hintText: "Search",
+                filled: storage.read("isDark"),
+                fillColor: inputDark,
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(width / 40),
-                    borderSide: BorderSide(color: grayText)),
+                    borderSide: storage.read("isDark")
+                        ? BorderSide.none
+                        : BorderSide(color: grayText)),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40))),
+                    borderRadius: BorderRadius.circular(width / 40),
+                    borderSide: storage.read("isDark")
+                        ? BorderSide.none
+                        : BorderSide(color: grayText))),
           ),
         ),
         InkWell(
