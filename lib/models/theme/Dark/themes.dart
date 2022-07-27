@@ -21,7 +21,7 @@ class MyThemes {
     primaryColor: blueTheme,
     fontFamily: "Poppins",
     backgroundColor: bgDark,
-    colorScheme: ColorScheme.dark(),
+    colorScheme: ColorScheme.dark(),  
   );
   static final lightTheme = ThemeData(
     primaryColor: blueTheme,
