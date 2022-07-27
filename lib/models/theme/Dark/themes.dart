@@ -13,10 +13,8 @@ class ThemeProvider extends ChangeNotifier {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
-
- 
 }
-
+  
 class MyThemes {
   static final darkTheme = ThemeData(
     // scaffoldBackgroundColor: ,
