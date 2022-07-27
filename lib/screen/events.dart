@@ -202,7 +202,6 @@ class _EventState extends State<Event> {
                   ),
                   IconButton(
                     onPressed: () {
-                      
                       Get.changeTheme(Get.isDarkMode
                           ? ThemeData.light()
                           : ThemeData.dark());
@@ -214,17 +213,17 @@ class _EventState extends State<Event> {
               SizedBox(height: width / 20),
               _searchBar(width, height),
               SizedBox(height: width / 15),
-              FutureBuilder(
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done)
-                    return _loadingState(width, height);
-                  if (snapshot.hasError) return Text("error");
-                  if (snapshot.hasData)
-                    return _listBuilder(width, height, snapshot.data);
-                  return Text("kosong");
-                },
-                future: event,
-              )
+              // FutureBuilder(
+              //   builder: (context, AsyncSnapshot snapshot) {
+              //     if (snapshot.connectionState != ConnectionState.done)
+              //       return _loadingState(width, height);
+              //     if (snapshot.hasError) return Text("error");
+              //     if (snapshot.hasData)
+              //       return _listBuilder(width, height, snapshot.data);
+              //     return Text("kosong");
+              //   },
+              //   future: event,
+              // )
             ],
           ),
         ),
