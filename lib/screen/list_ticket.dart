@@ -139,6 +139,8 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
+      isScrollControlled: true,
+
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
         topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
@@ -255,6 +257,25 @@ class _TicketState extends State<Ticket> {
                                   ))))
                           .toList(),
                     ),
+                    SizedBox(height: width / 20),
+                    Container(
+                      width: width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(width / 40))),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          "Apply",
+                          style: TextStyle(
+                              fontFamily: "popinsemi", fontSize: width / 20),
+                        ),
+                      ),
+                    )
                   ],
                 );
               },
@@ -382,7 +403,7 @@ class _TicketState extends State<Ticket> {
         ),
       )),
       bottomNavigationBar: Container(
-        height: height / 10.5,
+        height: height / 12.5,
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -431,7 +452,7 @@ class _TicketState extends State<Ticket> {
         .toLowerCase()
         .contains(keyword.toLowerCase()));
     return Container(
-      height: height * 1,
+      height: height * 1.2,
       child: ListView.separated(
         itemBuilder: (_, i) => _listTickets(width, i, filter),
         separatorBuilder: (context, index) =>

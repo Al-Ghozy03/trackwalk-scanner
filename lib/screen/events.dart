@@ -272,7 +272,7 @@ class _EventState extends State<Event> {
                     CustomShimmer(
                         height: width / 30, width: width * 0.45, radius: width),
                   ],
-                )
+                ),
               ],
             );
           },
