@@ -15,7 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool hidePassword = true;
   late String Username, password;
-  
+
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Row(
@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
   Widget _usernameField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
+      child: TextField(
         keyboardType: TextInputType.text,
         onChanged: (value) {
           setState(() {
@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
   Widget _passwordField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
+      child: TextField(
         keyboardType: TextInputType.text,
         obscureText: hidePassword,
         onChanged: (value) {
@@ -149,9 +149,7 @@ class _LoginState extends State<Login> {
             onPressed: () {},
             child: Text(
               "Sign in",
-              style: TextStyle(
-                  fontSize: width/20,
-                  fontFamily: "PopinSemi"),
+              style: TextStyle(fontSize: width / 20, fontFamily: "PopinSemi"),
             ),
           ),
         )
