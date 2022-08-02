@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "popin",
           scaffoldBackgroundColor: bgDark),
       title: 'MyTask',
-      home: Event(),
+      home: Login(),
     );
   }
 }

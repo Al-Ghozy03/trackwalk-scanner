@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
   Widget _passwordField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
+      child: TextField(
         keyboardType: TextInputType.text,
         obscureText: hidePassword,
         onChanged: (value) {
