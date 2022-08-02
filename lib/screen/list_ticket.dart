@@ -290,7 +290,7 @@ class _TicketState extends State<Ticket> {
 
   @override
   void initState() {
-    ticket = ApiService().ticket(widget.id);
+    ticket = ApiService().ticket(widget.id  );
     super.initState();
   }
 

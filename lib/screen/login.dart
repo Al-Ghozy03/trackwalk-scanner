@@ -29,8 +29,12 @@ class _LoginState extends State<Login> {
             padding: EdgeInsets.symmetric(vertical: 70),
             child: Container(
               height: width * 0.3,
-              child: Image(
-                image: AssetImage('assets/img/Mandalika.png'),
+              // child: Image(
+              //   image: AssetImage('assets/img/Mandalika.png'),
+              //   fit: BoxFit.fill,
+              // ),
+              child: Image.network(
+                "https://track-dev.xplorin.id/wp-content/uploads/2022/07/logo-mandalika-track-walk-2.png",
                 fit: BoxFit.fill,
               ),
             ))
@@ -126,7 +130,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget  _loginButton(width) {
+  Widget _loginButton(width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
