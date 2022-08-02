@@ -28,20 +28,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      defaultTransition: Transition.rightToLeftWithFade,
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          fontFamily: "popin",
-          colorScheme: ThemeData().colorScheme.copyWith(primary: blueTheme)),
-      darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          fontFamily: "popin",
-          scaffoldBackgroundColor: bgDark),
-      title: 'MyTask',
-      home: Event(),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'MyTask',
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          home: Event(),
+        );
+      },
     );
   }
 }

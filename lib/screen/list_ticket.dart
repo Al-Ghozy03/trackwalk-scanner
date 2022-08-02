@@ -416,7 +416,7 @@ class _TicketState extends State<Ticket> {
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: blueTheme,
+                primary: blueTheme,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
@@ -462,9 +462,9 @@ class _TicketState extends State<Ticket> {
     var formatter = new DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(now);
 
-    var filterDate = data[0]["WooCommerceEventsBookingDate"]
-          .contains(formattedDate);
-    
+    var filterDate =
+        data[0]["WooCommerceEventsBookingDate"].contains(formattedDate);
+
     print(filterDate);
     return Container(
       height: height * 1.19,

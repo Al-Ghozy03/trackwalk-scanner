@@ -300,8 +300,8 @@ class _EventState extends State<Event> {
                 onTap: () {
                   Get.to(
                       Calendar(
-                        image: filter[i]["WooCommerceEventsTicketLogo"],
-                      ),
+                          image: filter[i]["WooCommerceEventsTicketLogo"],
+                          id: filter[i]["WooCommerceEventsProductID"]),
                       arguments: filter[i]["WooCommerceEventsName"],
                       transition: Transition.cupertino);
                 },
@@ -348,12 +348,12 @@ class _EventState extends State<Event> {
       height: height * 0.75,
       child: ListView.separated(
           itemBuilder: (_, i) {
-            // print(filter[i]["WooCommerceEventsName"]);
             return InkWell(
               onTap: () {
                 Get.to(
                     Calendar(
                       image: filter[i]["WooCommerceEventsTicketLogo"],
+                      id: filter[i]["WooCommerceEventsProductID"],
                     ),
                     arguments: filter[i]["WooCommerceEventsName"],
                     transition: Transition.rightToLeftWithFade);
