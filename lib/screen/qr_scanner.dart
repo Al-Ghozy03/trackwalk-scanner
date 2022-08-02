@@ -164,6 +164,7 @@ class _QRState extends State<QR> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((bar) {
+      
       setState(() {
         this.barcode = bar;
         print(bar);
