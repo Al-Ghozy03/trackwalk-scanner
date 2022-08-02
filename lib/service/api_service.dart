@@ -19,6 +19,8 @@ class ApiService {
   String _event = "/get_list_of_events";
   String _ticket = "/get_tickets_in_event";
   String _singleTicket = "/get_tickets_in_event";
+    String _param2 = "?param2";
+
 
   // Future event() async {
   //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));
@@ -30,7 +32,6 @@ class ApiService {
   // }
 
   Future ticket(id) async {
-    String _param2 = "?param2";
     Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
@@ -63,7 +64,6 @@ class ApiService {
   }
 
   Future singleTicket(id) async {
-    String _param2 = "?param2";
     Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
