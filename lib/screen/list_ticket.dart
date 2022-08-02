@@ -368,34 +368,34 @@ class _TicketState extends State<Ticket> {
                   SizedBox(height: width / 20),
                   _searchBar(width, height),
                   SizedBox(height: width / 15),
-                  FutureBuilder(
-                    future: ticket,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done)
-                        return _loadingState(width, height);
-                      if (snapshot.hasError)
-                        return Column(
-                          children: [
-                            LottieBuilder.asset(
-                                "assets/json/94992-error-404.json"),
-                            Text(
-                              "Ooops, something went wrong",
-                              style: TextStyle(
-                                  fontFamily: "popinsemi",
-                                  fontSize: width / 17),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "Please check your internet connection",
-                              style: TextStyle(color: grayText),
-                            )
-                          ],
-                        );
-                      if (snapshot.hasData)
-                        return _listBuilder(width, height, snapshot.data);
-                      return Text("kosong");
-                    },
-                  ),
+                  // FutureBuilder(
+                  //   future: ticket,
+                  //   builder: (context, AsyncSnapshot snapshot) {
+                  //     if (snapshot.connectionState != ConnectionState.done)
+                  //       return _loadingState(width, height);
+                  //     if (snapshot.hasError)
+                  //       return Column(
+                  //         children: [
+                  //           LottieBuilder.asset(
+                  //               "assets/json/94992-error-404.json"),
+                  //           Text(
+                  //             "Ooops, something went wrong",
+                  //             style: TextStyle(
+                  //                 fontFamily: "popinsemi",
+                  //                 fontSize: width / 17),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //           Text(
+                  //             "Please check your internet connection",
+                  //             style: TextStyle(color: grayText),
+                  //           )
+                  //         ],
+                  //       );
+                  //     if (snapshot.hasData)
+                  //       return _listBuilder(width, height, snapshot.data);
+                  //     return Text("kosong");
+                  //   },
+                  // ),
                 ],
               ),
             ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures, unused_import, unused_element
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,7 @@ class _EventState extends State<Event> {
 
   void modalFilter() {
     showModalBottomSheet(
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -68,19 +69,18 @@ class _EventState extends State<Event> {
                               margin: EdgeInsets.only(right: width / 40),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(width)),
                                       elevation: 0,
                                       backgroundColor:
                                           activeIndexFilter == data.key
                                               ? blueThemeOpacity
                                               : null,
-                                      shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              color:
-                                                  activeIndexFilter == data.key
-                                                      ? blueTheme
-                                                      : grayText),
-                                          borderRadius:
-                                              BorderRadius.circular(width))),
+                                      side: BorderSide(
+                                          color: activeIndexFilter == data.key
+                                              ? blueTheme
+                                              : grayText)),
                                   onPressed: () {
                                     stateSetter(() {
                                       activeIndexFilter = data.key;
@@ -119,12 +119,12 @@ class _EventState extends State<Event> {
                                               ? blueThemeOpacity
                                               : null,
                                       shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              color: activeIndexSort == data.key
-                                                  ? blueTheme
-                                                  : grayText),
                                           borderRadius:
-                                              BorderRadius.circular(width))),
+                                              BorderRadius.circular(width)),
+                                      side: BorderSide(
+                                          color: activeIndexSort == data.key
+                                              ? blueTheme
+                                              : grayText)),
                                   onPressed: () {
                                     stateSetter(() {
                                       activeIndexSort = data.key;
@@ -282,9 +282,13 @@ class _EventState extends State<Event> {
     );
   }
 
-  Widget _listBuilder(width, height, List<EventModel> data) {
-    var filter = data.where((element) =>
-        element.name.toLowerCase().contains(keyword.toLowerCase()));
+  Widget _listBuilder(width, height, data) {
+    var filter = data
+        .where((element) => element["WooCommerceEventsName"]
+            .toString()
+            .toLowerCase()
+            .contains(keyword.toLowerCase()))
+        .toList();
     if (GetPlatform.isIOS)
       return CupertinoScrollbar(
           child: Container(
@@ -296,9 +300,9 @@ class _EventState extends State<Event> {
                 onTap: () {
                   Get.to(
                       Calendar(
-                        image: filter.elementAt(i).images[0].src,
+                        image: filter[i]["WooCommerceEventsTicketLogo"],
                       ),
-                      arguments: filter.elementAt(i).name,
+                      arguments: filter[i]["WooCommerceEventsName"],
                       transition: Transition.cupertino);
                 },
                 child: Container(
@@ -309,14 +313,14 @@ class _EventState extends State<Event> {
                       Flexible(
                         child: Row(
                           children: [
-                            Icon(Iconsax.calendar_tick, size: width / 10),
-                            SizedBox(width: width / 30),
+                            // Icon(Iconsax.calendar_tick, size: width / 10),
+                            // SizedBox(width: width / 30),
                             Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    filter.elementAt(i).name,
+                                    filter[i]["WooCommerceEventsName"],
                                     style: TextStyle(fontFamily: "popinsemi"),
                                   ),
                                   Text("Bookable Event",
@@ -344,13 +348,14 @@ class _EventState extends State<Event> {
       height: height * 0.75,
       child: ListView.separated(
           itemBuilder: (_, i) {
+            // print(filter[i]["WooCommerceEventsName"]);
             return InkWell(
               onTap: () {
                 Get.to(
                     Calendar(
-                      image: filter.elementAt(i).images[0].src,
+                      image: filter[i]["WooCommerceEventsTicketLogo"],
                     ),
-                    arguments: filter.elementAt(i).name,
+                    arguments: filter[i]["WooCommerceEventsName"],
                     transition: Transition.rightToLeftWithFade);
               },
               child: Container(
@@ -361,14 +366,14 @@ class _EventState extends State<Event> {
                     Flexible(
                       child: Row(
                         children: [
-                          Icon(Iconsax.calendar_tick, size: width / 10),
-                          SizedBox(width: width / 30),
+                          // Icon(Iconsax.calendar_tick, size: width / 10),
+                          // SizedBox(width: width / 30),
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  filter.elementAt(i).name,
+                                  filter[i]["WooCommerceEventsName"],
                                   style: TextStyle(fontFamily: "popinsemi"),
                                 ),
                                 Text("Bookable Event",
@@ -411,18 +416,17 @@ class _EventState extends State<Event> {
                       prefixIcon:
                           Icon(Iconsax.search_normal_1, color: grayText),
                       hintText: "Search",
-                      filled: storage.read("isDark"),
+                      filled: Get.isDarkMode,
                       fillColor: inputDark,
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(width / 40),
-                          borderSide: storage.read("isDark")
+                          borderSide: Get.isDarkMode
                               ? BorderSide.none
                               : BorderSide(color: grayText)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(width / 40),
-                          borderSide: storage.read("isDark")
-                              ? BorderSide.none
-                              : BorderSide())),
+                          borderSide:
+                              Get.isDarkMode ? BorderSide.none : BorderSide())),
                 )
               : CupertinoSearchTextField(
                   onChanged: (value) {
@@ -431,8 +435,7 @@ class _EventState extends State<Event> {
                     });
                   },
                   style: TextStyle(
-                      color:
-                          storage.read("isDark") ? Colors.white : Colors.black),
+                      color: Get.isDarkMode ? Colors.white : Colors.black),
                   padding: EdgeInsets.symmetric(vertical: width / 30),
                 ),
         ),

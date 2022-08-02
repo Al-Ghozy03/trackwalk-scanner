@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, prefer_final_fields
 
 import 'dart:convert';
 import 'package:alert/alert.dart';
@@ -11,16 +11,20 @@ import 'getx_service.dart';
 final storage = GetStorage();
 
 class ApiService {
-  String baseUrl = "https://track-dev.xplorin.id/wp-json/wc/v3";
-  static final String _login = "/api/v1/token";
+  String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
+  String _login = "/api/v1/token";
   String consumerKey = "ck_74c41e69516b18c05e84f8993331c49aca073c16";
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
 
   Future event() async {
-    final res = await http.get(Uri.parse(
-        "$baseUrl/products?consumer_key=$consumerKey&consumer_secret=$consumerSecret"));
+    final res =
+        await http.post(Uri.parse("$baseUrl/get_list_of_events"), headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "username": "tracktix",
+      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G",
+    });
     if (res.statusCode == 200) {
-      return eventModelFromJson(res.body);
+      return jsonDecode(res.body);
     } else {
       return false;
     }
