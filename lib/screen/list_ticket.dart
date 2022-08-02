@@ -298,10 +298,7 @@ class _TicketState extends State<Ticket> {
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
-    var now = new DateTime.now();
-    var formatter = new DateFormat.yMMMMd('en_US');
-    String formattedDate = formatter.format(arguments[1]);
-    log(formattedDate);
+
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -459,21 +456,23 @@ class _TicketState extends State<Ticket> {
 
   Widget _listBuilder(height, width, data) {
     print(data.length);
-    var now = new DateTime.now();
+
     var formatter = new DateFormat.yMMMMd('en_US');
-    String formattedDate = formatter.format(now);
-
-    var filterDate =
-        data[0]["WooCommerceEventsBookingDate"].contains(formattedDate);
-
-    print(filterDate);
+    String formattedDate = formatter.format(arguments[1]);
+    log(formattedDate);
+    var filterDate = data
+        .where((element) => element["WooCommerceEventsBookingDate"]
+            .toString()
+            .contains(formattedDate))
+        .toList();
+    // print(filterDate);
     return Container(
       height: height * 1.19,
       child: ListView.separated(
         itemBuilder: (_, i) => _listTickets(width, i, data[i]),
         separatorBuilder: (context, index) =>
             SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-        itemCount: data.length,
+        itemCount: filterDate.length,
       ),
     );
   }

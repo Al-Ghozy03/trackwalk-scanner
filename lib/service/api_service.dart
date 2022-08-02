@@ -20,6 +20,7 @@ class ApiService {
   String _event = "/get_list_of_events";
   String _ticket = "/get_tickets_in_event";
   String _singleTicket = "/get_tickets_in_event";
+  String _param2 = "?param2";
 
   // Future event() async {
   //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));
@@ -52,7 +53,7 @@ class ApiService {
   Future event() async {
     final res =
         await http.post(Uri.parse("$baseUrl/get_list_of_events"), headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
       "username": "tracktix",
       "password": "wYSLQ7jdN8k3(iO#6oyq7x9G",
     });
@@ -63,9 +64,8 @@ class ApiService {
     }
   }
 
-  Future singleTicket() async {
-    String _param2 = "?param2=1081";
-    Uri urlApi = Uri.parse(baseUrl + _ticket + _param2);
+  Future singleTicket(id) async {
+    Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -110,6 +110,7 @@ class ApiService {
       return true;
     } else {
       print(response.body);
+
       return false;
     }
   }
