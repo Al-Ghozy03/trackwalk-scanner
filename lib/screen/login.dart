@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _loginButton(width) {
+  Widget  _loginButton(width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
