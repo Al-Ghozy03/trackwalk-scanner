@@ -9,7 +9,8 @@ import 'package:track_walk_admin/screen/list_ticket.dart';
 
 class Calendar extends StatefulWidget {
   final image;
-  const Calendar({super.key, required this.image});
+  String id;
+  Calendar({super.key, required this.image,required this.id});
 
   @override
   State<Calendar> createState() => _CalendarState();
