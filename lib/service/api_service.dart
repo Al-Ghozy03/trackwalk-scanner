@@ -29,9 +29,9 @@ class ApiService {
   //   }
   // }
 
-  Future ticket() async {
-    String _param2 = "?param2=1081";
-    Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2");
+  Future ticket(id) async {
+    String _param2 = "?param2";
+    Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
