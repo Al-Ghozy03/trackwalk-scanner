@@ -30,7 +30,7 @@ class ApiService {
   //   }
   // }
 
-  Future ticket() async {
+  Future ticket(String id) async {
     String _param2 = "?param2=1081";
     Uri urlApi = Uri.parse(baseUrl + _ticket + _param2);
     Map<String, String> requestHeaders = {
