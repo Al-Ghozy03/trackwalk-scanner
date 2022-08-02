@@ -16,7 +16,8 @@ import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
   String id;
-  Ticket({super.key, required this.id});
+  String img;
+  Ticket({super.key, required this.id, required this.img});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -326,7 +327,7 @@ class _TicketState extends State<Ticket> {
                           color: grayText,
                           borderRadius: BorderRadius.circular(width / 30),
                           image: DecorationImage(
-                            image: NetworkImage(arguments[2]),
+                            image: NetworkImage(widget.img),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -345,7 +346,9 @@ class _TicketState extends State<Ticket> {
                                   fontFamily: "popinsemi"),
                             ),
                             Text(
-                              "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              arguments[1] == "02 Jan 2022"
+                                  ? "02 Jan 2022"
+                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                               style: TextStyle(
                                   fontSize: width / 27, color: grayText),
                             ),

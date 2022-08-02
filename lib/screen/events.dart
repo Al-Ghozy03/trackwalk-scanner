@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/models/api/event_model.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
+import 'package:track_walk_admin/screen/list_ticket.dart';
 import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 
@@ -311,13 +312,25 @@ class _EventState extends State<Event> {
           itemBuilder: (_, i) {
             return InkWell(
               onTap: () {
-                Get.to(
-                    Calendar(
-                      image: filter[i]["WooCommerceEventsTicketLogo"],
-                      id: filter[i]["WooCommerceEventsProductID"],
-                    ),
-                    arguments: filter[i]["WooCommerceEventsName"],
-                    transition: Transition.rightToLeftWithFade);
+                if (filter[i]["WooCommerceEventsType"].toString() == "single") {
+                  Get.to(
+                      Ticket(
+                        id: filter[i]["WooCommerceEventsProductID"],
+                        img: filter[i]["WooCommerceEventsTicketLogo"],
+                      ),
+                      arguments: [
+                        filter[i]["WooCommerceEventsName"],
+                        "${filter[i]["WooCommerceEventsDateDay"]} ${filter[i]["WooCommerceEventsDateMonth"]} ${filter[i]["WooCommerceEventsDateYear"]}"
+                      ]);
+                } else {
+                  Get.to(
+                      Calendar(
+                        image: filter[i]["WooCommerceEventsTicketLogo"],
+                        id: filter[i]["WooCommerceEventsProductID"],
+                      ),
+                      arguments: filter[i]["WooCommerceEventsName"],
+                      transition: Transition.rightToLeftWithFade);
+                }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: width / 35),

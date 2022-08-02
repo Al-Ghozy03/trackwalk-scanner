@@ -83,11 +83,11 @@ class _CalendarState extends State<Calendar> {
                           Get.to(
                               Ticket(
                                 id: widget.id,
+                                img: widget.image,
                               ),
                               arguments: [
                                 arguments,
                                 _selectedDay,
-                                widget.image
                               ],
                               transition: Transition.rightToLeftWithFade);
                         })
@@ -96,6 +96,7 @@ class _CalendarState extends State<Calendar> {
                           Get.to(
                               Ticket(
                                 id: widget.id,
+                                img: widget.image,
                               ),
                               arguments: [
                                 arguments,
