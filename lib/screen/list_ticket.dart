@@ -138,6 +138,8 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
+      isScrollControlled: true,
+
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
         topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
@@ -254,6 +256,25 @@ class _TicketState extends State<Ticket> {
                                   ))))
                           .toList(),
                     ),
+                    SizedBox(height: width / 20),
+                    Container(
+                      width: width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(width / 40))),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          "Apply",
+                          style: TextStyle(
+                              fontFamily: "popinsemi", fontSize: width / 20),
+                        ),
+                      ),
+                    )
                   ],
                 );
               },
@@ -289,7 +310,9 @@ class _TicketState extends State<Ticket> {
                       onPressed: () {
                         Get.back();
                       },
-                      icon: Icon(Iconsax.arrow_left)),
+                      icon: Icon(GetPlatform.isIOS
+                          ? Icons.arrow_back_ios_rounded
+                          : Iconsax.arrow_left)),
                   SizedBox(height: width / 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,17 +367,34 @@ class _TicketState extends State<Ticket> {
                   SizedBox(height: width / 20),
                   _searchBar(width, height),
                   SizedBox(height: width / 15),
-                  FutureBuilder(
-                    future: ticket,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done)
-                        return _loadingState(width, height);
-                      if (snapshot.hasError) return Text("error");
-                      if (snapshot.hasData)
-                        return _listBuilder(width, height, snapshot.data);
-                      return Text("kosong");
-                    },
-                  ),
+                  // FutureBuilder(
+                  //   future: ticket,
+                  //   builder: (context, AsyncSnapshot snapshot) {
+                  //     if (snapshot.connectionState != ConnectionState.done)
+                  //       return _loadingState(width, height);
+                  //     if (snapshot.hasError)
+                  //       return Column(
+                  //         children: [
+                  //           LottieBuilder.asset(
+                  //               "assets/json/94992-error-404.json"),
+                  //           Text(
+                  //             "Ooops, something went wrong",
+                  //             style: TextStyle(
+                  //                 fontFamily: "popinsemi",
+                  //                 fontSize: width / 17),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //           Text(
+                  //             "Please check your internet connection",
+                  //             style: TextStyle(color: grayText),
+                  //           )
+                  //         ],
+                  //       );
+                  //     if (snapshot.hasData)
+                  //       return _listBuilder(width, height, snapshot.data);
+                  //     return Text("kosong");
+                  //   },
+                  // ),
                 ],
               ),
             ),
@@ -362,10 +402,11 @@ class _TicketState extends State<Ticket> {
         ),
       )),
       bottomNavigationBar: Container(
-        height: height / 10.5,
+        height: height / 12.5,
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+                backgroundColor: blueTheme,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
@@ -375,7 +416,6 @@ class _TicketState extends State<Ticket> {
       ),
     );
   }
-
 
   Widget _loadingState(width, height) {
     return Container(
@@ -411,7 +451,7 @@ class _TicketState extends State<Ticket> {
         .toLowerCase()
         .contains(keyword.toLowerCase()));
     return Container(
-      height: height * 1,
+      height: height * 1.2,
       child: ListView.separated(
         itemBuilder: (_, i) => _listTickets(width, i, filter),
         separatorBuilder: (context, index) =>
@@ -488,13 +528,20 @@ class _TicketState extends State<Ticket> {
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1,color: grayText),
+                prefixIcon: Icon(Iconsax.search_normal_1, color: grayText),
                 hintText: "Search",
+                filled: storage.read("isDark"),
+                fillColor: inputDark,
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(width / 40),
-                    borderSide: BorderSide(color: grayText)),
+                    borderSide: storage.read("isDark")
+                        ? BorderSide.none
+                        : BorderSide(color: grayText)),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40))),
+                    borderRadius: BorderRadius.circular(width / 40),
+                    borderSide: storage.read("isDark")
+                        ? BorderSide.none
+                        : BorderSide(color: grayText))),
           ),
         ),
         InkWell(

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,6 +12,7 @@ import 'package:track_walk_admin/screen/events.dart';
 import 'package:track_walk_admin/screen/list_ticket.dart';
 import 'package:track_walk_admin/screen/login.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
+import 'package:track_walk_admin/service/api_service.dart';
 
 import 'models/theme/Dark/themes.dart';
 

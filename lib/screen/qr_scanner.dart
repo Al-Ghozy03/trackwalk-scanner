@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_local_variable
 
 import 'dart:async';
 import 'dart:io';
@@ -54,6 +54,7 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
+      final height = Get.height;
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -61,7 +62,7 @@ class _QRState extends State<QR> {
           children: [
             buildQrView(context),
             Positioned(
-              bottom: 60,
+              bottom: 90,
               child: buildResult(),
             ),
             Column(
@@ -92,8 +93,10 @@ class _QRState extends State<QR> {
   }
 
   Widget buildControlButtons() {
+      final height = Get.height;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+       height: height / 12.5,
+      // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
         color: blueTheme,
