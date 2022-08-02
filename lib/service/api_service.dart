@@ -1,12 +1,14 @@
 // ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:alert/alert.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:track_walk_admin/models/api/event_model.dart';
 import 'package:track_walk_admin/models/api/ticket_model.dart';
+import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
 
 final storage = GetStorage();
@@ -18,9 +20,8 @@ class ApiService {
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
   String _event = "/get_list_of_events";
   String _ticket = "/get_tickets_in_event";
-  String _singleTicket = "/get_tickets_in_event";
-    String _param2 = "?param2";
-
+  String _singleTicket = "/get_single_ticket";
+  String _param2 = "?param2";
 
   // Future event() async {
   //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));
@@ -75,6 +76,10 @@ class ApiService {
 
     // print(res);
     if (res.statusCode == 200) {
+      log("hai");
+      print(urlApi);
+      
+      true;
       return jsonDecode(res.body);
     } else {
       return false;

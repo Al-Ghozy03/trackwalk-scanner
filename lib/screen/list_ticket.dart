@@ -418,7 +418,7 @@ class _TicketState extends State<Ticket> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
-              Get.to(QR(), transition: Transition.circularReveal);
+              Get.to(QR(), transition: Transition.circularReveal, arguments: arguments);
             },
             child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),
@@ -466,15 +466,32 @@ class _TicketState extends State<Ticket> {
             .contains(formattedDate))
         .toList();
     // print(filterDate);
-    return Container(
-      height: height * 1.19,
-      child: ListView.separated(
-        itemBuilder: (_, i) => _listTickets(width, i, data[i]),
-        separatorBuilder: (context, index) =>
-            SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-        itemCount: filterDate.length,
-      ),
-    );
+    return (filterDate.length != 0)
+        ? Container(
+            height: height * 1.19,
+            child: ListView.separated(
+              itemBuilder: (_, i) => _listTickets(width, i, data[i]),
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+              itemCount: filterDate.length,
+            ),
+          )
+        : Column(
+            children: [
+              LottieBuilder.asset("assets/json/67375-no-data.json"),
+              Container(
+                width: width / 3,
+                child: AutoSizeText(
+                  "Ooops, No Ticket In This Date",
+                  style: TextStyle(fontFamily: "popinsemi"),
+                  presetFontSizes: [20, 15],
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+             
+            ],
+          );
   }
 
   Widget _listTickets(width, int i, tickets) {
