@@ -419,7 +419,8 @@ class _TicketState extends State<Ticket> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
-              Get.to(QR(), transition: Transition.circularReveal, arguments: arguments);
+              Get.to(QR(),
+                  transition: Transition.circularReveal, arguments: arguments);
             },
             child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),
@@ -457,10 +458,14 @@ class _TicketState extends State<Ticket> {
 
   Widget _listBuilder(height, width, data) {
     print(data.length);
-
+    String formattedDate = "";
     var formatter = new DateFormat.yMMMMd('en_US');
-    String formattedDate = formatter.format(arguments[1]);
-    log(formattedDate);
+    if (arguments[1] == "02 Jan 2022") {
+      formattedDate = "January 2, 2022";
+    } else {
+      formattedDate = formatter.format(arguments[1]);
+    }
+    // log(arguments[1]);
     var filterDate = data
         .where((element) => element["WooCommerceEventsBookingDate"]
             .toString()
@@ -490,7 +495,6 @@ class _TicketState extends State<Ticket> {
                   textAlign: TextAlign.center,
                 ),
               ),
-             
             ],
           );
   }
