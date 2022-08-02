@@ -90,7 +90,9 @@ class _QRState extends State<QR> {
         borderRadius: BorderRadius.circular(8),
         color: (hasil == "It's not a ticket")
             ? Color.fromARGB(104, 244, 67, 54)
-            : Colors.white24,
+            : (hasil == "Success")
+                ? Color.fromARGB(120, 76, 175, 79)
+                : Colors.white24,
       ),
       child: Text(
         "$hasil",
@@ -107,7 +109,11 @@ class _QRState extends State<QR> {
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
-        color: (hasil == "It's not a ticket") ? Colors.red : blueTheme,
+        color: (hasil == "It's not a ticket")
+            ? Colors.red
+            : (hasil == "Success")
+                ? Color.fromARGB(120, 76, 175, 79)
+                : blueTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -142,7 +148,11 @@ class _QRState extends State<QR> {
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-          borderColor: (hasil == "It's not a ticket") ? Colors.red : blueTheme,
+          borderColor: (hasil == "It's not a ticket")
+              ? Colors.red
+              : (hasil == "Success")
+                  ? Color.fromARGB(120, 76, 175, 79)
+                  : blueTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -176,21 +186,40 @@ class _QRState extends State<QR> {
     ticket = ApiService().singleTicket(bar.code).then((value) {
       print(value);
       if (value["status"] != "error") {
-        HapticFeedback.lightImpact();
-        Get.to(
-            DetailTiket(
-              id: bar,
-            ),
-            transition: Transition.circularReveal);
+        if (mounted) {
+          setState(() {
+            hasil = "Success";
+          });
+        }
+        Timer(Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              hasil = "Scan A Code";
+            });
+          }
+        });
+        // HapticFeedback.lightImpact();
+        vibrate();
+        Timer(Duration(seconds: 1), () {
+          Get.to(
+              DetailTiket(
+                id: bar,
+              ),
+              transition: Transition.circularReveal);
+        });
       } else {
         vibrate();
-        setState(() {
-          hasil = "It's not a ticket";
-        });
-        Timer(Duration(seconds: 5), () {
+        if (mounted) {
           setState(() {
-            hasil = "Scan A Code";
+            hasil = "It's not a ticket";
           });
+        }
+        Timer(Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              hasil = "Scan A Code";
+            });
+          }
         });
       }
     });
