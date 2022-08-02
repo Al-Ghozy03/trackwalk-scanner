@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures, unused_import, unused_element
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures, unused_import, unused_element, dead_code, avoid_print
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class _EventState extends State<Event> {
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
-
+  List data = [];
   void modalFilter() {
     showModalBottomSheet(
       backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
@@ -62,36 +62,49 @@ class _EventState extends State<Event> {
                       children: sort
                           .asMap()
                           .entries
-                          .map((data) => Container(
+                          .map((e) => Container(
                               margin: EdgeInsets.only(right: width / 40),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                       elevation: 0,
-                                      backgroundColor:
-                                          activeIndexSort == data.key
-                                              ? blueThemeOpacity
-                                              : null,
+                                      backgroundColor: activeIndexSort == e.key
+                                          ? blueThemeOpacity
+                                          : null,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(width)),
                                       side: BorderSide(
-                                          color: activeIndexSort == data.key
+                                          color: activeIndexSort == e.key
                                               ? blueTheme
                                               : grayText)),
                                   onPressed: () {
                                     stateSetter(() {
-                                      activeIndexSort = data.key;
+                                      activeIndexSort = e.key;
                                     });
-                                    if (activeIndexSort == 0) {}
+                                    setState(() {
+                                      if (activeIndexSort == 0) {
+                                        data.sort((a, b) => a[
+                                                "WooCommerceEventsName"]
+                                            .toString()
+                                            .compareTo(
+                                                b["WooCommerceEventsName"]));
+                                      } else {
+                                        data.sort((a, b) => b[
+                                                "WooCommerceEventsName"]
+                                            .toString()
+                                            .compareTo(
+                                                a["WooCommerceEventsName"]));
+                                      }
+                                    });
                                   },
                                   child: Text(
-                                    data.value,
+                                    e.value,
                                     style: TextStyle(
-                                        color: activeIndexSort == data.key
+                                        color: activeIndexSort == e.key
                                             ? blueTheme
                                             : grayText,
                                         fontSize: width / 25,
-                                        fontFamily: activeIndexSort == data.key
+                                        fontFamily: activeIndexSort == e.key
                                             ? "popinsemi"
                                             : "popin"),
                                   ))))
@@ -111,11 +124,18 @@ class _EventState extends State<Event> {
   @override
   void initState() {
     event = ApiService().event();
+    event.then((value) {
+      setState(() {
+        data = value;
+      });
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(DateTime.fromMillisecondsSinceEpoch(1657368000 * 1000));
     if (Get.isDarkMode) {
       storage.write("isDark", true);
     } else {
@@ -177,8 +197,7 @@ class _EventState extends State<Event> {
                         )
                       ],
                     );
-                  if (snapshot.hasData)
-                    return _listBuilder(width, height, snapshot.data);
+                  if (snapshot.hasData) return _listBuilder(width, height);
 
                   return Text("kosong");
                 },
@@ -220,13 +239,14 @@ class _EventState extends State<Event> {
     );
   }
 
-  Widget _listBuilder(width, height, data) {
+  Widget _listBuilder(width, height) {
     var filter = data
         .where((element) => element["WooCommerceEventsName"]
             .toString()
             .toLowerCase()
             .contains(keyword.toLowerCase()))
         .toList();
+    if (filter.isEmpty) return Center(child: Text("No result found"));
     if (GetPlatform.isIOS)
       return CupertinoScrollbar(
           child: Container(
@@ -259,12 +279,15 @@ class _EventState extends State<Event> {
                                 children: [
                                   Text(
                                     filter[i]["WooCommerceEventsName"],
-                                    style: TextStyle(fontFamily: "popinsemi"),
+                                    style: TextStyle(
+                                        fontFamily: "popinsemi",
+                                        fontSize: width * 0.05),
                                   ),
-                                  Text("Bookable Event",
+                                  Text(filter[i]["WooCommerceEventsType"],
                                       style: TextStyle(
-                                          fontSize: width / 30,
-                                          color: grayText))
+                                        fontSize: width * 0.035,
+                                        color: grayText,
+                                      ))
                                 ],
                               ),
                             ),
@@ -304,8 +327,6 @@ class _EventState extends State<Event> {
                     Flexible(
                       child: Row(
                         children: [
-                          // Icon(Iconsax.calendar_tick, size: width / 10),
-                          // SizedBox(width: width / 30),
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,9 +337,20 @@ class _EventState extends State<Event> {
                                       fontFamily: "popinsemi",
                                       fontSize: width * 0.05),
                                 ),
-                                Text("Bookable Event",
+                                Text(
+                                    filter[i]["WooCommerceEventsType"]
+                                                .toString() ==
+                                            "single"
+                                        ? "Add on"
+                                        : "Bookable Events",
                                     style: TextStyle(
-                                        fontSize: width *0.035, color: grayText,))
+                                      fontSize: width * 0.035,
+                                      color: filter[i]["WooCommerceEventsType"]
+                                                  .toString() ==
+                                              "single"
+                                          ? Colors.red
+                                          : Colors.green,
+                                    ))
                               ],
                             ),
                           ),

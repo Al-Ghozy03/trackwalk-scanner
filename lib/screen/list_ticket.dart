@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new
 
 import 'dart:developer';
 
@@ -11,7 +11,6 @@ import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 
-import '../models/api/ticket_model.dart';
 import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
 
@@ -396,7 +395,6 @@ class _TicketState extends State<Ticket> {
                           ],
                         );
                       if (snapshot.hasData) {
-                        print(snapshot.data);
                         return _listBuilder(width, height, snapshot.data);
                       } else {
                         return Text("kosong");
