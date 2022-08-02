@@ -313,8 +313,8 @@ class _EventState extends State<Event> {
                       Flexible(
                         child: Row(
                           children: [
-                            // Icon(Iconsax.calendar_tick, size: width / 10),
-                            // SizedBox(width: width / 30),
+                            Icon(Iconsax.calendar_tick, size: width / 10),
+                            SizedBox(width: width / 30),
                             Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

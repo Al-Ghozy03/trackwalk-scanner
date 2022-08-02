@@ -19,6 +19,7 @@ class ApiService {
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
   String _event = "/get_list_of_events";
   String _ticket = "/get_tickets_in_event";
+  String _singleTicket = "/get_tickets_in_event";
 
   // Future event() async {
   //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));

@@ -16,7 +16,8 @@ import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
-  const Ticket({super.key});
+  String id;
+  Ticket({super.key, required this.id});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -289,7 +290,7 @@ class _TicketState extends State<Ticket> {
 
   @override
   void initState() {
-    ticket = ApiService().ticket();
+    ticket = ApiService().ticket(widget.id);
     super.initState();
   }
 
@@ -297,7 +298,10 @@ class _TicketState extends State<Ticket> {
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
-
+    var now = new DateTime.now();
+    var formatter = new DateFormat.yMMMMd('en_US');
+    String formattedDate = formatter.format(arguments[1]);
+    log(formattedDate);
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -325,10 +329,10 @@ class _TicketState extends State<Ticket> {
                         decoration: BoxDecoration(
                           color: grayText,
                           borderRadius: BorderRadius.circular(width / 30),
-                          // image: DecorationImage(
-                          //   image: NetworkImage(arguments[2]),
-                          //   fit: BoxFit.cover,
-                          // ),
+                          image: DecorationImage(
+                            image: NetworkImage(arguments[2]),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -338,17 +342,17 @@ class _TicketState extends State<Ticket> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text(
-                            //   arguments[0],
-                            //   style: TextStyle(
-                            //       fontSize: width / 18,
-                            //       fontFamily: "popinsemi"),
-                            // ),
-                            // Text(
-                            //   "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                            //   style: TextStyle(
-                            //       fontSize: width / 27, color: grayText),
-                            // ),
+                            Text(
+                              arguments[0],
+                              style: TextStyle(
+                                  fontSize: width / 18,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            Text(
+                              "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              style: TextStyle(
+                                  fontSize: width / 27, color: grayText),
+                            ),
                             InkWell(
                               onTap: () {
                                 dialogDetails();
