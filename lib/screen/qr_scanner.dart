@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
+
+import '../service/api_service.dart';
 
 class QR extends StatefulWidget {
   const QR({super.key});
@@ -21,6 +25,7 @@ class _QRState extends State<QR> {
   QRViewController? controller;
   String? hasil;
   late final Timer timer;
+
   @override
   void dispose() {
     controller?.dispose();
@@ -54,7 +59,7 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
-      final height = Get.height;
+    final height = Get.height;
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -93,9 +98,9 @@ class _QRState extends State<QR> {
   }
 
   Widget buildControlButtons() {
-      final height = Get.height;
+    final height = Get.height;
     return Container(
-       height: height / 12.5,
+      height: height / 12.5,
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
@@ -145,11 +150,35 @@ class _QRState extends State<QR> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((barcode) {
-      Get.to(DetailTiket(), transition: Transition.circularReveal);
+    controller.scannedDataStream.listen((bar) {
       setState(() {
-        this.barcode = barcode;
+        this.barcode = bar;
+        print(bar);
+        Timer(Duration(milliseconds: 1), () {
+          future(bar);
+        });
       });
+    });
+  }
+
+  void future(bar) {
+    late Future ticket;
+    ticket = ApiService().singleTicket(bar.code).then((value) {
+      print(value);
+      if (value["status"] != "error") {
+        Get.to(
+            DetailTiket(
+              id: bar,
+            ),
+            transition: Transition.circularReveal);
+      } else {
+        setState(() {
+          hasil = "It's not a ticket";
+          Timer(Duration(seconds: 5), () {
+            hasil = "Scan A Code";
+          });
+        });
+      }
     });
   }
 }
