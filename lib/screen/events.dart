@@ -19,7 +19,6 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  int activeIndexFilter = 0;
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
@@ -42,65 +41,19 @@ class _EventState extends State<Event> {
             padding: EdgeInsets.all(width / 15),
             child: StatefulBuilder(
               builder: (context, StateSetter stateSetter) {
-                List filter = [
-                  "All Events",
-                  "One-day Events",
-                  "Multi-day Events",
-                  "Bookable Events"
-                ];
+                // List filter = [
+                //   "All Events",
+                //   "One-day Events",
+                //   "Multi-day Events",
+                //   "Bookable Events"
+                // ];
                 List sort = [
                   "Event Name : A-Z",
                   "Event Name : Z-A",
-                  "Event Name : New to Old",
-                  "Event Name : Old to New"
                 ];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Filter",
-                        style: TextStyle(
-                            fontSize: width / 15, fontFamily: "popinsemi")),
-                    SizedBox(height: width / 20),
-                    Wrap(
-                      children: filter
-                          .asMap()
-                          .entries
-                          .map((data) => Container(
-                              margin: EdgeInsets.only(right: width / 40),
-                              child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(width)),
-                                      elevation: 0,
-                                      backgroundColor:
-                                          activeIndexFilter == data.key
-                                              ? blueThemeOpacity
-                                              : null,
-                                      side: BorderSide(
-                                          color: activeIndexFilter == data.key
-                                              ? blueTheme
-                                              : grayText)),
-                                  onPressed: () {
-                                    stateSetter(() {
-                                      activeIndexFilter = data.key;
-                                    });
-                                  },
-                                  child: Text(
-                                    data.value,
-                                    style: TextStyle(
-                                        color: activeIndexFilter == data.key
-                                            ? blueTheme
-                                            : grayText,
-                                        fontSize: width / 25,
-                                        fontFamily:
-                                            activeIndexFilter == data.key
-                                                ? "popinsemi"
-                                                : "popin"),
-                                  ))))
-                          .toList(),
-                    ),
-                    SizedBox(height: width / 20),
                     Text("Sort",
                         style: TextStyle(
                             fontSize: width / 15, fontFamily: "popinsemi")),
@@ -129,6 +82,7 @@ class _EventState extends State<Event> {
                                     stateSetter(() {
                                       activeIndexSort = data.key;
                                     });
+                                    if (activeIndexSort == 0) {}
                                   },
                                   child: Text(
                                     data.value,
@@ -144,22 +98,6 @@ class _EventState extends State<Event> {
                           .toList(),
                     ),
                     SizedBox(height: width / 20),
-                    Container(
-                      width: width,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(width / 40))),
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: Text("Apply",
-                              style: TextStyle(
-                                  fontFamily: "popinsemi",
-                                  fontSize: width / 20))),
-                    )
                   ],
                 );
               },
@@ -374,11 +312,13 @@ class _EventState extends State<Event> {
                               children: [
                                 Text(
                                   filter[i]["WooCommerceEventsName"],
-                                  style: TextStyle(fontFamily: "popinsemi"),
+                                  style: TextStyle(
+                                      fontFamily: "popinsemi",
+                                      fontSize: width * 0.05),
                                 ),
                                 Text("Bookable Event",
                                     style: TextStyle(
-                                        fontSize: width / 30, color: grayText))
+                                        fontSize: width *0.035, color: grayText,))
                               ],
                             ),
                           ),
