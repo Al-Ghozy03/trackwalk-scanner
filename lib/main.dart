@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "popin",
           scaffoldBackgroundColor: bgDark),
       title: 'MyTask',
-      home: Login(),
+      home: Ticket(),
     );
   }
 }

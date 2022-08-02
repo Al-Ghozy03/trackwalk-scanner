@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures
 
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -140,7 +142,6 @@ class _TicketState extends State<Ticket> {
   void modalFilter() {
     showModalBottomSheet(
       isScrollControlled: true,
-
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
         topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
@@ -322,11 +323,13 @@ class _TicketState extends State<Ticket> {
                         width: width / 4,
                         height: width / 4,
                         decoration: BoxDecoration(
-                            color: grayText,
-                            borderRadius: BorderRadius.circular(width / 30),
-                            image: DecorationImage(
-                                image: NetworkImage(arguments[2]),
-                                fit: BoxFit.cover)),
+                          color: grayText,
+                          borderRadius: BorderRadius.circular(width / 30),
+                          // image: DecorationImage(
+                          //   image: NetworkImage(arguments[2]),
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
                       ),
                       SizedBox(
                         width: width / 20,
@@ -335,17 +338,17 @@ class _TicketState extends State<Ticket> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              arguments[0],
-                              style: TextStyle(
-                                  fontSize: width / 18,
-                                  fontFamily: "popinsemi"),
-                            ),
-                            Text(
-                              "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                              style: TextStyle(
-                                  fontSize: width / 27, color: grayText),
-                            ),
+                            // Text(
+                            //   arguments[0],
+                            //   style: TextStyle(
+                            //       fontSize: width / 18,
+                            //       fontFamily: "popinsemi"),
+                            // ),
+                            // Text(
+                            //   "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                            //   style: TextStyle(
+                            //       fontSize: width / 27, color: grayText),
+                            // ),
                             InkWell(
                               onTap: () {
                                 dialogDetails();
@@ -391,9 +394,12 @@ class _TicketState extends State<Ticket> {
                             )
                           ],
                         );
-                      if (snapshot.hasData)
+                      if (snapshot.hasData) {
+                        print(snapshot.data);
                         return _listBuilder(width, height, snapshot.data);
-                      return Text("kosong");
+                      } else {
+                        return Text("kosong");
+                      }
                     },
                   ),
                 ],
@@ -447,22 +453,29 @@ class _TicketState extends State<Ticket> {
     );
   }
 
-  Widget _listBuilder(height, width, List<TicketModel> data) {
-    var filter = data.where((element) => element.billing.firstName
-        .toLowerCase()
-        .contains(keyword.toLowerCase()));
+  Widget _listBuilder(height, width, data) {
+    print(data.length);
+    var now = new DateTime.now();
+    var formatter = new DateFormat.yMMMMd('en_US');
+    String formattedDate = formatter.format(now);
+
+    var filterDate =
+        data[0]["WooCommerceEventsBookingDate"].contains(formattedDate);
+
+    print(filterDate);
     return Container(
-      height: height * 1.2,
+      height: height * 1.19,
       child: ListView.separated(
-        itemBuilder: (_, i) => _listTickets(width, i, filter),
+        itemBuilder: (_, i) => _listTickets(width, i, data[i]),
         separatorBuilder: (context, index) =>
             SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-        itemCount: filter.length,
+        itemCount: data.length,
       ),
     );
   }
 
   Widget _listTickets(width, int i, tickets) {
+    print(tickets["customerFirstName"]);
     return InkWell(
       onTap: () {},
       child: Container(
@@ -475,7 +488,7 @@ class _TicketState extends State<Ticket> {
                   Icon(
                     Icons.circle,
                     size: width / 20,
-                    color: (tickets.elementAt(i).status != "completed")
+                    color: (tickets["WooCommerceEventsStatus"] != "Checked In")
                         ? Colors.grey
                         : Colors.green,
                   ),
@@ -485,19 +498,15 @@ class _TicketState extends State<Ticket> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AutoSizeText(
-                          presetFontSizes: [width / 45, 14, 12],
-                          tickets.elementAt(i).billing.firstName != ""
-                              ? tickets
-                                  .elementAt(i)
-                                  .billing
-                                  .firstName
-                                  .toString()
-                              : tickets.elementAt(i).id.toString(),
+                          (tickets["customerFirstName"] == "")
+                              ? tickets["WooCommerceEventsTicketID"]
+                              : tickets["customerFirstName"],
                           style: TextStyle(fontFamily: "popinsemi"),
+                          presetFontSizes: [width / 45, 14, 12],
                         ),
                         AutoSizeText(
                           presetFontSizes: [width / 55, 12, 10],
-                          (tickets.elementAt(i).status != "completed")
+                          (tickets["WooCommerceEventsStatus"] != "Checked In")
                               ? "Status : Check-out"
                               : "Status : Check-in",
                           style: TextStyle(color: grayText),
