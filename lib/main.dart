@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           themeMode: themeProvider.themeMode,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          home: Event(),
+          home: Login(),
         );
       },
     );
