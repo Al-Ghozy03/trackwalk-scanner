@@ -88,7 +88,9 @@ class _QRState extends State<QR> {
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white24,
+        color: (hasil == "It's not a ticket")
+            ? Color.fromARGB(104, 244, 67, 54)
+            : Colors.white24,
       ),
       child: Text(
         "$hasil",
@@ -105,7 +107,7 @@ class _QRState extends State<QR> {
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
-        color: blueTheme,
+        color: (hasil == "It's not a ticket") ? Colors.red : blueTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -140,7 +142,7 @@ class _QRState extends State<QR> {
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-          borderColor: blueTheme,
+          borderColor: (hasil == "It's not a ticket") ? Colors.red : blueTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -184,7 +186,9 @@ class _QRState extends State<QR> {
         vibrate();
         setState(() {
           hasil = "It's not a ticket";
-          Timer(Duration(seconds: 5), () {
+        });
+        Timer(Duration(seconds: 5), () {
+          setState(() {
             hasil = "Scan A Code";
           });
         });
