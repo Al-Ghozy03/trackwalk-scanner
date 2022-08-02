@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:alert/alert.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:track_walk_admin/models/api/event_model.dart';
@@ -101,6 +102,7 @@ class ApiService {
     }
     if (response.statusCode == 200) {
       storage.write("token", jsonDecode(response.body)["jwt_token"]);
+      Get.off(event());
       return true;
     } else {
       return false;

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_checkbox.dart';
 
 class Login extends StatefulWidget {
@@ -14,8 +15,11 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool hidePassword = true;
-  late String Username, password;
   TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  // late String Username, password;
+
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Row(
@@ -38,8 +42,8 @@ class _LoginState extends State<Login> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        controller: username,
         keyboardType: TextInputType.text,
+        controller: username,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: grayText),
@@ -66,11 +70,7 @@ class _LoginState extends State<Login> {
       child: TextField(
         keyboardType: TextInputType.text,
         obscureText: hidePassword,
-        onChanged: (value) {
-          setState(() {
-            password = value;
-          });
-        },
+        controller: password,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: grayText),
@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _loginButton(width) {
+  Widget  _loginButton(width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -141,7 +141,9 @@ class _LoginState extends State<Login> {
                 borderRadius: BorderRadius.circular(width),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              ApiService().login(username.text, password.text);
+            },
             child: Text(
               "Sign in",
               style: TextStyle(fontSize: width / 20, fontFamily: "PopinSemi"),
@@ -196,7 +198,7 @@ class _LoginState extends State<Login> {
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             Container(
