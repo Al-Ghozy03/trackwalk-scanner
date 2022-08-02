@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable
-
+import 'package:flutter/services.dart';
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
+import 'package:vibration/vibration.dart';
 
 import '../service/api_service.dart';
 
@@ -161,17 +162,26 @@ class _QRState extends State<QR> {
     });
   }
 
+  void vibrate() async {
+    if (await Vibration.hasVibrator()) {
+      //check if device has vibration feature
+      Vibration.vibrate(); //500 millisecond vibration
+    }
+  }
+
   void future(bar) {
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       print(value);
       if (value["status"] != "error") {
+        HapticFeedback.lightImpact();
         Get.to(
             DetailTiket(
               id: bar,
             ),
             transition: Transition.circularReveal);
       } else {
+        vibrate();
         setState(() {
           hasil = "It's not a ticket";
           Timer(Duration(seconds: 5), () {
