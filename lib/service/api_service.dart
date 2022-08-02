@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, unused_field, prefer_final_fields
 
 import 'dart:convert';
 import 'package:alert/alert.dart';
