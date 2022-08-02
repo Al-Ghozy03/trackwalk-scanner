@@ -1,6 +1,7 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, unused_field, prefer_final_fields
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:alert/alert.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -76,6 +77,10 @@ class ApiService {
 
     // print(res);
     if (res.statusCode == 200) {
+      log("hai");
+      print(urlApi);
+      
+      true;
       return jsonDecode(res.body);
     } else {
       return false;

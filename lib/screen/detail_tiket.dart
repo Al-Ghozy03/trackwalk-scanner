@@ -4,15 +4,18 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
 
+import '../service/api_service.dart';
+
 class DetailTiket extends StatefulWidget {
-  const DetailTiket({super.key});
+  final id;
+  DetailTiket({super.key, required this.id});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
 }
 
 class _DetailTiketState extends State<DetailTiket> {
-  
+  late final ticket;
   void dialogDetails() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -73,10 +76,10 @@ class _DetailTiketState extends State<DetailTiket> {
                       "Slots",
                       style: TextStyle(color: grayText),
                     ),
-                    SizedBox(width: width/7),
+                    SizedBox(width: width / 7),
                     Flexible(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Session 1 06.30 - 09.00 WITA",
@@ -91,16 +94,20 @@ class _DetailTiketState extends State<DetailTiket> {
                                         style: TextStyle(color: grayText),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left: width/40),
-                                        padding: EdgeInsets.symmetric(horizontal: width/50,vertical: width/100),
+                                        margin:
+                                            EdgeInsets.only(left: width / 40),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: width / 50,
+                                            vertical: width / 100),
                                         decoration: BoxDecoration(
                                             color: blueTheme,
                                             borderRadius:
                                                 BorderRadius.circular(width)),
                                         child: Text(
                                           "10/10",
-                                          style:
-                                              TextStyle(fontSize: width / 50,color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: width / 50,
+                                              color: Colors.white),
                                         ),
                                       )
                                     ],
@@ -117,6 +124,13 @@ class _DetailTiketState extends State<DetailTiket> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    ticket = ApiService().singleTicket(widget.id);
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

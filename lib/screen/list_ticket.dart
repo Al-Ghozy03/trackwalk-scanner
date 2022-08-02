@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new
 
 import 'dart:developer';
 
@@ -11,13 +11,13 @@ import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 
-import '../models/api/ticket_model.dart';
 import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
   String id;
-  Ticket({super.key, required this.id});
+  String img;
+  Ticket({super.key, required this.id, required this.img});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -327,7 +327,7 @@ class _TicketState extends State<Ticket> {
                           color: grayText,
                           borderRadius: BorderRadius.circular(width / 30),
                           image: DecorationImage(
-                            image: NetworkImage(arguments[2]),
+                            image: NetworkImage(widget.img),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -346,7 +346,9 @@ class _TicketState extends State<Ticket> {
                                   fontFamily: "popinsemi"),
                             ),
                             Text(
-                              "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              arguments[1] == "02 Jan 2022"
+                                  ? "02 Jan 2022"
+                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                               style: TextStyle(
                                   fontSize: width / 27, color: grayText),
                             ),
@@ -396,7 +398,6 @@ class _TicketState extends State<Ticket> {
                           ],
                         );
                       if (snapshot.hasData) {
-                        print(snapshot.data);
                         return _listBuilder(width, height, snapshot.data);
                       } else {
                         return Text("kosong");
@@ -418,7 +419,8 @@ class _TicketState extends State<Ticket> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
-              Get.to(QR(), transition: Transition.circularReveal);
+              Get.to(QR(),
+                  transition: Transition.circularReveal, arguments: arguments);
             },
             child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),
@@ -456,25 +458,45 @@ class _TicketState extends State<Ticket> {
 
   Widget _listBuilder(height, width, data) {
     print(data.length);
-
+    String formattedDate = "";
     var formatter = new DateFormat.yMMMMd('en_US');
-    String formattedDate = formatter.format(arguments[1]);
-    log(formattedDate);
+    if (arguments[1] == "02 Jan 2022") {
+      formattedDate = "January 2, 2022";
+    } else {
+      formattedDate = formatter.format(arguments[1]);
+    }
+    // log(arguments[1]);
     var filterDate = data
         .where((element) => element["WooCommerceEventsBookingDate"]
             .toString()
             .contains(formattedDate))
         .toList();
     // print(filterDate);
-    return Container(
-      height: height * 1.19,
-      child: ListView.separated(
-        itemBuilder: (_, i) => _listTickets(width, i, data[i]),
-        separatorBuilder: (context, index) =>
-            SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-        itemCount: filterDate.length,
-      ),
-    );
+    return (filterDate.length != 0)
+        ? Container(
+            height: height * 1.19,
+            child: ListView.separated(
+              itemBuilder: (_, i) => _listTickets(width, i, data[i]),
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+              itemCount: filterDate.length,
+            ),
+          )
+        : Column(
+            children: [
+              LottieBuilder.asset("assets/json/67375-no-data.json"),
+              Container(
+                width: width / 3,
+                child: AutoSizeText(
+                  "Ooops, No Ticket In This Date",
+                  style: TextStyle(fontFamily: "popinsemi"),
+                  presetFontSizes: [20, 15],
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          );
   }
 
   Widget _listTickets(width, int i, tickets) {

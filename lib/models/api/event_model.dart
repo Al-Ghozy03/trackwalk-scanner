@@ -4,7 +4,6 @@
 
 // ignore_for_file: unnecessary_null_in_if_null_operators
 
-import 'dart:convert';
 
 // List<EventModel> eventModelFromJson(String str) => List<EventModel>.from(json.decode(str).map((x) => EventModel.fromJson(x)));
 
