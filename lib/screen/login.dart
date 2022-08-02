@@ -15,7 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool hidePassword = true;
   late String Username, password;
-
+  TextEditingController username = TextEditingController();
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Row(
@@ -37,13 +37,9 @@ class _LoginState extends State<Login> {
   Widget _usernameField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextField(
+      child: TextFormField(
+        controller: username,
         keyboardType: TextInputType.text,
-        onChanged: (value) {
-          setState(() {
-            Username = value;
-          });
-        },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: grayText),
@@ -110,7 +106,6 @@ class _LoginState extends State<Login> {
   }
 
   void _togglePassword() {
-    print(hidePassword);
     setState(() {
       hidePassword = !hidePassword;
     });

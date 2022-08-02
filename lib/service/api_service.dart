@@ -45,6 +45,19 @@ class ApiService {
       return false;
     }
   }
+    Future event() async {
+    final res =
+        await http.post(Uri.parse("$baseUrl/get_list_of_events"), headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "username": "tracktix",
+      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G",
+    });
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      return false;
+    }
+  }
 
     Future singleTicket() async {
     String _param2 = "?param2=1081";

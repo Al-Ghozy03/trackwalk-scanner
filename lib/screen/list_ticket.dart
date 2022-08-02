@@ -459,9 +459,9 @@ class _TicketState extends State<Ticket> {
     var formatter = new DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(now);
 
-    var filterDate =
-        data[0]["WooCommerceEventsBookingDate"].contains(formattedDate);
-
+    var filterDate = data[0]["WooCommerceEventsBookingDate"]
+          .contains(formattedDate);
+    
     print(filterDate);
     return Container(
       height: height * 1.19,
