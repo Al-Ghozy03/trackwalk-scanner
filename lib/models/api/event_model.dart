@@ -1,16 +1,14 @@
-// To parse required this JSON data, do
-//
-//     final eventModel = eventModelFromJson(jsonString);
+// // To parse required this JSON data, do
+// //
+// //     final eventModel = eventModelFromJson(jsonString);
 
 // ignore_for_file: unnecessary_null_in_if_null_operators
 
 import 'dart:convert';
 
-List<EventModel> eventModelFromJson(String str) =>
-    List<EventModel>.from(json.decode(str).map((x) => EventModel.fromJson(x)));
+// List<EventModel> eventModelFromJson(String str) => List<EventModel>.from(json.decode(str).map((x) => EventModel.fromJson(x)));
 
-String eventModelToJson(List<EventModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+// String eventModelToJson(List<EventModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class EventModel {
   EventModel({
