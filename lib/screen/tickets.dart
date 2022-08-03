@@ -550,8 +550,11 @@ class _TicketState extends State<Ticket> {
   Widget _listTickets(width, int i, tickets) {
     return InkWell(
       onTap: () {
-        Get.to(DetailTiket(id: tickets["WooCommerceEventsTicketID"], type: widget.type),
-            transition: Transition.circularReveal, arguments: arguments);
+        Get.to(
+            DetailTiket(
+                id: tickets["WooCommerceEventsTicketID"], type: widget.type),
+            transition: Transition.circularReveal,
+            arguments: arguments);
       },
       child: Container(
         child: Row(
