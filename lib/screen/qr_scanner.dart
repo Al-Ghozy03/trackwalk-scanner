@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
@@ -61,10 +62,30 @@ class _QRState extends State<QR> {
   Widget build(BuildContext context) {
     // controller!.pauseCamera();
     controller?.resumeCamera();
-
+    final width = MediaQuery.of(context).size.width;
     final height = Get.height;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "Scan Ticket",
+            style: TextStyle(
+                color: blueTheme,
+                fontWeight: FontWeight.bold,
+                fontSize: width / 20),
+          ),
+          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+             Iconsax.close_circle5,
+              color: blueTheme,
+            ),
+          ),
+        ),
         body: Stack(
           alignment: Alignment.center,
           children: [
