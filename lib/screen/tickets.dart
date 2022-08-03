@@ -360,13 +360,13 @@ class _TicketState extends State<Ticket> {
                                   fontSize: width / 18,
                                   fontFamily: "popinsemi"),
                             ),
-                            // Text(
-                            //   arguments[1] == "02 Jan 2022"
-                            //       ? "02 Jan 2022"
-                            //       : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                            //   style: TextStyle(
-                            //       fontSize: width / 27, color: grayText),
-                            // ),
+                            Text(
+                              arguments[1] == "03 Jan 2022"
+                                  ? "03 Jan 2022"
+                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              style: TextStyle(
+                                  fontSize: width / 27, color: grayText),
+                            ),
                             InkWell(
                               onTap: () {
                                 dialogDetails();
@@ -434,8 +434,13 @@ class _TicketState extends State<Ticket> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
-              Get.to(QR(),
-                  transition: Transition.circularReveal, arguments: arguments);
+              Get.to(
+                  QR(
+                    type: widget.type,
+                    id: widget.id,
+                  ),
+                  transition: Transition.circularReveal,
+                  arguments: arguments);
             },
             child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),
