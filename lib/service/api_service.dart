@@ -118,4 +118,26 @@ class ApiService {
       return false;
     }
   }
+
+  Future checkInTicket(id) async {
+    Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      "username": "tracktix",
+      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G"
+    };
+    final res = await http.post(urlApi, headers: requestHeaders);
+
+    // print(res);
+    if (res.statusCode == 200) {
+      // log("hai");
+      // print(urlApi);
+      
+      true;
+      return jsonDecode(res.body);
+    } else {
+      return false;
+    }
+  }
 }
