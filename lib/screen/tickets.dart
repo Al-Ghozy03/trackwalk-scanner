@@ -224,35 +224,57 @@ class _TicketState extends State<Ticket> {
                       children: sort
                           .asMap()
                           .entries
-                          .map((data) => Container(
+                          .map((value) => Container(
                               margin: EdgeInsets.only(right: width / 40),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                       elevation: 0,
                                       backgroundColor:
-                                          activeIndexSort == data.key
+                                          activeIndexSort == value.key
                                               ? blueThemeOpacity
                                               : null,
                                       shape: RoundedRectangleBorder(
                                           side: BorderSide(
-                                              color: activeIndexSort == data.key
-                                                  ? blueTheme
-                                                  : grayText),
+                                              color:
+                                                  activeIndexSort == value.key
+                                                      ? blueTheme
+                                                      : grayText),
                                           borderRadius:
                                               BorderRadius.circular(width))),
                                   onPressed: () {
                                     stateSetter(() {
-                                      activeIndexSort = data.key;
+                                      activeIndexSort = value.key;
+                                    });
+                                    setState(() {
+                                      if (activeIndexSort == 0) {
+                                        data.sort(
+                                          (a, b) => a["customerFirstName"]
+                                              .toString()
+                                              .toLowerCase()
+                                              .compareTo(b["customerFirstName"]
+                                                  .toString()
+                                                  .toLowerCase()),
+                                        );
+                                      } else {
+                                        data.sort(
+                                          (a, b) => b["customerFirstName"]
+                                              .toString()
+                                              .toLowerCase()
+                                              .compareTo(a["customerFirstName"]
+                                                  .toString()
+                                                  .toLowerCase()),
+                                        );
+                                      }
                                     });
                                   },
                                   child: Text(
-                                    data.value,
+                                    value.value,
                                     style: TextStyle(
-                                        color: activeIndexSort == data.key
+                                        color: activeIndexSort == value.key
                                             ? blueTheme
                                             : grayText,
                                         fontSize: width / 25,
-                                        fontFamily: activeIndexSort == data.key
+                                        fontFamily: activeIndexSort == value.key
                                             ? "popinsemi"
                                             : "popin"),
                                   ))))
@@ -524,8 +546,9 @@ class _TicketState extends State<Ticket> {
                   Icon(
                     Icons.circle,
                     size: width / 20,
-                    color: tickets["WooCommerceEventsStatus"].toLowerCase() != "checked in"?
-                       Colors.grey
+                    color: tickets["WooCommerceEventsStatus"].toLowerCase() !=
+                            "checked in"
+                        ? Colors.grey
                         : Colors.green,
                   ),
                   SizedBox(width: width / 30),
