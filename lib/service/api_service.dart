@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, prefer_final_fields, unused_field, avoid_print
 
 import 'dart:convert';
 import 'dart:developer';
@@ -6,8 +6,6 @@ import 'package:alert/alert.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:track_walk_admin/models/api/event_model.dart';
-import 'package:track_walk_admin/models/api/ticket_model.dart';
 import 'package:track_walk_admin/screen/events.dart';
 import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
@@ -111,6 +109,7 @@ class ApiService {
     if (response.statusCode == 200) {
       print(response.statusCode);
       storage.write("token", jsonDecode(response.body)["jwt_token"]);
+      // ignore: prefer_const_constructors
       Get.off(Event());
       return true;
     } else {

@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable
-import 'package:flutter/services.dart';
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
