@@ -28,12 +28,10 @@ class ApiService {
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      "username": "tracktix",
-      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G"
+      "username": storage.read("auth")["username"],
+      "password": storage.read("auth")["password"]
     };
     final res = await http.post(urlApi, headers: requestHeaders);
-
-    // print(res);
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
     } else {
@@ -66,16 +64,11 @@ class ApiService {
     final res = await http.post(urlApi, headers: requestHeaders);
 
     if (res.statusCode == 200) {
-      log("hai");
-      print(urlApi);
-
-      true;
       return jsonDecode(res.body);
     } else {
       return false;
     }
   }
-
 
   Future checkInTicket(id) async {
     Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");

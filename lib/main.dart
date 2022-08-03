@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      defaultTransition: Transition.rightToLeft,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.light,
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: bgDark),
       themeMode: ThemeMode.system,
       title: 'TrackWalk',
-      home: Login(),
+      home: storage.read("auth") == null ? Login() : Event(),
     );
   }
 }
