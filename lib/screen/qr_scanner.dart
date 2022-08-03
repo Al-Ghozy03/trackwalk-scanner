@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
-import 'package:vibration/vibration.dart';
+
 
 import '../service/api_service.dart';
 
@@ -164,7 +164,6 @@ class _QRState extends State<QR> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((bar) {
-      
       setState(() {
         this.barcode = bar;
         print(bar);
@@ -175,12 +174,12 @@ class _QRState extends State<QR> {
     });
   }
 
-  void vibrate() async {
-    if (await Vibration.hasVibrator()) {
-      //check if device has vibration feature
-      Vibration.vibrate(); //500 millisecond vibration
-    }
-  }
+  // void vibrate() async {
+  //   if (await Vibration.hasVibrator()) {
+  //     //check if device has vibration feature
+  //     Vibration.vibrate(); //500 millisecond vibration
+  //   }
+  // }
 
   void future(bar) {
     late Future ticket;
@@ -200,7 +199,7 @@ class _QRState extends State<QR> {
           }
         });
         // HapticFeedback.lightImpact();
-        vibrate();
+        // vibrate();
         Timer(Duration(seconds: 1), () {
           Get.to(
               DetailTiket(
@@ -209,7 +208,7 @@ class _QRState extends State<QR> {
               transition: Transition.circularReveal);
         });
       } else {
-        vibrate();
+        // vibrate();
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";

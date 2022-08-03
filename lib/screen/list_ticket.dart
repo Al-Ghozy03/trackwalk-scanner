@@ -298,7 +298,8 @@ class _TicketState extends State<Ticket> {
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
-
+print(arguments[1]);
+print(widget.id);
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -345,13 +346,13 @@ class _TicketState extends State<Ticket> {
                                   fontSize: width / 18,
                                   fontFamily: "popinsemi"),
                             ),
-                            Text(
-                              arguments[1] == "02 Jan 2022"
-                                  ? "02 Jan 2022"
-                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                              style: TextStyle(
-                                  fontSize: width / 27, color: grayText),
-                            ),
+                            // Text(
+                            //   arguments[1] == "02 Jan 2022"
+                            //       ? "02 Jan 2022"
+                            //       : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                            //   style: TextStyle(
+                            //       fontSize: width / 27, color: grayText),
+                            // ),
                             InkWell(
                               onTap: () {
                                 dialogDetails();
@@ -374,36 +375,36 @@ class _TicketState extends State<Ticket> {
                   SizedBox(height: width / 20),
                   _searchBar(width, height),
                   SizedBox(height: width / 15),
-                  FutureBuilder(
-                    future: ticket,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done)
-                        return _loadingState(width, height);
-                      if (snapshot.hasError)
-                        return Column(
-                          children: [
-                            LottieBuilder.asset(
-                                "assets/json/94992-error-404.json"),
-                            Text(
-                              "Ooops, something went wrong",
-                              style: TextStyle(
-                                  fontFamily: "popinsemi",
-                                  fontSize: width / 17),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "Please check your internet connection",
-                              style: TextStyle(color: grayText),
-                            )
-                          ],
-                        );
-                      if (snapshot.hasData) {
-                        return _listBuilder(width, height, snapshot.data);
-                      } else {
-                        return Text("kosong");
-                      }
-                    },
-                  ),
+                  // FutureBuilder(
+                  //   future: ticket,
+                  //   builder: (context, AsyncSnapshot snapshot) {
+                  //     if (snapshot.connectionState != ConnectionState.done)
+                  //       return _loadingState(width, height);
+                  //     if (snapshot.hasError)
+                  //       return Column(
+                  //         children: [
+                  //           LottieBuilder.asset(
+                  //               "assets/json/94992-error-404.json"),
+                  //           Text(
+                  //             "Ooops, something went wrong",
+                  //             style: TextStyle(
+                  //                 fontFamily: "popinsemi",
+                  //                 fontSize: width / 17),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //           Text(
+                  //             "Please check your internet connection",
+                  //             style: TextStyle(color: grayText),
+                  //           )
+                  //         ],
+                  //       );
+                  //     if (snapshot.hasData) {
+                  //       return _listBuilder(width, height, snapshot.data);
+                  //     } else {
+                  //       return Text("kosong");
+                  //     }
+                  //   },
+                  // ),
                 ],
               ),
             ),
