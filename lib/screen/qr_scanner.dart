@@ -59,6 +59,9 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
+    // controller!.pauseCamera();
+    controller?.resumeCamera();
+
     final height = Get.height;
     return SafeArea(
       child: Scaffold(
@@ -221,7 +224,7 @@ class _QRState extends State<QR> {
           // print(value);
 
           Timer(Duration(seconds: 1), () {
-            controller!.pauseCamera();
+            // controller!.pauseCamera();
             Get.to(DetailTiket(id: bar.code, type: widget.type),
                 transition: Transition.circularReveal, arguments: arguments);
           });
