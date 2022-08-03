@@ -71,7 +71,12 @@ class _QRState extends State<QR> {
           title: Text(
             "Scan Ticket",
             style: TextStyle(
-                color: blueTheme,
+                color: (hasil == "It's not a ticket" ||
+                        hasil == "Not Ticket For This Event")
+                    ? Colors.red
+                    : (hasil == "Success")
+                        ? Color.fromARGB(120, 76, 175, 79)
+                        : blueTheme,
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
@@ -81,8 +86,13 @@ class _QRState extends State<QR> {
               Get.back();
             },
             icon: Icon(
-             Iconsax.close_circle5,
-              color: blueTheme,
+              Iconsax.close_circle5,
+              color: (hasil == "It's not a ticket" ||
+                      hasil == "Not Ticket For This Event")
+                  ? Colors.red
+                  : (hasil == "Success")
+                      ? Color.fromARGB(120, 76, 175, 79)
+                      : blueTheme,
             ),
           ),
         ),
