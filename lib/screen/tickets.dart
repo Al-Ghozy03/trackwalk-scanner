@@ -12,9 +12,10 @@ import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
+  String type;
   String id;
   String img;
-  Ticket({super.key, required this.id, required this.img});
+  Ticket({super.key, required this.id, required this.img, required this.type});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -198,9 +199,7 @@ class _TicketState extends State<Ticket> {
                                     stateSetter(() {
                                       activeIndexFilter = data.key;
                                     });
-                                    setState(() {
-                                      
-                                    });
+                                    setState(() {});
                                   },
                                   child: Text(
                                     data.value,
@@ -282,16 +281,37 @@ class _TicketState extends State<Ticket> {
 
   @override
   Widget build(BuildContext context) {
-    var filter = data.where((element) {
-      DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
-          int.parse(element["WooCommerceEventsBookingDateTimestamp"]) * 1000);
-      return DateFormat.yMEd().format(timestamp) ==
-              DateFormat.yMEd().format(arguments[1]) &&
-          element["WooCommerceEventsAttendeeName"]
-              .toLowerCase()
-              .toString()
-              .contains(keyword.toLowerCase());
-    }).toList();
+    var filter = arguments[1].runtimeType != DateTime
+        ? data.where((element) {
+            DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+                int.parse(element["WooCommerceEventsBookingDateTimestamp"]) *
+                    1000);
+            return DateFormat.yMEd().format(timestamp) ==
+                    DateFormat.yMEd().format(DateTime.now()) &&
+                (element["WooCommerceEventsAttendeeName"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()) ||
+                    element["customerFirstName"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()) ||
+                    element["customerFirstName"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()));
+          }).toList()
+        : data.where((element) {
+            DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+                int.parse(element["WooCommerceEventsBookingDateTimestamp"]) *
+                    1000);
+            return DateFormat.yMEd().format(timestamp) ==
+                    DateFormat.yMEd().format(arguments[1]) &&
+                element["WooCommerceEventsAttendeeName"]
+                    .toLowerCase()
+                    .toString()
+                    .contains(keyword.toLowerCase());
+          }).toList();
     final width = Get.width;
     final height = Get.height;
     return Scaffold(
@@ -504,8 +524,8 @@ class _TicketState extends State<Ticket> {
                   Icon(
                     Icons.circle,
                     size: width / 20,
-                    color: (tickets["WooCommerceEventsStatus"] != "Checked In")
-                        ? Colors.grey
+                    color: tickets["WooCommerceEventsStatus"].toLowerCase() != "checked in"?
+                       Colors.grey
                         : Colors.green,
                   ),
                   SizedBox(width: width / 30),
@@ -522,9 +542,7 @@ class _TicketState extends State<Ticket> {
                         ),
                         AutoSizeText(
                           presetFontSizes: [width / 55, 12, 10],
-                          (tickets["WooCommerceEventsStatus"] != "Checked In")
-                              ? "Status : Check-out"
-                              : "Status : Check-in",
+                          tickets["WooCommerceEventsStatus"].toString(),
                           style: TextStyle(color: grayText),
                         )
                       ],
