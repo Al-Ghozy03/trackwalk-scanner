@@ -138,7 +138,7 @@ class _DetailTiketState extends State<DetailTiket> {
 
   @override
   Widget build(BuildContext context) {
-    print(ticket);
+    print(widget.type);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
@@ -256,7 +256,7 @@ class _DetailTiketState extends State<DetailTiket> {
                             data["WooCommerceEventsTicketExpireTimestamp"],
                             width),
                         SizedBox(height: width / 40),
-                        _info("Slot", data["WooCommerceEventsBookingSlotID"],
+                        _info("Slot", data["WooCommerceEventsBookingSlot"],
                             width),
                         SizedBox(height: width / 40),
                         _info("Date", data["WooCommerceEventsBookingDate"],

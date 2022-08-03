@@ -21,6 +21,7 @@ class ApiService {
   String _ticket = "/get_tickets_in_event";
   String _singleTicket = "/get_single_ticket";
   String _param2 = "?param2";
+  String _param3 = "?param3";
 
   // Future event() async {
   //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));
@@ -134,7 +135,7 @@ class ApiService {
     if (res.statusCode == 200) {
       // log("hai");
       // print(urlApi);
-      
+
       true;
       return jsonDecode(res.body);
     } else {
