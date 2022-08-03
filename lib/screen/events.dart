@@ -7,7 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
-import 'package:track_walk_admin/screen/list_ticket.dart';
+import 'package:track_walk_admin/screen/tickets.dart';
 import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 
@@ -311,7 +311,6 @@ class _EventState extends State<Event> {
       height: height * 0.75,
       child: ListView.separated(
           itemBuilder: (_, i) {
-            // print(filter[i]["WooCommerceEventsName"]);
             return InkWell(
               onTap: () {
                 if (filter[i]["WooCommerceEventsType"].toString() == "single") {
@@ -319,7 +318,7 @@ class _EventState extends State<Event> {
                       Ticket(
                         id: filter[i]["WooCommerceEventsProductID"],
                         img: filter[i]["WooCommerceEventsTicketLogo"],
-                        type: filter[i]["WooCommerceEventsType"],
+                        type: "single",
                       ),
                       arguments: [
                         filter[i]["WooCommerceEventsName"],
