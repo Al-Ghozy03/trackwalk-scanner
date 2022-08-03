@@ -55,7 +55,24 @@ class _LoginState extends State<Login> {
             "auth", {"username": username.text, "password": password.text});
         Get.off(Event());
       } else {
-        print("salah tolol");
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Something went wrong'),
+                content: Text('Username or Password wrong'),
+                
+                actions: <Widget>[
+                  TextButton(
+                    
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      
+                      child: Text('Close')),
+                ],
+              );
+            });
       }
       return true;
     } else {
