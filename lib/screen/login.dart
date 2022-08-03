@@ -1,11 +1,16 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, unused_local_variable, avoid_print, deprecated_member_use, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'dart:convert';
+
+import 'package:alert/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/screen/events.dart';
 import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_checkbox.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,11 +21,50 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool hidePassword = true;
+  bool isLoading = false;
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController url = TextEditingController();
-
-  // late String Username, password;
+  Future login() async {
+    setState(() {
+      isLoading = true;
+    });
+    final res = await http.post(Uri.parse("$baseUrl/login_status"), headers: {
+      'Content-type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+      "username": username.text,
+      "password": password.text
+    });
+    if (res.statusCode == 400) {
+      setState(() {
+        isLoading = false;
+      });
+      Alert(
+              message: jsonDecode(res.body)["error_description"],
+              shortDuration: true)
+          .show();
+      return false;
+    }
+    if (res.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      var message = jsonDecode(res.body)["message"];
+      if (message) {
+        storage.write(
+            "auth", {"username": username.text, "password": password.text});
+        Get.off(Event());
+      } else {
+        print("salah tolol");
+      }
+      return true;
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      return false;
+    }
+  }
 
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -31,12 +75,8 @@ class _LoginState extends State<Login> {
             padding: EdgeInsets.symmetric(vertical: 70),
             child: Container(
               height: width * 0.3,
-              // child: Image(
-              //   image: AssetImage('assets/img/Mandalika.png'),
-              //   fit: BoxFit.fill,
-              // ),
-              child: Image.network(
-                "https://track-dev.xplorin.id/wp-content/uploads/2022/07/logo-mandalika-track-walk-2.png",
+              child: Image(
+                image: AssetImage('assets/img/Mandalika.png'),
                 fit: BoxFit.fill,
               ),
             ))
@@ -195,12 +235,19 @@ class _LoginState extends State<Login> {
               ),
             ),
             onPressed: () {
-              ApiService().login(username.text, password.text, url.text);
+              login();
             },
-            child: Text(
-              "Sign in",
-              style: TextStyle(fontSize: width / 20, fontFamily: "PopinSemi"),
-            ),
+            child: isLoading
+                ? Transform.scale(
+                    scale: 0.5,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ))
+                : Text(
+                    "Sign in",
+                    style: TextStyle(
+                        fontSize: width / 20, fontFamily: "PopinSemi"),
+                  ),
           ),
         )
       ],

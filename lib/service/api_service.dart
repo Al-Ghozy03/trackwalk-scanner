@@ -11,9 +11,9 @@ import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
 
 final storage = GetStorage();
+String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
 
 class ApiService {
-  String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
   static final String _login = "login_status";
   String consumerKey = "ck_74c41e69516b18c05e84f8993331c49aca073c16";
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
@@ -22,15 +22,6 @@ class ApiService {
   String _singleTicket = "/get_single_ticket";
   String _param2 = "?param2";
   String _param3 = "?param3";
-
-  // Future event() async {
-  //   final res = await http.get(Uri.parse("$baseUrl" + "$_event"));
-  //   if (res.statusCode == 200) {
-  //     return eventModelFromJson(res.body);
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   Future ticket(id) async {
     Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2=$id");
