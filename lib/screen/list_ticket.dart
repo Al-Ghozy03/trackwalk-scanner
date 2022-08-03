@@ -340,13 +340,13 @@ class _TicketState extends State<Ticket> {
                                   fontSize: width / 18,
                                   fontFamily: "popinsemi"),
                             ),
-                            Text(
-                              arguments[1] == "02 Jan 2022"
-                                  ? "02 Jan 2022"
-                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
-                              style: TextStyle(
-                                  fontSize: width / 27, color: grayText),
-                            ),
+                            // Text(
+                            //   arguments[1] == "02 Jan 2022"
+                            //       ? "02 Jan 2022"
+                            //       : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                            //   style: TextStyle(
+                            //       fontSize: width / 27, color: grayText),
+                            // ),
                             InkWell(
                               onTap: () {
                                 dialogDetails();
