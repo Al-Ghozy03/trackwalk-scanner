@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -177,7 +178,16 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   Widget _build(width, data) {
-    print(arguments);
+    String formatDate = "";
+    if (data["WooCommerceEventsTicketExpireTimestamp"] != "") {
+      final DateTime date2 = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+      var formatter = DateFormat('dd-MM-yyyy hh:mm');
+
+      DateTime formattedDate2 = date2;
+      formatDate = DateFormat.yMMMMEEEEd().add_jm().format(formattedDate2);
+    }
+    print(formatDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -204,7 +214,15 @@ class _DetailTiketState extends State<DetailTiket> {
               ),
               Text(
                 data["WooCommerceEventsStatus"],
-                style: TextStyle(color: grayText, fontSize: width / 27),
+                style: TextStyle(
+                    color: (data["WooCommerceEventsStatus"] != "Checked In")
+                        ? grayText
+                        : greenText,
+                    fontSize: width / 27,
+                    fontWeight:
+                        (data["WooCommerceEventsStatus"] != "Checked In")
+                            ? FontWeight.normal
+                            : FontWeight.bold),
               ),
               Divider(thickness: 1),
               Text(
@@ -253,7 +271,7 @@ class _DetailTiketState extends State<DetailTiket> {
                         SizedBox(height: width / 40),
                         _info(
                             "Ticket Expiration",
-                            data["WooCommerceEventsTicketExpireTimestamp"],
+                            formatDate,
                             width),
                         SizedBox(height: width / 40),
                         _info("Slot", data["WooCommerceEventsBookingSlot"],
@@ -295,7 +313,8 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 20),
                   _info("Email", data["WooCommerceEventsAttendeeEmail"], width),
                   SizedBox(height: width / 20),
-                  _info("Phone", data["WooCommerceEventsAttendeeTelephone"], width),
+                  _info("Phone", data["WooCommerceEventsAttendeeTelephone"],
+                      width),
                   SizedBox(height: width / 4),
                 ],
               ),
