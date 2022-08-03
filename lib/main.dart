@@ -14,8 +14,6 @@ import 'package:track_walk_admin/screen/login.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import 'package:track_walk_admin/service/api_service.dart';
 
-import 'models/theme/Dark/themes.dart';
-
 void main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
