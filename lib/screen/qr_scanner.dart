@@ -150,7 +150,7 @@ class _QRState extends State<QR> {
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
           borderColor: (hasil == "It's not a ticket" ||
-                hasil == "Not Ticket For This Event")
+                  hasil == "Not Ticket For This Event")
               ? Colors.red
               : (hasil == "Success")
                   ? Color.fromARGB(120, 76, 175, 79)

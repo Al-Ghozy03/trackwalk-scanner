@@ -236,32 +236,69 @@ class _DetailTiketState extends State<DetailTiket> {
                 ],
               ),
               SizedBox(height: width / 40),
-              _info("Ticket Number", "5432657", width),
+              _info("Ticket Number", data["WooCommerceEventsTicketID"], width),
               SizedBox(height: width / 40),
               Row(
                 children: [
-                  _info("Order ID", "2043", width),
+                  _info("Order ID", data["WooCommerceEventsOrderID"], width),
                   SizedBox(width: width / 15),
-                  _info("Price", "Rp 150.000", width),
+                  _info(
+                      "Price", data["WooCommerceEventsTicketPriceText"], width),
                 ],
               ),
-              SizedBox(height: width / 40),
-              _info("Ticket Expiration", "Jumat, 01 Juli 2022 16:49", width),
-              SizedBox(height: width / 40),
-              _info("Slot", "", width),
-              SizedBox(height: width / 40),
-              _info("Date", "", width),
+              (widget.type != "single")
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: width / 40),
+                        _info(
+                            "Ticket Expiration",
+                            data["WooCommerceEventsTicketExpireTimestamp"],
+                            width),
+                        SizedBox(height: width / 40),
+                        _info("Slot", data["WooCommerceEventsBookingSlotID"],
+                            width),
+                        SizedBox(height: width / 40),
+                        _info("Date", data["WooCommerceEventsBookingDate"],
+                            width),
+                      ],
+                    )
+                  : SizedBox()
             ],
           ),
         ),
         SizedBox(height: width / 20),
-        Text(
-          "Attendee",
-          style: TextStyle(fontSize: width / 20, fontFamily: "popinsemi"),
-        ),
-        SizedBox(height: width / 50),
-        _info("Seasons", "Session 1 06:30 - 10:00 WITA", width),
-        SizedBox(height: width / 20),
+        (widget.type != "single")
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Attendee",
+                    style: TextStyle(
+                        fontSize: width / 20, fontFamily: "popinsemi"),
+                  ),
+                  SizedBox(height: width / 50),
+                  _info("Seasons", data["WooCommerceEventsBookingSlot"], width),
+                  SizedBox(height: width / 20),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Purchaser",
+                    style: TextStyle(
+                        fontSize: width / 20, fontFamily: "popinsemi"),
+                  ),
+                  SizedBox(height: width / 50),
+                  _info("Name", data["customerFirstName"], width),
+                  SizedBox(height: width / 20),
+                  _info("Email", data["WooCommerceEventsAttendeeEmail"], width),
+                  SizedBox(height: width / 20),
+                  _info("Phone", data["WooCommerceEventsAttendeeTelephone"], width),
+                  SizedBox(height: width / 4),
+                ],
+              ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -396,7 +433,7 @@ class _DetailTiketState extends State<DetailTiket> {
           style: TextStyle(color: grayText, fontSize: width / 25),
         ),
         Text(
-          value,
+          (value == "") ? "Nan" : value,
           style: TextStyle(fontSize: width / 25),
         ),
       ],
