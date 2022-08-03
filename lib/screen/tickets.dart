@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
@@ -548,7 +549,10 @@ class _TicketState extends State<Ticket> {
 
   Widget _listTickets(width, int i, tickets) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(DetailTiket(id: tickets["WooCommerceEventsTicketID"], type: widget.type),
+            transition: Transition.circularReveal, arguments: arguments);
+      },
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

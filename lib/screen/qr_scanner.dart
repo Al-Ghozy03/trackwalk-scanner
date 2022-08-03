@@ -189,10 +189,25 @@ class _QRState extends State<QR> {
   void future(bar) {
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
-      print(value["data"]["WooCommerceEventsProductID"]);
-      print(widget.id);
-      if (value["status"] != "error") {
+      // print(value["data"]["WooCommerceEventsProductID"]);
+      // print(widget.id);
+      if (value["status"] == "error") {
         //  print(value);
+        // vibrate();
+        if (mounted) {
+          setState(() {
+            hasil = "It's not a ticket";
+          });
+        }
+        Timer(Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              hasil = "Scan A Code";
+            });
+          }
+        });
+      } else {
+        //
         if (value["data"]["WooCommerceEventsProductID"].toString() !=
             widget.id.toString()) {
           setState(() {
@@ -229,20 +244,6 @@ class _QRState extends State<QR> {
                 transition: Transition.circularReveal, arguments: arguments);
           });
         }
-      } else {
-        // vibrate();
-        if (mounted) {
-          setState(() {
-            hasil = "It's not a ticket";
-          });
-        }
-        Timer(Duration(seconds: 5), () {
-          if (mounted) {
-            setState(() {
-              hasil = "Scan A Code";
-            });
-          }
-        });
       }
     });
   }
