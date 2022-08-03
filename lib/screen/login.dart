@@ -17,6 +17,8 @@ class _LoginState extends State<Login> {
   bool hidePassword = true;
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController url = TextEditingController();
+
 
   // late String Username, password;
 
@@ -63,6 +65,32 @@ class _LoginState extends State<Login> {
             ),
             labelStyle: TextStyle(color: grayText),
             labelText: 'Username',
+            contentPadding: EdgeInsets.symmetric(vertical: 0)),
+      ),
+    );
+  }
+
+  Widget _urlField(width) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: TextFormField(
+        keyboardType: TextInputType.text,
+        controller: url,
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: grayText),
+              borderRadius: BorderRadius.circular(width / 40),
+            ),
+            prefixIcon: Icon(
+              Iconsax.global,
+              color: grayText,
+            ),
+            labelStyle: TextStyle(color: grayText),
+            labelText: 'URL',
             contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
     );
@@ -182,6 +210,7 @@ class _LoginState extends State<Login> {
             ),
             child: Column(
               children: <Widget>[
+                _urlField(width),
                 _usernameField(width),
                 _passwordField(width),
                 SizedBox(
