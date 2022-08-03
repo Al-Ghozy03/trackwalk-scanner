@@ -65,7 +65,6 @@ class ApiService {
     };
     final res = await http.post(urlApi, headers: requestHeaders);
 
-    // print(res);
     if (res.statusCode == 200) {
       log("hai");
       print(urlApi);
@@ -77,40 +76,6 @@ class ApiService {
     }
   }
 
-  Future login(String username, String password, String url) async {
-    Uri urlApi = Uri.parse(baseUrl + "/$_login");
-    Map<String, String> requestHeaders = {
-      'Content-type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json',
-    };
-    final response = await http.post(
-      urlApi,
-      body: jsonEncode({
-        "url": url,
-        "username": username.toLowerCase(),
-        "password": password,
-      }),
-      headers: requestHeaders,
-    );
-    if (response.statusCode == 400) {
-      Alert(
-              message: jsonDecode(response.body)["error_description"],
-              shortDuration: true)
-          .show();
-      return false;
-    }
-    if (response.statusCode == 200) {
-      print(response.statusCode);
-      storage.write("token", jsonDecode(response.body)["jwt_token"]);
-      // ignore: prefer_const_constructors
-      Get.off(Event());
-      return true;
-    } else {
-      print(response.body);
-
-      return false;
-    }
-  }
 
   Future checkInTicket(id) async {
     Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");
@@ -122,12 +87,7 @@ class ApiService {
     };
     final res = await http.post(urlApi, headers: requestHeaders);
 
-    // print(res);
     if (res.statusCode == 200) {
-      // log("hai");
-      // print(urlApi);
-
-      true;
       return jsonDecode(res.body);
     } else {
       return false;
