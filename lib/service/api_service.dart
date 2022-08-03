@@ -71,7 +71,7 @@ class ApiService {
   }
 
   Future checkInTicket(id) async {
-    Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param2=$id");
+    Uri urlApi = Uri.parse(baseUrl + _singleTicket + "$_param3=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',

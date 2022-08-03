@@ -23,7 +23,7 @@ class DetailTiket extends StatefulWidget {
 class _DetailTiketState extends State<DetailTiket> {
   final arguments = Get.arguments;
   late Future ticket;
-
+  bool isLoading = false;
   FutureOr refetch() {
     setState(() {
       ticket = ApiService().singleTicket(widget.id);
@@ -31,6 +31,9 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   Future changeStatus(String status) async {
+    setState(() {
+      isLoading = true;
+    });
     final res = await http.post(
         Uri.parse(
             "$baseUrl/update_ticket_status?param2=${widget.id}&param3=$status"),
@@ -41,9 +44,15 @@ class _DetailTiketState extends State<DetailTiket> {
           "password": storage.read("auth")["password"]
         });
     if (res.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
       refetch();
       return true;
     } else {
+      setState(() {
+        isLoading = false;
+      });
       refetch();
       return false;
     }
@@ -334,8 +343,7 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 20),
                   _info("Email", data["customerEmail"], width),
                   SizedBox(height: width / 20),
-                  _info("Phone", data["customerPhone"],
-                      width),
+                  _info("Phone", data["customerPhone"], width),
                   SizedBox(height: width / 4),
                 ],
               ),
@@ -343,34 +351,40 @@ class _DetailTiketState extends State<DetailTiket> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OutlinedButton(
-                onPressed: () {
-                  changeStatus("Not Checked In");
-                },
-                style: OutlinedButton.styleFrom(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(width / 50))),
-                child: Text(
-                  "Check-out",
-                  style: TextStyle(
-                      fontFamily: "popinsemi",
-                      color: grayText,
-                      fontSize: width / 20),
-                )),
+              onPressed: () {
+                changeStatus("Not Checked In");
+              },
+              style: OutlinedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(width / 50))),
+              child: isLoading
+                  ? _loadingButton(width)
+                  : Text(
+                      "Check-out",
+                      style: TextStyle(
+                          fontFamily: "popinsemi", fontSize: width / 20),
+                    ),
+            ),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shadowColor: Colors.black.withOpacity(0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(width / 50))),
-                onPressed: () {
-                  changeStatus("Checked In");
-                },
-                child: Text(
-                  "Check-in",
-                  style:
-                      TextStyle(fontFamily: "popinsemi", fontSize: width / 20),
-                ))
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shadowColor: Colors.black.withOpacity(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(width / 50),
+                ),
+              ),
+              onPressed: () {
+                changeStatus("Checked In");
+              },
+              child: isLoading
+                  ? _loadingButton(width)
+                  : Text(
+                      "Check-in",
+                      style: TextStyle(
+                          fontFamily: "popinsemi", fontSize: width / 20),
+                    ),
+            )
           ],
         )
       ],
@@ -494,6 +508,15 @@ class _DetailTiketState extends State<DetailTiket> {
         SizedBox(
           height: width / 30,
         ),
+        CustomShimmer(height: width / 30, width: width / 4, radius: width),
+      ],
+    );
+  }
+
+  Widget _loadingButton(width) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         CustomShimmer(height: width / 30, width: width / 4, radius: width),
       ],
     );
