@@ -1,6 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new
-
-import 'dart:developer';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new, unrelated_type_equality_checks
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
-
 import '../service/api_service.dart';
 import '../widget/custom_shimmer.dart';
 
@@ -29,6 +26,8 @@ class _TicketState extends State<Ticket> {
   late Future ticket;
   String keyword = "";
   final arguments = Get.arguments;
+  List data = [];
+  String formattedDate = "";
 
   void dialogDetails() {
     showModalBottomSheet(
@@ -142,6 +141,7 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
+      backgroundColor: bgDark,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -160,14 +160,11 @@ class _TicketState extends State<Ticket> {
                 List filter = [
                   "All Tickets",
                   "One-day Tickets",
-                  "Multi-day Tickets",
                   "Bookable Tickets"
                 ];
                 List sort = [
                   "Ticket Name : A-Z",
                   "Ticket Name : Z-A",
-                  "Ticket Name : New to Old",
-                  "Ticket Name : Old to New"
                 ];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,6 +197,9 @@ class _TicketState extends State<Ticket> {
                                   onPressed: () {
                                     stateSetter(() {
                                       activeIndexFilter = data.key;
+                                    });
+                                    setState(() {
+                                      
                                     });
                                   },
                                   child: Text(
@@ -259,25 +259,6 @@ class _TicketState extends State<Ticket> {
                                   ))))
                           .toList(),
                     ),
-                    SizedBox(height: width / 20),
-                    Container(
-                      width: width,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(width / 40))),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: Text(
-                          "Apply",
-                          style: TextStyle(
-                              fontFamily: "popinsemi", fontSize: width / 20),
-                        ),
-                      ),
-                    )
                   ],
                 );
               },
@@ -290,15 +271,29 @@ class _TicketState extends State<Ticket> {
 
   @override
   void initState() {
-    ticket = ApiService().ticket(widget.id  );
+    ticket = ApiService().ticket(widget.id);
+    ticket.then((value) {
+      setState(() {
+        data = value;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var filter = data.where((element) {
+      DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(element["WooCommerceEventsBookingDateTimestamp"]) * 1000);
+      return DateFormat.yMEd().format(timestamp) ==
+              DateFormat.yMEd().format(arguments[1]) &&
+          element["WooCommerceEventsAttendeeName"]
+              .toLowerCase()
+              .toString()
+              .contains(keyword.toLowerCase());
+    }).toList();
     final width = Get.width;
     final height = Get.height;
-
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -398,7 +393,7 @@ class _TicketState extends State<Ticket> {
                           ],
                         );
                       if (snapshot.hasData) {
-                        return _listBuilder(width, height, snapshot.data);
+                        return _listBuilder(width, height, filter);
                       } else {
                         return Text("kosong");
                       }
@@ -456,30 +451,17 @@ class _TicketState extends State<Ticket> {
     );
   }
 
-  Widget _listBuilder(height, width, data) {
-    print(data.length);
-    String formattedDate = "";
-    var formatter = new DateFormat.yMMMMd('en_US');
-    if (arguments[1] == "02 Jan 2022") {
-      formattedDate = "January 2, 2022";
-    } else {
-      formattedDate = formatter.format(arguments[1]);
-    }
-    // log(arguments[1]);
-    var filterDate = data
-        .where((element) => element["WooCommerceEventsBookingDate"]
-            .toString()
-            .contains(formattedDate))
-        .toList();
-    // print(filterDate);
-    return (filterDate.length != 0)
+  Widget _listBuilder(height, width, List data) {
+    return (data.isNotEmpty)
         ? Container(
             height: height * 1.19,
             child: ListView.separated(
-              itemBuilder: (_, i) => _listTickets(width, i, data[i]),
+              itemBuilder: (_, i) {
+                return _listTickets(width, i, data[i]);
+              },
               separatorBuilder: (context, index) =>
                   SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-              itemCount: filterDate.length,
+              itemCount: data.length,
             ),
           )
         : Column(
@@ -500,7 +482,6 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _listTickets(width, int i, tickets) {
-    print(tickets["customerFirstName"]);
     return InkWell(
       onTap: () {},
       child: Container(

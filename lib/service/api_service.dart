@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, unused_field, prefer_final_fields
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, unused_field, prefer_final_fields, no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
 
 import 'dart:convert';
 import 'dart:developer';
@@ -6,8 +6,6 @@ import 'package:alert/alert.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:track_walk_admin/models/api/event_model.dart';
-import 'package:track_walk_admin/models/api/ticket_model.dart';
 import 'package:track_walk_admin/screen/events.dart';
 import 'getx_service.dart';
 
