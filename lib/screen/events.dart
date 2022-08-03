@@ -245,8 +245,10 @@ class _EventState extends State<Event> {
                 onTap: () {
                   Get.to(
                       Calendar(
-                          image: filter[i]["WooCommerceEventsTicketLogo"],
-                          id: filter[i]["WooCommerceEventsProductID"]),
+                        image: filter[i]["WooCommerceEventsTicketLogo"],
+                        id: filter[i]["WooCommerceEventsProductID"],
+                        type: filter[i]["WooCommerceEventsType"],
+                      ),
                       arguments: filter[i]["WooCommerceEventsName"],
                       transition: Transition.cupertino);
                 },
@@ -314,6 +316,7 @@ class _EventState extends State<Event> {
                       Calendar(
                         image: filter[i]["WooCommerceEventsTicketLogo"],
                         id: filter[i]["WooCommerceEventsProductID"],
+                        type: filter[i]["WooCommerceEventsType"],
                       ),
                       arguments: filter[i]["WooCommerceEventsName"],
                       transition: Transition.rightToLeftWithFade);
