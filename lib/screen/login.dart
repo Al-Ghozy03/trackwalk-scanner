@@ -61,14 +61,11 @@ class _LoginState extends State<Login> {
               return AlertDialog(
                 title: Text('Something went wrong'),
                 content: Text('Username or Password wrong'),
-                
                 actions: <Widget>[
                   TextButton(
-                    
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      
                       child: Text('Close')),
                 ],
               );
@@ -221,14 +218,17 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Widget _rememberSettings(width) {
+  Widget _rememberSettings(width, username, password) {
     return Padding(
       padding: EdgeInsets.only(left: 18.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CustomCheck(),
+          CustomCheck(
+            password: username,
+            username: password,
+          ),
           SizedBox(width: width / 30),
           Text("Remember Settings"),
         ],
@@ -303,7 +303,7 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                _rememberSettings(width),
+                _rememberSettings(width, username.text, password.text),
                 _loginButton(width),
               ],
             ),
@@ -311,6 +311,20 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    var username1 = storage.read("username");
+    var password2 = storage.read("password");
+
+    if (storage.read("username") != null) {
+      username.text = storage.read("username");
+      password.text = storage.read("password");
+    }
+
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

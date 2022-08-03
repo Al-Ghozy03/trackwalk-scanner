@@ -486,7 +486,7 @@ class _TicketState extends State<Ticket> {
             return Row(
               children: [
                 CustomShimmer(
-                    width: width / 6, height: width / 6, radius: width / 30),
+                    width: width / 10, height: width / 10, radius: width / 10),
                 SizedBox(width: width / 30),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
