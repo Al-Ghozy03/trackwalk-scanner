@@ -9,7 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/events.dart';
-import 'package:track_walk_admin/screen/list_ticket.dart';
+import 'package:track_walk_admin/screen/tickets.dart';
 import 'package:track_walk_admin/screen/login.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import 'package:track_walk_admin/service/api_service.dart';

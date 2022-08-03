@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/list_ticket.dart';
+import 'package:track_walk_admin/screen/tickets.dart';
 
 class Calendar extends StatefulWidget {
   final image;
@@ -84,6 +84,7 @@ class _CalendarState extends State<Calendar> {
                               Ticket(
                                 id: widget.id,
                                 img: widget.image,
+                                type: "bookings",
                               ),
                               arguments: [
                                 arguments,
@@ -97,6 +98,7 @@ class _CalendarState extends State<Calendar> {
                               Ticket(
                                 id: widget.id,
                                 img: widget.image,
+                                type: "bookings",
                               ),
                               arguments: [
                                 arguments,
