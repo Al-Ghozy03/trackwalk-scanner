@@ -14,7 +14,8 @@ import '../widget/custom_shimmer.dart';
 class Ticket extends StatefulWidget {
   String id;
   String img;
-  Ticket({super.key, required this.id, required this.img});
+  String type;
+  Ticket({super.key, required this.id, required this.img, required this.type});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -412,8 +413,13 @@ class _TicketState extends State<Ticket> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
-              Get.to(QR(),
-                  transition: Transition.circularReveal, arguments: arguments);
+              Get.to(
+                  QR(
+                    type: widget.type,
+                    id: widget.id,
+                  ),
+                  transition: Transition.circularReveal,
+                  arguments: arguments);
             },
             child: Icon(Icons.qr_code_scanner, size: width / 10)),
       ),

@@ -10,8 +10,9 @@ import 'package:track_walk_admin/screen/list_ticket.dart';
 class Calendar extends StatefulWidget {
   final image;
   String id;
-
-  Calendar({super.key, required this.image, required this.id});
+  String type;
+  Calendar(
+      {super.key, required this.image, required this.id, required this.type});
   @override
   State<Calendar> createState() => _CalendarState();
 }
@@ -84,6 +85,7 @@ class _CalendarState extends State<Calendar> {
                               Ticket(
                                 id: widget.id,
                                 img: widget.image,
+                                type: widget.type,
                               ),
                               arguments: [
                                 arguments,
@@ -97,6 +99,7 @@ class _CalendarState extends State<Calendar> {
                               Ticket(
                                 id: widget.id,
                                 img: widget.image,
+                                type: widget.type,
                               ),
                               arguments: [
                                 arguments,

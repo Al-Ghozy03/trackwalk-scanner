@@ -75,8 +75,8 @@ class ApiService {
 
     // print(res);
     if (res.statusCode == 200) {
-      log("hai");
-      print(urlApi);
+      // log("hai");
+      // print(urlApi);
       
       true;
       return jsonDecode(res.body);

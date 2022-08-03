@@ -7,11 +7,12 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 
-
 import '../service/api_service.dart';
 
 class QR extends StatefulWidget {
-  const QR({super.key});
+  String type;
+  final id;
+  QR({super.key, required this.type, required this.id});
 
   @override
   State<QR> createState() => _QRState();
@@ -23,6 +24,7 @@ class _QRState extends State<QR> {
   QRViewController? controller;
   String? hasil;
   late final Timer timer;
+  final arguments = Get.arguments;
 
   @override
   void dispose() {
@@ -85,7 +87,8 @@ class _QRState extends State<QR> {
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: (hasil == "It's not a ticket")
+        color: (hasil == "It's not a ticket" ||
+                hasil == "Not Ticket For This Event")
             ? Color.fromARGB(104, 244, 67, 54)
             : (hasil == "Success")
                 ? Color.fromARGB(120, 76, 175, 79)
@@ -106,7 +109,8 @@ class _QRState extends State<QR> {
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
-        color: (hasil == "It's not a ticket")
+        color: (hasil == "It's not a ticket" ||
+                hasil == "Not Ticket For This Event")
             ? Colors.red
             : (hasil == "Success")
                 ? Color.fromARGB(120, 76, 175, 79)
@@ -145,7 +149,8 @@ class _QRState extends State<QR> {
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-          borderColor: (hasil == "It's not a ticket")
+          borderColor: (hasil == "It's not a ticket" ||
+                hasil == "Not Ticket For This Event")
               ? Colors.red
               : (hasil == "Success")
                   ? Color.fromARGB(120, 76, 175, 79)
@@ -164,7 +169,7 @@ class _QRState extends State<QR> {
       setState(() {
         this.barcode = bar;
         print(bar);
-        Timer(Duration(milliseconds: 1), () {
+        Timer(Duration(microseconds: 1), () {
           future(bar);
         });
       });
@@ -181,29 +186,46 @@ class _QRState extends State<QR> {
   void future(bar) {
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
-      print(value);
+      print(value["data"]["WooCommerceEventsProductID"]);
+      print(widget.id);
       if (value["status"] != "error") {
-        if (mounted) {
+        //  print(value);
+        if (value["data"]["WooCommerceEventsProductID"].toString() !=
+            widget.id.toString()) {
           setState(() {
-            hasil = "Success";
+            hasil = "Not Ticket For This Event";
           });
-        }
-        Timer(Duration(seconds: 5), () {
+          Timer(Duration(seconds: 5), () {
+            if (mounted) {
+              setState(() {
+                hasil = "Scan A Code";
+              });
+            }
+          });
+        } else {
+          //  print(value);
           if (mounted) {
             setState(() {
-              hasil = "Scan A Code";
+              hasil = "Success";
             });
           }
-        });
-        // HapticFeedback.lightImpact();
-        // vibrate();
-        Timer(Duration(seconds: 1), () {
-          Get.to(
-              DetailTiket(
-                id: bar,
-              ),
-              transition: Transition.circularReveal);
-        });
+          Timer(Duration(seconds: 5), () {
+            if (mounted) {
+              setState(() {
+                hasil = "Scan A Code";
+              });
+            }
+          });
+          // HapticFeedback.lightImpact();
+          // vibrate();
+          // print(value);
+
+          Timer(Duration(seconds: 1), () {
+            controller!.pauseCamera();
+            Get.to(DetailTiket(id: bar.code, type: widget.type),
+                transition: Transition.circularReveal, arguments: arguments);
+          });
+        }
       } else {
         // vibrate();
         if (mounted) {
