@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, unused_local_variable, avoid_print, deprecated_member_use, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/service/api_service.dart';
@@ -18,7 +19,6 @@ class _LoginState extends State<Login> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController url = TextEditingController();
-
 
   // late String Username, password;
 
@@ -52,18 +52,23 @@ class _LoginState extends State<Login> {
         controller: username,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             prefixIcon: Icon(
               Iconsax.user,
               color: grayText,
             ),
-            labelStyle: TextStyle(color: grayText),
+            labelStyle:
+                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
             labelText: 'Username',
             contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
@@ -78,18 +83,23 @@ class _LoginState extends State<Login> {
         controller: url,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             prefixIcon: Icon(
               Iconsax.global,
               color: grayText,
             ),
-            labelStyle: TextStyle(color: grayText),
+            labelStyle:
+                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
             labelText: 'URL',
             contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
@@ -105,11 +115,15 @@ class _LoginState extends State<Login> {
         controller: password,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: grayText),
+              borderSide: Get.isDarkMode
+                  ? BorderSide.none
+                  : BorderSide(color: grayText),
               borderRadius: BorderRadius.circular(width / 40),
             ),
             suffixIcon: hidePassword
@@ -130,7 +144,8 @@ class _LoginState extends State<Login> {
               Iconsax.key,
               color: grayText,
             ),
-            labelStyle: TextStyle(color: grayText),
+            labelStyle:
+                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
             labelText: 'Password',
             contentPadding: EdgeInsets.symmetric(vertical: 0)),
       ),
@@ -174,7 +189,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             onPressed: () {
-              ApiService().login(username.text, password.text,url.text);
+              ApiService().login(username.text, password.text, url.text);
             },
             child: Text(
               "Sign in",
@@ -206,7 +221,7 @@ class _LoginState extends State<Login> {
                     blurRadius: 15,
                     offset: Offset(0, 1)),
               ],
-              color: Colors.white,
+              color: Get.isDarkMode ? Color(0xff191F24) : Colors.white,
             ),
             child: Column(
               children: <Widget>[
