@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, unused_field, prefer_final_fields, no_leading_underscores_for_local_identifiers, avoid_print, prefer_const_constructors
+// ignore_for_file: unused_import, prefer_const_declarations, prefer_interpolation_to_compose_strings, prefer_final_fields, unused_field, avoid_print
 
 import 'dart:convert';
 import 'dart:developer';
@@ -7,18 +7,19 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:track_walk_admin/screen/events.dart';
+import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
 
 final storage = GetStorage();
 
 class ApiService {
   String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
-  static final String _login = "login_status";
+  static final String _login = "/login_status";
   String consumerKey = "ck_74c41e69516b18c05e84f8993331c49aca073c16";
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
   String _event = "/get_list_of_events";
   String _ticket = "/get_tickets_in_event";
-  String _singleTicket = "/get_tickets_in_event";
+  String _singleTicket = "/get_single_ticket";
   String _param2 = "?param2";
 
   // Future event() async {
@@ -30,9 +31,8 @@ class ApiService {
   //   }
   // }
 
-  Future ticket(String id) async {
-    String _param2 = "?param2=1081";
-    Uri urlApi = Uri.parse(baseUrl + _ticket + _param2);
+  Future ticket(id) async {
+    Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2=$id");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -52,7 +52,7 @@ class ApiService {
   Future event() async {
     final res =
         await http.post(Uri.parse("$baseUrl/get_list_of_events"), headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
       "username": "tracktix",
       "password": "wYSLQ7jdN8k3(iO#6oyq7x9G",
     });
@@ -109,6 +109,7 @@ class ApiService {
     if (response.statusCode == 200) {
       print(response.statusCode);
       storage.write("token", jsonDecode(response.body)["jwt_token"]);
+      // ignore: prefer_const_constructors
       Get.off(Event());
       return true;
     } else {

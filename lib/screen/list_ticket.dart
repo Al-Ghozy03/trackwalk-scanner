@@ -464,21 +464,31 @@ class _TicketState extends State<Ticket> {
               itemCount: data.length,
             ),
           )
-        : Column(
-            children: [
-              LottieBuilder.asset("assets/json/67375-no-data.json"),
-              Container(
-                width: width / 3,
-                child: AutoSizeText(
-                  "Ooops, No Ticket In This Date",
-                  style: TextStyle(fontFamily: "popinsemi"),
-                  presetFontSizes: [20, 15],
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
+        : (data.isNotEmpty)
+            ? Container(
+                height: height * 1.19,
+                child: ListView.separated(
+                  itemBuilder: (_, i) => _listTickets(width, i, data[i]),
+                  separatorBuilder: (context, index) => SizedBox(
+                      height: width / 15, child: Divider(thickness: 0.8)),
+                  itemCount: data.length,
                 ),
-              ),
-            ],
-          );
+              )
+            : Column(
+                children: [
+                  LottieBuilder.asset("assets/json/67375-no-data.json"),
+                  Container(
+                    width: width / 3,
+                    child: AutoSizeText(
+                      "Ooops, No Ticket In This Date",
+                      style: TextStyle(fontFamily: "popinsemi"),
+                      presetFontSizes: [20, 15],
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
   }
 
   Widget _listTickets(width, int i, tickets) {

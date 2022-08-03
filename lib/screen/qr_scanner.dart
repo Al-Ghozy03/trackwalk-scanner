@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, avoid_print
-
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print
 import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
+import 'package:vibration/vibration.dart';
 
 import '../service/api_service.dart';
 
@@ -85,7 +85,11 @@ class _QRState extends State<QR> {
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white24,
+        color: (hasil == "It's not a ticket")
+            ? Color.fromARGB(104, 244, 67, 54)
+            : (hasil == "Success")
+                ? Color.fromARGB(120, 76, 175, 79)
+                : Colors.white24,
       ),
       child: Text(
         "$hasil",
@@ -102,7 +106,11 @@ class _QRState extends State<QR> {
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
-        color: blueTheme,
+        color: (hasil == "It's not a ticket")
+            ? Colors.red
+            : (hasil == "Success")
+                ? Color.fromARGB(120, 76, 175, 79)
+                : blueTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -137,7 +145,11 @@ class _QRState extends State<QR> {
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-          borderColor: blueTheme,
+          borderColor: (hasil == "It's not a ticket")
+              ? Colors.red
+              : (hasil == "Success")
+                  ? Color.fromARGB(120, 76, 175, 79)
+                  : blueTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -149,6 +161,7 @@ class _QRState extends State<QR> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((bar) {
+      
       setState(() {
         this.barcode = bar;
         print(bar);
@@ -159,22 +172,52 @@ class _QRState extends State<QR> {
     });
   }
 
+  void vibrate() async {
+    if (await Vibration.hasVibrator()) {
+      //check if device has vibration feature
+      Vibration.vibrate(); //500 millisecond vibration
+    }
+  }
+
   void future(bar) {
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       print(value);
       if (value["status"] != "error") {
-        Get.to(
-            DetailTiket(
-              id: bar,
-            ),
-            transition: Transition.circularReveal);
-      } else {
-        setState(() {
-          hasil = "It's not a ticket";
-          Timer(Duration(seconds: 5), () {
-            hasil = "Scan A Code";
+        if (mounted) {
+          setState(() {
+            hasil = "Success";
           });
+        }
+        Timer(Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              hasil = "Scan A Code";
+            });
+          }
+        });
+        // HapticFeedback.lightImpact();
+        vibrate();
+        Timer(Duration(seconds: 1), () {
+          Get.to(
+              DetailTiket(
+                id: bar,
+              ),
+              transition: Transition.circularReveal);
+        });
+      } else {
+        vibrate();
+        if (mounted) {
+          setState(() {
+            hasil = "It's not a ticket";
+          });
+        }
+        Timer(Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              hasil = "Scan A Code";
+            });
+          }
         });
       }
     });
