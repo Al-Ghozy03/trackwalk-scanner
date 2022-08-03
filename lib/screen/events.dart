@@ -154,25 +154,12 @@ class _EventState extends State<Event> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Events",
-                    style: TextStyle(
-                      fontSize: width / 13,
-                      fontFamily: "popinsemi",
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Get.changeTheme(Get.isDarkMode
-                          ? ThemeData.light()
-                          : ThemeData.dark());
-                    },
-                    icon: Icon(Get.isDarkMode ? Iconsax.moon : Iconsax.sun_1),
-                  ),
-                ],
+              Text(
+                "Events",
+                style: TextStyle(
+                  fontSize: width / 13,
+                  fontFamily: "popinsemi",
+                ),
               ),
               SizedBox(height: width / 20),
               _searchBar(width, height),

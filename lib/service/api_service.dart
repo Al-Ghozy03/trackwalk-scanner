@@ -14,7 +14,7 @@ final storage = GetStorage();
 
 class ApiService {
   String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
-  static final String _login = "/login_status";
+  static final String _login = "login_status";
   String consumerKey = "ck_74c41e69516b18c05e84f8993331c49aca073c16";
   String consumerSecret = "cs_6d9b38145bd9cc8e55bb999d04a1a4ab0ceb450c";
   String _event = "/get_list_of_events";
@@ -75,9 +75,9 @@ class ApiService {
 
     // print(res);
     if (res.statusCode == 200) {
-      // log("hai");
-      // print(urlApi);
-      
+      log("hai");
+      print(urlApi);
+
       true;
       return jsonDecode(res.body);
     } else {
@@ -85,7 +85,7 @@ class ApiService {
     }
   }
 
-  Future login(String username, String password) async {
+  Future login(String username, String password, String url) async {
     Uri urlApi = Uri.parse(baseUrl + "/$_login");
     Map<String, String> requestHeaders = {
       'Content-type': 'application/x-www-form-urlencoded',
@@ -94,6 +94,7 @@ class ApiService {
     final response = await http.post(
       urlApi,
       body: jsonEncode({
+        "url": url,
         "username": username.toLowerCase(),
         "password": password,
       }),
