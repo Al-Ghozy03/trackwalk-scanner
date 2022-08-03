@@ -26,14 +26,16 @@ class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
   late Future ticket;
+  late Future detail;
   String keyword = "";
   final arguments = Get.arguments;
   List data = [];
-  String formattedDate = "";
+  List dataDetail = [];
 
   void dialogDetails() {
     showModalBottomSheet(
       isScrollControlled: true,
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
@@ -43,69 +45,82 @@ class _TicketState extends State<Ticket> {
       builder: (context) {
         final width = MediaQuery.of(context).size.width;
         final height = MediaQuery.of(context).size.height;
-        List data = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+        // List data = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(width / 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Details",
-                  style:
-                      TextStyle(fontSize: width / 15, fontFamily: "popinsemi"),
-                ),
-                SizedBox(height: width / 40),
-                Text(arguments[0]),
-                SizedBox(height: width / 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Location",
-                      style: TextStyle(color: grayText),
-                    ),
-                    SizedBox(width: width / 15),
-                    Flexible(
-                        child: Text(
-                            "Pertamina Mandalika, Internation Street Circuit")),
-                  ],
-                ),
-                SizedBox(height: width / 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Time Zone",
-                      style: TextStyle(color: grayText),
-                    ),
-                    SizedBox(width: width / 25),
-                    Flexible(child: Text("Asia/Singapore")),
-                  ],
-                ),
-                SizedBox(height: width / 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Slots",
-                      style: TextStyle(color: grayText),
-                    ),
-                    SizedBox(width: width / 7),
-                    Flexible(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Session 1 06.30 - 09.00 WITA",
-                          style: TextStyle(fontFamily: "popinsemi"),
-                        ),
-                        Column(
-                          children: data
-                              .map((e) => Row(
+            child: FutureBuilder(
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState != ConnectionState.done)
+                  return Text("loading");
+                if (snapshot.hasError) return Text("error");
+                if (snapshot.hasData) {
+                  List data = snapshot.data
+                      .where(
+                          (e) => e["WooCommerceEventsProductID"] == widget.id)
+                      .toList();
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Details",
+                        style: TextStyle(
+                            fontSize: width / 15, fontFamily: "popinsemi"),
+                      ),
+                      SizedBox(height: width / 40),
+                      Text(arguments[0]),
+                      SizedBox(height: width / 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Location",
+                            style: TextStyle(color: grayText),
+                          ),
+                          SizedBox(width: width / 15),
+                          Flexible(
+                              child:
+                                  Text(data[0]["WooCommerceEventsLocation"])),
+                        ],
+                      ),
+                      SizedBox(height: width / 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Time Zone",
+                            style: TextStyle(color: grayText),
+                          ),
+                          SizedBox(width: width / 25),
+                          Flexible(
+                              child:
+                                  Text(data[0]["WooCommerceEventsTimeZone"])),
+                        ],
+                      ),
+                      SizedBox(height: width / 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Slots",
+                            style: TextStyle(color: grayText),
+                          ),
+                          SizedBox(width: width / 7),
+                          Flexible(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data[0]["WooCommerceEventsLocation"].toString(),
+                                style: TextStyle(fontFamily: "popinsemi"),
+                              ),
+                              Column(
+                                children: data.asMap().entries.map((e) {
+                                  print(e.value["add_date_ids"]);
+                                  return Row(
                                     children: [
                                       Text(
-                                        "July 04, 2022",
+                                        "",
                                         style: TextStyle(color: grayText),
                                       ),
                                       Container(
@@ -126,14 +141,19 @@ class _TicketState extends State<Ticket> {
                                         ),
                                       )
                                     ],
-                                  ))
-                              .toList(),
-                        )
-                      ],
-                    )),
-                  ],
-                ),
-              ],
+                                  );
+                                }).toList(),
+                              )
+                            ],
+                          )),
+                        ],
+                      ),
+                    ],
+                  );
+                }
+                return Text("kosong");
+              },
+              future: detail,
             ),
           ),
         );
@@ -294,6 +314,7 @@ class _TicketState extends State<Ticket> {
   @override
   void initState() {
     ticket = ApiService().ticket(widget.id);
+    detail = ApiService().event();
     ticket.then((value) {
       setState(() {
         data = value;
