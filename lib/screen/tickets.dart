@@ -329,10 +329,18 @@ class _TicketState extends State<Ticket> {
                     1000);
             return DateFormat.yMEd().format(timestamp) ==
                     DateFormat.yMEd().format(arguments[1]) &&
-                element["WooCommerceEventsAttendeeName"]
-                    .toLowerCase()
-                    .toString()
-                    .contains(keyword.toLowerCase());
+                (element["WooCommerceEventsAttendeeName"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()) ||
+                    element["customerFirstName"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()) ||
+                    element["WooCommerceEventsTicketID"]
+                        .toLowerCase()
+                        .toString()
+                        .contains(keyword.toLowerCase()));
           }).toList();
     final width = Get.width;
     final height = Get.height;

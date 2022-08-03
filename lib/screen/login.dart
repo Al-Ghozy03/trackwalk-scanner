@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, unused_local_variable, avoid_print, deprecated_member_use, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/service/api_service.dart';
@@ -18,9 +19,6 @@ class _LoginState extends State<Login> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController url = TextEditingController();
-
-
-  // late String Username, password;
 
   Widget _buildLogo(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

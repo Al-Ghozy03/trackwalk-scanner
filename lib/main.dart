@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: bgDark),
       themeMode: ThemeMode.system,
       title: 'TrackWalk',
-      home: Login(),
+      home: Event(),
     );
   }
 }
