@@ -217,6 +217,7 @@ class _TicketState extends State<Ticket> {
                         Container(
                           // height: 5,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
@@ -260,7 +261,7 @@ class _TicketState extends State<Ticket> {
                               "When",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 15),
+                            SizedBox(width: width / 10),
                             Flexible(child: Text("Jan 04, 2022")),
                           ],
                         ),
@@ -272,7 +273,7 @@ class _TicketState extends State<Ticket> {
                               "Time",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 25),
+                            SizedBox(width: width / 10),
                             Flexible(child: Text("00:00 - 00:00")),
                           ],
                         ),
@@ -284,7 +285,7 @@ class _TicketState extends State<Ticket> {
                               "Where",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 25),
+                            SizedBox(width: width / 10),
                             Flexible(
                                 child: Text(
                                     "Pertamina Mandalika, Internasional Street Circuit")),
@@ -298,7 +299,7 @@ class _TicketState extends State<Ticket> {
                               "Time Zone",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 25),
+                            SizedBox(width: width / 10),
                             Flexible(child: Text("Asia/Singapore")),
                           ],
                         ),
