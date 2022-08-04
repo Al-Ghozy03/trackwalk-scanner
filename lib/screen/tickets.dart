@@ -10,6 +10,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import '../service/api_service.dart';
+import '../widget/CheckIcons.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
@@ -220,35 +221,23 @@ class _TicketState extends State<Ticket> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.circle,
-                                      size: width / 20,
-                                      color: Colors.green,
-                                    ),
-                                    SizedBox(width: width / 30),
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          AutoSizeText(
-                                            "Check-in",
-                                            style: TextStyle(
-                                                fontFamily: "popinsemi"),
-                                            presetFontSizes: [
-                                              width / 35,
-                                              10,
-                                              14
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CheckIcon(
+                                    width: width,
+                                    color: Colors.green,
+                                    jumlah: "8",
+                                    title: "Checked In",
+                                  ),
+                                  SizedBox(height: width / 30,),
+                                  CheckIcon(
+                                    width: width,
+                                    color: Colors.grey,
+                                    jumlah: "8",
+                                    title: "Not Checked In",
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -261,7 +250,7 @@ class _TicketState extends State<Ticket> {
                               "When",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 11),
+                            SizedBox(width: width / 5.5),
                             Flexible(child: Text("Jan 04, 2022")),
                           ],
                         ),
@@ -273,7 +262,7 @@ class _TicketState extends State<Ticket> {
                               "Time",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 10),
+                            SizedBox(width: width / 5),
                             Flexible(child: Text("00:00 - 00:00")),
                           ],
                         ),
@@ -285,7 +274,7 @@ class _TicketState extends State<Ticket> {
                               "Where",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 12),
+                            SizedBox(width: width / 6),
                             Flexible(
                                 child: Text(
                                     "Pertamina Mandalika, Internasional Street Circuit")),
