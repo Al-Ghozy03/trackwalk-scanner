@@ -725,7 +725,23 @@ class _DetailTiketState extends State<DetailTiket> {
           children: [
             OutlinedButton(
               onPressed: () {
-                changeStatus("Not Checked In");
+                (data["WooCommerceEventsStatus"] != "Check-out")
+                    ? changeStatus("Check-out")
+                    : Dialogs.materialDialog(
+                        color: Get.isDarkMode ? bgDark : Colors.white,
+                        context: context,
+                        title: "Gagal",
+                        titleAlign: TextAlign.center,
+                        titleStyle: TextStyle(
+                          fontSize: Get.width / 20,
+                          fontFamily: 'popinsemi',
+                        ),
+                        msg: "Sudah Check-out",
+                        msgStyle: TextStyle(color: grayText),
+                        actions: [
+                            TextButton(
+                                onPressed: () => Get.back(), child: Text("Ok"))
+                          ]);
               },
               style: OutlinedButton.styleFrom(
                   elevation: 0,
