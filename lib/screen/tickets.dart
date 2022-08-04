@@ -194,7 +194,118 @@ class _TicketState extends State<Ticket> {
                         MediaQuery.of(context).size.width / 20))),
             context: context,
             builder: (context) {
-              return SingleChildScrollView();
+              final width = MediaQuery.of(context).size.width;
+              final height = MediaQuery.of(context).size.height;
+              return SingleChildScrollView(
+                child: Padding(
+                    padding: EdgeInsets.all(width / 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Details",
+                          style: TextStyle(
+                              fontSize: width / 15, fontFamily: "popinsemi"),
+                        ),
+                        SizedBox(height: width / 40),
+                        Text(
+                          "Motorcycle / Bicycle Parking Ticket Add-on",
+                          style: TextStyle(
+                              fontSize: width / 15, fontFamily: "popinsemi"),
+                        ),
+                        SizedBox(height: width / 20),
+                        Container(
+                          // height: 5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.circle,
+                                      size: width / 20,
+                                      color: Colors.green,
+                                    ),
+                                    SizedBox(width: width / 30),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AutoSizeText(
+                                            "Check-in",
+                                            style: TextStyle(
+                                                fontFamily: "popinsemi"),
+                                            presetFontSizes: [
+                                              width / 35,
+                                              10,
+                                              14
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Iconsax.arrow_right_3,
+                                  size: width / 40, color: grayText)
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: width / 20),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "When",
+                              style: TextStyle(color: grayText),
+                            ),
+                            SizedBox(width: width / 15),
+                            Flexible(child: Text("Jan 04, 2022")),
+                          ],
+                        ),
+                        SizedBox(height: width / 20),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Time",
+                              style: TextStyle(color: grayText),
+                            ),
+                            SizedBox(width: width / 25),
+                            Flexible(child: Text("00:00 - 00:00")),
+                          ],
+                        ),
+                        SizedBox(height: width / 20),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Where",
+                              style: TextStyle(color: grayText),
+                            ),
+                            SizedBox(width: width / 25),
+                            Flexible(
+                                child: Text(
+                                    "Pertamina Mandalika, Internasional Street Circuit")),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Time Zone",
+                              style: TextStyle(color: grayText),
+                            ),
+                            SizedBox(width: width / 25),
+                            Flexible(child: Text("Asia/Singapore")),
+                          ],
+                        ),
+                      ],
+                    )),
+              );
             });
   }
 
