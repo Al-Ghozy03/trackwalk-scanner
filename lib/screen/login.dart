@@ -59,16 +59,13 @@ class _LoginState extends State<Login> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Something went wrong'),
-                content: Text('Username or Password wrong'),
-                
+                title: Text('Sign-in Error'),
+                content: Text('Incorect URL, Username or Password'),
                 actions: <Widget>[
                   TextButton(
-                    
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      
                       child: Text('Close')),
                 ],
               );
