@@ -219,7 +219,7 @@ class _DetailTiketState extends State<DetailTiket> {
                       if (snapshot.hasData) {
                         List data = snapshot.data
                             .where((e) =>
-                                e["WooCommerceEventsProductID"] == widget.id)
+                                e["WooCommerceEventsProductID"] == widget.idDetail)
                             .toList();
                         return Column(
                           children: data.asMap().entries.map((e) {
