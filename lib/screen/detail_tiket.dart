@@ -1,13 +1,15 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, curly_braces_in_flow_control_structures, must_be_immutable
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 import '../service/api_service.dart';
+import 'package:http/http.dart' as http;
 
 class DetailTiket extends StatefulWidget {
   final id;
@@ -20,7 +22,42 @@ class DetailTiket extends StatefulWidget {
 
 class _DetailTiketState extends State<DetailTiket> {
   final arguments = Get.arguments;
-  late final ticket;
+  late Future ticket;
+  bool isLoading = false;
+  FutureOr refetch() {
+    setState(() {
+      ticket = ApiService().singleTicket(widget.id);
+    });
+  }
+
+  Future changeStatus(String status) async {
+    setState(() {
+      isLoading = true;
+    });
+    final res = await http.post(
+        Uri.parse(
+            "$baseUrl/update_ticket_status?param2=${widget.id}&param3=$status"),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          "username": storage.read("auth")["username"],
+          "password": storage.read("auth")["password"]
+        });
+    if (res.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      refetch();
+      return true;
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      refetch();
+      return false;
+    }
+  }
+
   void dialogDetails() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -139,55 +176,46 @@ class _DetailTiketState extends State<DetailTiket> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.type);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.all(width / 25),
-        child: FutureBuilder(
-          future: ticket,
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState != ConnectionState.done)
-              return _loading();
-            if (snapshot.hasError)
-              return Column(
-                children: [
-                  LottieBuilder.asset("assets/json/94992-error-404.json"),
-                  Text(
-                    "Ooops, something went wrong",
-                    style: TextStyle(
-                        fontFamily: "popinsemi", fontSize: width / 17),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Please check your internet connection",
-                    style: TextStyle(color: grayText),
-                  )
-                ],
-              );
-            if (snapshot.hasData) {
-              return _build(width, snapshot.data["data"]);
-            } else {
-              return Text("Kosong");
-            }
-          },
+          child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(width / 25),
+          child: FutureBuilder(
+            future: ticket,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState != ConnectionState.done)
+                return _loading();
+              if (snapshot.hasError)
+                return Column(
+                  children: [
+                    LottieBuilder.asset("assets/json/94992-error-404.json"),
+                    Text(
+                      "Ooops, something went wrong",
+                      style: TextStyle(
+                          fontFamily: "popinsemi", fontSize: width / 17),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Please check your internet connection",
+                      style: TextStyle(color: grayText),
+                    )
+                  ],
+                );
+              if (snapshot.hasData) {
+                return _builder(width, snapshot.data["data"]);
+              } else {
+                return Text("Kosong");
+              }
+            },
+          ),
         ),
       )),
     );
   }
 
-  Widget _build(width, data) {
-    String formatDate = "";
-    if (data["WooCommerceEventsTicketExpireTimestamp"] != "") {
-      final DateTime date2 = DateTime.fromMillisecondsSinceEpoch(
-          int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
-      var formatter = DateFormat('dd-MM-yyyy hh:mm');
-
-      DateTime formattedDate2 = date2;
-      formatDate = DateFormat.yMMMMEEEEd().add_jm().format(formattedDate2);
-    }
-    print(formatDate);
+  Widget _builder(width, data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -201,7 +229,9 @@ class _DetailTiketState extends State<DetailTiket> {
           padding: EdgeInsets.all(width / 25),
           width: width,
           decoration: BoxDecoration(
-              border: Border.all(color: grayText),
+              border: Border.all(
+                  color:
+                      Get.isDarkMode ? Color(0xff252A34) : Color(0xffDFDFDF)),
               borderRadius: BorderRadius.circular(width / 30)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,14 +294,14 @@ class _DetailTiketState extends State<DetailTiket> {
                       "Price", data["WooCommerceEventsTicketPriceText"], width),
                 ],
               ),
-              (widget.type != "single")
+              widget.type != "single"
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: width / 40),
                         _info(
                             "Ticket Expiration",
-                            formatDate,
+                            "${DateFormat.yMMMMEEEEd().format(DateTime.fromMillisecondsSinceEpoch(int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000))} ${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000))}",
                             width),
                         SizedBox(height: width / 40),
                         _info("Slot", data["WooCommerceEventsBookingSlot"],
@@ -313,8 +343,7 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 20),
                   _info("Email", data["customerEmail"], width),
                   SizedBox(height: width / 20),
-                  _info("Phone", data["customerPhone"],
-                      width),
+                  _info("Phone", data["customerPhone"], width),
                   SizedBox(height: width / 4),
                 ],
               ),
@@ -322,30 +351,40 @@ class _DetailTiketState extends State<DetailTiket> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(width / 50))),
-                child: Text(
-                  "Check-out",
-                  style: TextStyle(
-                      fontFamily: "popinsemi",
-                      color: grayText,
-                      fontSize: width / 20),
-                )),
+              onPressed: () {
+                changeStatus("Not Checked In");
+              },
+              style: OutlinedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(width / 50))),
+              child: isLoading
+                  ? _loadingButton(width)
+                  : Text(
+                      "Check-out",
+                      style: TextStyle(
+                          fontFamily: "popinsemi", fontSize: width / 20),
+                    ),
+            ),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shadowColor: Colors.black.withOpacity(0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(width / 50))),
-                onPressed: () {},
-                child: Text(
-                  "Check-in",
-                  style:
-                      TextStyle(fontFamily: "popinsemi", fontSize: width / 20),
-                ))
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shadowColor: Colors.black.withOpacity(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(width / 50),
+                ),
+              ),
+              onPressed: () {
+                changeStatus("Checked In");
+              },
+              child: isLoading
+                  ? _loadingButton(width)
+                  : Text(
+                      "Check-in",
+                      style: TextStyle(
+                          fontFamily: "popinsemi", fontSize: width / 20),
+                    ),
+            )
           ],
         )
       ],
@@ -372,48 +411,50 @@ class _DetailTiketState extends State<DetailTiket> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomShimmer(height: width / 20, width: width / 2, radius: 5),
+              CustomShimmer(
+                  height: width / 30, width: width / 2, radius: width),
               SizedBox(
                 height: width / 40,
               ),
-              CustomShimmer(height: width / 20, width: width / 4, radius: 5),
+              CustomShimmer(
+                  height: width / 30, width: width / 4, radius: width),
               Divider(thickness: 1),
-              CustomShimmer(height: width / 20, width: width / 1.5, radius: 5),
+              CustomShimmer(
+                  height: width / 30, width: width / 1.5, radius: width),
               SizedBox(height: width / 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomShimmer(
-                      height: width / 20, width: width / 4, radius: 5),
+                      height: width / 30, width: width / 4, radius: width),
                   SizedBox(height: width / 20),
                   CustomShimmer(
-                      height: width / 20, width: width / 4, radius: 5),
+                      height: width / 30, width: width / 4, radius: width),
                 ],
               ),
               SizedBox(height: width / 40),
-              _infoLoading("Ticket Number", "5432657", width),
+              _infoLoading(width),
               SizedBox(height: width / 40),
               Row(
                 children: [
-                  _infoLoading("Order ID", "2043", width),
+                  _infoLoading(width),
                   SizedBox(width: width / 15),
-                  _infoLoading("Price", "Rp 150.000", width),
+                  _infoLoading(width),
                 ],
               ),
               SizedBox(height: width / 40),
-              _infoLoading(
-                  "Ticket Expiration", "Jumat, 01 Juli 2022 16:49", width),
+              _infoLoading(width),
               SizedBox(height: width / 40),
-              _infoLoading("Slot", "", width),
+              _infoLoading(width),
               SizedBox(height: width / 40),
-              _infoLoading("Date", "", width),
+              _infoLoading(width),
             ],
           ),
         ),
         SizedBox(height: width / 20),
-        CustomShimmer(height: width / 20, width: width / 4, radius: 5),
+        CustomShimmer(height: width / 20, width: width / 4, radius: width),
         SizedBox(height: width / 50),
-        _infoLoading("Seasons", "Session 1 06:30 - 10:00 WITA", width),
+        _infoLoading(width),
         SizedBox(height: width / 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -425,7 +466,7 @@ class _DetailTiketState extends State<DetailTiket> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(width / 50))),
               child: CustomShimmer(
-                  height: width / 20, width: width / 4, radius: 5),
+                  height: width / 30, width: width / 4, radius: width),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -435,7 +476,7 @@ class _DetailTiketState extends State<DetailTiket> {
                       borderRadius: BorderRadius.circular(width / 50))),
               onPressed: () {},
               child: CustomShimmer(
-                  height: width / 20, width: width / 4, radius: 5),
+                  height: width / 30, width: width / 4, radius: width),
             )
           ],
         )
@@ -459,15 +500,24 @@ class _DetailTiketState extends State<DetailTiket> {
     );
   }
 
-  Widget _infoLoading(String title, String value, width) {
+  Widget _infoLoading(width) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomShimmer(height: width / 20, width: width / 6, radius: 5),
+        CustomShimmer(height: width / 30, width: width / 6, radius: width),
         SizedBox(
           height: width / 30,
         ),
-        CustomShimmer(height: width / 20, width: width / 4, radius: 5),
+        CustomShimmer(height: width / 30, width: width / 4, radius: width),
+      ],
+    );
+  }
+
+  Widget _loadingButton(width) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomShimmer(height: width / 30, width: width / 4, radius: width),
       ],
     );
   }

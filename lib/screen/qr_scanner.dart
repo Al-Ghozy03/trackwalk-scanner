@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print, must_be_immutable, prefer_typing_uninitialized_variables
 import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
@@ -220,11 +220,7 @@ class _QRState extends State<QR> {
   void future(bar) {
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
-      // print(value["data"]["WooCommerceEventsProductID"]);
-      // print(widget.id);
       if (value["status"] == "error") {
-        //  print(value);
-        // vibrate();
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
@@ -238,7 +234,6 @@ class _QRState extends State<QR> {
           }
         });
       } else {
-        //
         if (value["data"]["WooCommerceEventsProductID"].toString() !=
             widget.id.toString()) {
           setState(() {
@@ -252,7 +247,6 @@ class _QRState extends State<QR> {
             }
           });
         } else {
-          //  print(value);
           if (mounted) {
             setState(() {
               hasil = "Success";
@@ -265,14 +259,15 @@ class _QRState extends State<QR> {
               });
             }
           });
-          // HapticFeedback.lightImpact();
-          // vibrate();
-          // print(value);
-
           Timer(Duration(seconds: 1), () {
             // controller!.pauseCamera();
-            Get.to(DetailTiket(id: bar.code, type: widget.type),
-                transition: Transition.circularReveal, arguments: arguments);
+            Get.to(
+                DetailTiket(
+                  id: bar.code,
+                  type: widget.type,
+                ),
+                transition: Transition.circularReveal,
+                arguments: arguments);
           });
         }
       }
