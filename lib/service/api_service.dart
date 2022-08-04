@@ -43,8 +43,8 @@ class ApiService {
     final res =
         await http.post(Uri.parse("$baseUrl/get_list_of_events"), headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "username": "tracktix",
-      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G",
+      "username": storage.read("auth")["username"],
+      "password": storage.read("auth")["password"]
     });
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
@@ -58,8 +58,8 @@ class ApiService {
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      "username": "tracktix",
-      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G"
+      "username": storage.read("auth")["username"],
+      "password": storage.read("auth")["password"]
     };
     final res = await http.post(urlApi, headers: requestHeaders);
 
@@ -75,8 +75,8 @@ class ApiService {
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      "username": "tracktix",
-      "password": "wYSLQ7jdN8k3(iO#6oyq7x9G"
+      "username": storage.read("auth")["username"],
+      "password": storage.read("auth")["password"]
     };
     final res = await http.post(urlApi, headers: requestHeaders);
 
