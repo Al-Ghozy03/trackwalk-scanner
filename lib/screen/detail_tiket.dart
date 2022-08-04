@@ -89,7 +89,7 @@ class _DetailTiketState extends State<DetailTiket> {
                   return Text("loading");
                 if (snapshot.hasError) return Text("error");
                 if (snapshot.hasData) {
-                  print(widget.id);
+                  print(widget.idDetail);
                   List data = snapshot.data
                       .where((e) =>
                           e["WooCommerceEventsProductID"] == widget.idDetail)
@@ -155,7 +155,10 @@ class _DetailTiketState extends State<DetailTiket> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    e.value["WooCommerceEventsLocation"]
+                                    e.value["WooCommerceEventsBookingOptions"][e
+                                                    .value[
+                                                "WooCommerceEventsBookingOptionIDs"]
+                                            [0]]["label"]
                                         .toString(),
                                     style: TextStyle(fontFamily: "popinsemi"),
                                   ),
