@@ -22,6 +22,7 @@ class _EventState extends State<Event> {
   int activeIndexSort = 0;
   late Future event;
   String keyword = "";
+  DateTime pre_backpress = DateTime.now();
   List data = [];
   void modalFilter() {
     showModalBottomSheet(
@@ -144,56 +145,77 @@ class _EventState extends State<Event> {
     final width = Get.width;
     final height = Get.height;
     return Scaffold(
-      body: SafeArea(
+      body: WillPopScope(
+        child: SafeArea(
           child: SingleChildScrollView(
-        physics: GetPlatform.isIOS
-            ? BouncingScrollPhysics()
-            : ClampingScrollPhysics(),
-        child: Padding(
-          padding: EdgeInsets.all(width / 25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Events",
-                style: TextStyle(
-                  fontSize: width / 13,
-                  fontFamily: "popinsemi",
-                ),
-              ),
-              SizedBox(height: width / 20),
-              _searchBar(width, height),
-              SizedBox(height: width / 15),
-              FutureBuilder(
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done)
-                    return _loadingState(width, height);
-                  if (snapshot.hasError)
-                    return Column(
-                      children: [
-                        LottieBuilder.asset("assets/json/94992-error-404.json"),
-                        Text(
-                          "Ooops, something went wrong",
-                          style: TextStyle(
-                              fontFamily: "popinsemi", fontSize: width / 17),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          "Please check your internet connection",
-                          style: TextStyle(color: grayText),
-                        )
-                      ],
-                    );
-                  if (snapshot.hasData) return _listBuilder(width, height);
+            physics: GetPlatform.isIOS
+                ? BouncingScrollPhysics()
+                : ClampingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.all(width / 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Events",
+                    style: TextStyle(
+                      fontSize: width / 13,
+                      fontFamily: "popinsemi",
+                    ),
+                  ),
+                  SizedBox(height: width / 20),
+                  _searchBar(width, height),
+                  SizedBox(height: width / 15),
+                  FutureBuilder(
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return _loadingState(width, height);
+                      if (snapshot.hasError)
+                        return Column(
+                          children: [
+                            LottieBuilder.asset(
+                                "assets/json/94992-error-404.json"),
+                            Text(
+                              "Ooops, something went wrong",
+                              style: TextStyle(
+                                  fontFamily: "popinsemi",
+                                  fontSize: width / 17),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Please check your internet connection",
+                              style: TextStyle(color: grayText),
+                            )
+                          ],
+                        );
+                      if (snapshot.hasData) return _listBuilder(width, height);
 
-                  return Text("kosong");
-                },
-                future: event,
-              )
-            ],
+                      return Text("kosong");
+                    },
+                    future: event,
+                  )
+                ],
+              ),
+            ),
           ),
         ),
-      )),
+        onWillPop: () async {
+          final timegap = DateTime.now().difference(pre_backpress);
+          final cantExit = timegap >= Duration(seconds: 2);
+          pre_backpress = DateTime.now();
+          if (cantExit) {
+            //show snackbar
+            final snack = SnackBar(
+              content: Text('Press Back button again to Exit'),
+              duration: Duration(seconds: 2),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snack);
+            return false;
+          } else {
+            return true;
+          }
+        },
+      ),
     );
   }
 
@@ -374,7 +396,7 @@ class _EventState extends State<Event> {
   }
 
   Widget _searchBar(width, height) {
-    print(DateTime.fromMillisecondsSinceEpoch(1659528000*1000));
+    print(DateTime.fromMillisecondsSinceEpoch(1659528000 * 1000));
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

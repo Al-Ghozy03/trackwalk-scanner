@@ -15,7 +15,11 @@ class DetailTiket extends StatefulWidget {
   final id;
   final idDetail;
   String type;
-  DetailTiket({super.key, required this.id, required this.type, required this.idDetail});
+  DetailTiket(
+      {super.key,
+      required this.id,
+      required this.type,
+      required this.idDetail});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -87,8 +91,8 @@ class _DetailTiketState extends State<DetailTiket> {
                 if (snapshot.hasData) {
                   print(widget.id);
                   List data = snapshot.data
-                      .where(
-                          (e) => e["WooCommerceEventsProductID"] == widget.idDetail)
+                      .where((e) =>
+                          e["WooCommerceEventsProductID"] == widget.idDetail)
                       .toList();
                   return Column(
                     children: data.asMap().entries.map((e) {
