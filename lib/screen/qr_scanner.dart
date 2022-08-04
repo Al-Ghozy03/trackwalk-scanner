@@ -7,7 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
-
+import 'dart:ui' as ui;
 import '../service/api_service.dart';
 
 class QR extends StatefulWidget {
@@ -64,6 +64,9 @@ class _QRState extends State<QR> {
     controller?.resumeCamera();
     final width = MediaQuery.of(context).size.width;
     final height = Get.height;
+    final themeData = Theme.of(context).brightness == ui.Brightness.dark
+        ? "DarkTheme"
+        : "LightTheme";
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -80,7 +83,7 @@ class _QRState extends State<QR> {
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
-          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+          backgroundColor: themeData == "DarkTheme" ? bgDark : Colors.white,
           leading: IconButton(
             onPressed: () {
               Get.back();
