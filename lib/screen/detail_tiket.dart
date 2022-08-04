@@ -380,18 +380,11 @@ class _DetailTiketState extends State<DetailTiket> {
                       width),
                   SizedBox(height: width / 20),
                   Text(
-                    "Attendee",
+                    "Purchase",
                     style: TextStyle(
                         fontSize: width / 20, fontFamily: "popinsemi"),
                   ),
                   SizedBox(height: width / 50),
-                  _info(
-                      "Purchaser",
-                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
-                          ? data["WooCommerceEventsVariations"]["Seasons"]
-                          : "Nan",
-                      width),
-                  SizedBox(height: width / 20),
                   _info(
                       "Name",
                       (data["WooCommerceEventsVariations"]["Seasons"] != "")
