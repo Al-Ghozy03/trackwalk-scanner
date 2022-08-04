@@ -15,7 +15,11 @@ class DetailTiket extends StatefulWidget {
   final id;
   final idDetail;
   String type;
-  DetailTiket({super.key, required this.id, required this.type, required this.idDetail});
+  DetailTiket(
+      {super.key,
+      required this.id,
+      required this.type,
+      required this.idDetail});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -85,10 +89,10 @@ class _DetailTiketState extends State<DetailTiket> {
                   return Text("loading");
                 if (snapshot.hasError) return Text("error");
                 if (snapshot.hasData) {
-                  print(widget.id);
+                  print(widget.idDetail);
                   List data = snapshot.data
-                      .where(
-                          (e) => e["WooCommerceEventsProductID"] == widget.idDetail)
+                      .where((e) =>
+                          e["WooCommerceEventsProductID"] == widget.idDetail)
                       .toList();
                   return Column(
                     children: data.asMap().entries.map((e) {
@@ -151,7 +155,10 @@ class _DetailTiketState extends State<DetailTiket> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    e.value["WooCommerceEventsLocation"]
+                                    e.value["WooCommerceEventsBookingOptions"][e
+                                                    .value[
+                                                "WooCommerceEventsBookingOptionIDs"]
+                                            [0]]["label"]
                                         .toString(),
                                     style: TextStyle(fontFamily: "popinsemi"),
                                   ),
@@ -254,6 +261,7 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   Widget _builder(width, data) {
+    // print(data["WooCommerceEventsVariations"]["Seasons"]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -364,7 +372,12 @@ class _DetailTiketState extends State<DetailTiket> {
                         fontSize: width / 20, fontFamily: "popinsemi"),
                   ),
                   SizedBox(height: width / 50),
-                  _info("Seasons", data["WooCommerceEventsBookingSlot"], width),
+                  _info(
+                      "Seasons",
+                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
+                          ? data["WooCommerceEventsVariations"]["Seasons"]
+                          : "Nan",
+                      width),
                   SizedBox(height: width / 20),
                 ],
               )

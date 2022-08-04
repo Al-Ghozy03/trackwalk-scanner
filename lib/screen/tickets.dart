@@ -119,7 +119,10 @@ class _TicketState extends State<Ticket> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    e.value["WooCommerceEventsLocation"]
+                                    e.value["WooCommerceEventsBookingOptions"][e
+                                                    .value[
+                                                "WooCommerceEventsBookingOptionIDs"]
+                                            [0]]["label"]
                                         .toString(),
                                     style: TextStyle(fontFamily: "popinsemi"),
                                   ),
