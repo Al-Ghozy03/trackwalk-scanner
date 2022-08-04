@@ -549,8 +549,10 @@ class _TicketState extends State<Ticket> {
                   onTap: () {
                     Get.to(
                             DetailTiket(
-                                id: values[i]["WooCommerceEventsTicketID"],
-                                type: widget.type),
+                              id: values[i]["WooCommerceEventsTicketID"],
+                              type: widget.type,
+                              idDetail: widget.id,
+                            ),
                             transition: Transition.rightToLeft,
                             arguments: arguments)
                         ?.then((value) {
@@ -674,8 +676,10 @@ class _TicketState extends State<Ticket> {
                         return;
                         Get.to(
                             DetailTiket(
-                                id: values[i]["WooCommerceEventsTicketID"],
-                                type: widget.type),
+                              id: values[i]["WooCommerceEventsTicketID"],
+                              type: widget.type,
+                              idDetail: widget.id,
+                            ),
                             transition: Transition.rightToLeft,
                             arguments: arguments);
                       },

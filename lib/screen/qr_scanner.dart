@@ -268,6 +268,7 @@ class _QRState extends State<QR> {
                 DetailTiket(
                   id: bar.code,
                   type: widget.type,
+                  idDetail: widget.id,
                 ),
                 transition: Transition.circularReveal,
                 arguments: arguments);
