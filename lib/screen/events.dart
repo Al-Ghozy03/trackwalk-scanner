@@ -374,7 +374,6 @@ class _EventState extends State<Event> {
   }
 
   Widget _searchBar(width, height) {
-    print(DateTime.fromMillisecondsSinceEpoch(1659528000*1000));
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

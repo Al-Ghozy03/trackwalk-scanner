@@ -174,7 +174,7 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
-      backgroundColor: bgDark,
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -332,7 +332,7 @@ class _TicketState extends State<Ticket> {
       });
     });
     super.initState();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -424,8 +424,8 @@ class _TicketState extends State<Ticket> {
                                   fontFamily: "popinsemi"),
                             ),
                             Text(
-                              arguments[1] == "03 Jan 2022"
-                                  ? "03 Jan 2022"
+                              arguments[1].runtimeType == String
+                                  ? arguments[1]
                                   : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                               style: TextStyle(
                                   fontSize: width / 27, color: grayText),
