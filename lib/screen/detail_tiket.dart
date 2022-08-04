@@ -22,11 +22,15 @@ class DetailTiket extends StatefulWidget {
   final id;
   final idDetail;
   String type;
+  final check;
+  final notCheck;
   DetailTiket(
       {super.key,
       required this.id,
       required this.type,
-      required this.idDetail});
+      required this.idDetail,
+      required this.check,
+      required this.notCheck});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -220,7 +224,8 @@ class _DetailTiketState extends State<DetailTiket> {
                       if (snapshot.hasData) {
                         List data = snapshot.data
                             .where((e) =>
-                                e["WooCommerceEventsProductID"] == widget.idDetail)
+                                e["WooCommerceEventsProductID"] ==
+                                widget.idDetail)
                             .toList();
                         return Column(
                           children: data.asMap().entries.map((e) {
@@ -369,7 +374,8 @@ class _DetailTiketState extends State<DetailTiket> {
                       if (snapshot.hasData) {
                         List data = snapshot.data
                             .where((e) =>
-                                e["WooCommerceEventsProductID"] == widget.idDetail)
+                                e["WooCommerceEventsProductID"] ==
+                                widget.idDetail)
                             .toList();
                         // print(data[0]);
                         return Column(
@@ -403,7 +409,7 @@ class _DetailTiketState extends State<DetailTiket> {
                                       CheckIcon(
                                         width: width,
                                         color: Colors.green,
-                                        jumlah: "8",
+                                        jumlah: widget.check,
                                         title: "Checked In",
                                       ),
                                       SizedBox(
@@ -412,7 +418,7 @@ class _DetailTiketState extends State<DetailTiket> {
                                       CheckIcon(
                                         width: width,
                                         color: Colors.grey,
-                                        jumlah: "8",
+                                        jumlah: widget.notCheck,
                                         title: "Not Checked In",
                                       ),
                                     ],
@@ -471,7 +477,9 @@ class _DetailTiketState extends State<DetailTiket> {
                                   style: TextStyle(color: grayText),
                                 ),
                                 SizedBox(width: width / 10),
-                                Flexible(child: Text(data[0]["WooCommerceEventsTimeZone"])),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsTimeZone"])),
                               ],
                             ),
                             SizedBox(height: width / 20),

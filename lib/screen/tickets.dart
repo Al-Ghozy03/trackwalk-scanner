@@ -669,6 +669,8 @@ class _TicketState extends State<Ticket> {
                   QR(
                     type: widget.type,
                     id: widget.id,
+                     check: checkedIn,
+                              notCheck: notCheckedIn,
                   ),
                   transition: Transition.circularReveal,
                   arguments: arguments);
@@ -720,6 +722,8 @@ class _TicketState extends State<Ticket> {
                               id: values[i]["WooCommerceEventsTicketID"],
                               type: widget.type,
                               idDetail: widget.id,
+                              check: checkedIn,
+                              notCheck: notCheckedIn,
                             ),
                             transition: Transition.rightToLeft,
                             arguments: arguments)
@@ -847,6 +851,8 @@ class _TicketState extends State<Ticket> {
                               id: values[i]["WooCommerceEventsTicketID"],
                               type: widget.type,
                               idDetail: widget.id,
+                              check: checkedIn,
+                              notCheck: notCheckedIn,
                             ),
                             transition: Transition.rightToLeft,
                             arguments: arguments);

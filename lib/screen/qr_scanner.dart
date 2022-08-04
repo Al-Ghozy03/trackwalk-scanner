@@ -13,7 +13,14 @@ import '../service/api_service.dart';
 class QR extends StatefulWidget {
   String type;
   final id;
-  QR({super.key, required this.type, required this.id});
+  final check;
+  final notCheck;
+  QR(
+      {super.key,
+      required this.type,
+      required this.id,
+      required this.check,
+      required this.notCheck});
 
   @override
   State<QR> createState() => _QRState();
@@ -269,6 +276,8 @@ class _QRState extends State<QR> {
                   id: bar.code,
                   type: widget.type,
                   idDetail: widget.id,
+                  check: widget.check,
+                  notCheck: widget.notCheck,
                 ),
                 transition: Transition.circularReveal,
                 arguments: arguments);
