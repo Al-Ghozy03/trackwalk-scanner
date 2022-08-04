@@ -217,6 +217,7 @@ class _TicketState extends State<Ticket> {
                         Container(
                           // height: 5,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
@@ -298,7 +299,7 @@ class _TicketState extends State<Ticket> {
                               "Time Zone",
                               style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 25),
+                            SizedBox(width: width / 10),
                             Flexible(child: Text("Asia/Singapore")),
                           ],
                         ),
@@ -311,14 +312,13 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
-      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       isScrollControlled: true,
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
-        topRight: Radius.circular(MediaQuery.of(context).size.width / 20),
-      )),
-      clipBehavior: Clip.antiAlias,
+              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
+              topRight:
+                  Radius.circular(MediaQuery.of(context).size.width / 20))),
       context: context,
       builder: (context) {
         final width = MediaQuery.of(context).size.width;
