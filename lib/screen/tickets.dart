@@ -249,8 +249,6 @@ class _TicketState extends State<Ticket> {
                                   ],
                                 ),
                               ),
-                              Icon(Iconsax.arrow_right_3,
-                                  size: width / 40, color: grayText)
                             ],
                           ),
                         ),
