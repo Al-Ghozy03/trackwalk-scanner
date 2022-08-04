@@ -366,19 +366,26 @@ class _DetailTiketState extends State<DetailTiket> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Attendee",
-                    style: TextStyle(
-                        fontSize: width / 20, fontFamily: "popinsemi"),
-                  ),
-                  SizedBox(height: width / 50),
-                  _info(
-                      "Seasons",
-                      (data["WooCommerceEventsVariations"].length == 0)
-                          ? "Nan"
-                          : data["WooCommerceEventsVariations"]["Seasons"].toString(),
-                      width),
-                  SizedBox(height: width / 20),
+                  (data["WooCommerceEventsVariations"].length != 0)
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Attendee",
+                              style: TextStyle(
+                                  fontSize: width / 20,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 50),
+                            _info(
+                                "Seasons",
+                                data["WooCommerceEventsVariations"]["Seasons"]
+                                    .toString(),
+                                width),
+                            SizedBox(height: width / 20),
+                          ],
+                        )
+                      : SizedBox(),
                   Text(
                     "Purchase",
                     style: TextStyle(
