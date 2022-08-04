@@ -374,9 +374,9 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 50),
                   _info(
                       "Seasons",
-                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
-                          ? data["WooCommerceEventsVariations"]["Seasons"]
-                          : "Nan",
+                      (data["WooCommerceEventsVariations"].length == 0)
+                          ? "Nan"
+                          : data["WooCommerceEventsVariations"]["Seasons"].toString(),
                       width),
                   SizedBox(height: width / 20),
                   Text(
@@ -387,22 +387,22 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 50),
                   _info(
                       "Name",
-                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
-                          ? data["WooCommerceEventsVariations"]["Seasons"]
+                      (data["customerFirstName"] != "")
+                          ? data["customerFirstName"]
                           : "Nan",
                       width),
                   SizedBox(height: width / 20),
                   _info(
                       "Email",
-                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
-                          ? data["WooCommerceEventsVariations"]["Seasons"]
+                      (data["customerEmail"] != "")
+                          ? data["customerEmail"]
                           : "Nan",
                       width),
                   SizedBox(height: width / 20),
                   _info(
                       "Phone",
-                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
-                          ? data["WooCommerceEventsVariations"]["Seasons"]
+                      (data["customerPhone"] != "")
+                          ? data["customerPhone"]
                           : "Nan",
                       width),
                   SizedBox(height: width / 20),
