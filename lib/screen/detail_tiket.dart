@@ -344,7 +344,7 @@ class _DetailTiketState extends State<DetailTiket> {
               );
             },
           )
-        : showModalBottomSheet(
+        : showModalBottomSheet(   
             isScrollControlled: true,
             backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
             shape: RoundedRectangleBorder(
@@ -410,8 +410,6 @@ class _DetailTiketState extends State<DetailTiket> {
                                   ],
                                 ),
                               ),
-                              Icon(Iconsax.arrow_right_3,
-                                  size: width / 40, color: grayText)
                             ],
                           ),
                         ),

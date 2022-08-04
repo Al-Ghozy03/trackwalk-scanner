@@ -290,6 +290,7 @@ class _TicketState extends State<Ticket> {
                                     "Pertamina Mandalika, Internasional Street Circuit")),
                           ],
                         ),
+                        SizedBox(height: width / 20),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -301,6 +302,7 @@ class _TicketState extends State<Ticket> {
                             Flexible(child: Text("Asia/Singapore")),
                           ],
                         ),
+                        SizedBox(height: width / 20),
                       ],
                     )),
               );
