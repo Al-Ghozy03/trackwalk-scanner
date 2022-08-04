@@ -261,6 +261,7 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   Widget _builder(width, data) {
+    // print(data["WooCommerceEventsVariations"]["Seasons"]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -371,7 +372,12 @@ class _DetailTiketState extends State<DetailTiket> {
                         fontSize: width / 20, fontFamily: "popinsemi"),
                   ),
                   SizedBox(height: width / 50),
-                  _info("Seasons", data["WooCommerceEventsBookingSlot"], width),
+                  _info(
+                      "Seasons",
+                      (data["WooCommerceEventsVariations"]["Seasons"] != "")
+                          ? data["WooCommerceEventsVariations"]["Seasons"]
+                          : "Nan",
+                      width),
                   SizedBox(height: width / 20),
                 ],
               )
