@@ -8,8 +8,12 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
+import 'package:track_walk_admin/widget/email.dart';
+import 'package:track_walk_admin/widget/phone.dart';
 import '../service/api_service.dart';
 import 'package:http/http.dart' as http;
+
+import '../service/url_service.dart';
 
 class DetailTiket extends StatefulWidget {
   final id;
@@ -30,8 +34,10 @@ class _DetailTiketState extends State<DetailTiket> {
   late Future ticket;
   late Future detail;
   bool isLoading = false;
+  String email = "";
   // List dataDetail = [];
   // List data = [];
+
   FutureOr refetch() {
     setState(() {
       ticket = ApiService().singleTicket(widget.id);
@@ -399,19 +405,19 @@ class _DetailTiketState extends State<DetailTiket> {
                           : "Nan",
                       width),
                   SizedBox(height: width / 20),
-                  _info(
-                      "Email",
-                      (data["customerEmail"] != "")
-                          ? data["customerEmail"]
-                          : "Nan",
-                      width),
+                  // _info(
+                  //     "Email",
+                  //     (data["customerEmail"] != "")
+                  //         ? data["customerEmail"]
+                  //         : "Nan",
+                  //     width),
+                  (data["customerEmail"] != "")
+                      ? Email(data: data, width: width)
+                      : _info("Email", "Nan", width),
                   SizedBox(height: width / 20),
-                  _info(
-                      "Phone",
-                      (data["customerPhone"] != "")
-                          ? data["customerPhone"]
-                          : "Nan",
-                      width),
+                  (data["customerPhone"] != "")
+                      ? Phone(data: data, width: width)
+                      : _info("Phone", "Nan", width),
                   SizedBox(height: width / 20),
                 ],
               )
@@ -426,9 +432,13 @@ class _DetailTiketState extends State<DetailTiket> {
                   SizedBox(height: width / 50),
                   _info("Name", data["customerFirstName"], width),
                   SizedBox(height: width / 20),
-                  _info("Email", data["customerEmail"], width),
+                  (data["customerEmail"] != "")
+                      ? Email(data: data, width: width)
+                      : _info("Email", "Nan", width),
                   SizedBox(height: width / 20),
-                  _info("Phone", data["customerPhone"], width),
+                  (data["customerPhone"] != "")
+                      ? Phone(data: data, width: width)
+                      : _info("Phone", "Nan", width),
                   SizedBox(height: width / 4),
                 ],
               ),
