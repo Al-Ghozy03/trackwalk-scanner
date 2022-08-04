@@ -6,6 +6,7 @@ import 'package:alert/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/events.dart';
 import 'package:track_walk_admin/service/api_service.dart';
@@ -55,21 +56,24 @@ class _LoginState extends State<Login> {
             "auth", {"username": username.text, "password": password.text});
         Get.off(Event());
       } else {
-        showDialog(
+        Dialogs.materialDialog(
+            color: Get.isDarkMode ? bgDark : Colors.white,
             context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Sign-in Error'),
-                content: Text('Incorect URL, Username or Password'),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Close')),
-                ],
-              );
-            });
+            title: "Sign-in Error",
+            titleAlign: TextAlign.center,
+            titleStyle: TextStyle(
+              fontSize: Get.width / 20,
+              fontFamily: 'popinsemi',
+            ),
+            msg: "Incorect URL, Username or Password",
+            msgStyle: TextStyle(color: grayText),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
+            ]);
       }
       return true;
     } else {
