@@ -249,8 +249,6 @@ class _TicketState extends State<Ticket> {
                                   ],
                                 ),
                               ),
-                              Icon(Iconsax.arrow_right_3,
-                                  size: width / 40, color: grayText)
                             ],
                           ),
                         ),
@@ -292,6 +290,7 @@ class _TicketState extends State<Ticket> {
                                     "Pertamina Mandalika, Internasional Street Circuit")),
                           ],
                         ),
+                        SizedBox(height: width / 20),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -303,6 +302,7 @@ class _TicketState extends State<Ticket> {
                             Flexible(child: Text("Asia/Singapore")),
                           ],
                         ),
+                        SizedBox(height: width / 20),
                       ],
                     )),
               );
