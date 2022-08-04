@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, curly_braces_in_flow_control_structures, must_be_immutable, avoid_print, unrelated_type_equality_checks
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/service/getx_service.dart';
+import 'package:track_walk_admin/widget/CheckIcons.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 import 'package:track_walk_admin/widget/email.dart';
 import 'package:track_walk_admin/widget/phone.dart';
@@ -18,11 +20,15 @@ class DetailTiket extends StatefulWidget {
   final id;
   final idDetail;
   String type;
+  final check;
+  final notCheck;
   DetailTiket(
       {super.key,
       required this.id,
       required this.type,
-      required this.idDetail});
+      required this.idDetail,
+      required this.check,
+      required this.notCheck});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -176,147 +182,300 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   void dialogDetails() {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
-              topRight:
-                  Radius.circular(MediaQuery.of(context).size.width / 20))),
-      context: context,
-      builder: (context) {
-        final width = MediaQuery.of(context).size.width;
-        final height = MediaQuery.of(context).size.height;
-        return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(width / 15),
-            child: FutureBuilder(
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState != ConnectionState.done)
-                  return Text("loading");
-                if (snapshot.hasError) return Text("error");
-                if (snapshot.hasData) {
-                  print(widget.idDetail);
-                  List data = snapshot.data
-                      .where((e) =>
-                          e["WooCommerceEventsProductID"] == widget.idDetail)
-                      .toList();
-                  return Column(
-                    children: data.asMap().entries.map((e) {
-                      List value = e.value["WooCommerceEventsBookingOptions"]
-                              [e.value["WooCommerceEventsBookingOptionIDs"][0]]
-                          ["add_date_ids"];
-                      var time = e.value["WooCommerceEventsBookingOptions"]
-                              [e.value["WooCommerceEventsBookingOptionIDs"][0]]
-                          ["add_date"];
+    widget.type != "single"
+        ? showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft:
+                        Radius.circular(MediaQuery.of(context).size.width / 20),
+                    topRight: Radius.circular(
+                        MediaQuery.of(context).size.width / 20))),
+            context: context,
+            builder: (context) {
+              final width = MediaQuery.of(context).size.width;
+              final height = MediaQuery.of(context).size.height;
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(width / 15),
+                  child: FutureBuilder(
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return Text("loading");
+                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasData) {
+                        List data = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsProductID"] ==
+                                widget.idDetail)
+                            .toList();
+                        return Column(
+                          children: data.asMap().entries.map((e) {
+                            List value =
+                                e.value["WooCommerceEventsBookingOptions"][
+                                    e.value["WooCommerceEventsBookingOptionIDs"]
+                                        [0]]["add_date_ids"];
+                            var time =
+                                e.value["WooCommerceEventsBookingOptions"][
+                                    e.value["WooCommerceEventsBookingOptionIDs"]
+                                        [0]]["add_date"];
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Details",
-                            style: TextStyle(
-                                fontSize: width / 15, fontFamily: "popinsemi"),
-                          ),
-                          SizedBox(height: width / 40),
-                          Text(arguments[0]),
-                          SizedBox(height: width / 20),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Location",
-                                style: TextStyle(color: grayText),
-                              ),
-                              SizedBox(width: width / 15),
-                              Flexible(
-                                  child: Text(
-                                      e.value["WooCommerceEventsLocation"])),
-                            ],
-                          ),
-                          SizedBox(height: width / 20),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Time Zone",
-                                style: TextStyle(color: grayText),
-                              ),
-                              SizedBox(width: width / 25),
-                              Flexible(
-                                  child: Text(
-                                      e.value["WooCommerceEventsTimeZone"])),
-                            ],
-                          ),
-                          SizedBox(height: width / 20),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Slots",
-                                style: TextStyle(color: grayText),
-                              ),
-                              SizedBox(width: width / 7),
-                              Flexible(
-                                  child: Column(
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Details",
+                                  style: TextStyle(
+                                      fontSize: width / 15,
+                                      fontFamily: "popinsemi"),
+                                ),
+                                SizedBox(height: width / 40),
+                                Text(arguments[0]),
+                                SizedBox(height: width / 20),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Location",
+                                      style: TextStyle(color: grayText),
+                                    ),
+                                    SizedBox(width: width / 15),
+                                    Flexible(
+                                        child: Text(e.value[
+                                            "WooCommerceEventsLocation"])),
+                                  ],
+                                ),
+                                SizedBox(height: width / 20),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Time Zone",
+                                      style: TextStyle(color: grayText),
+                                    ),
+                                    SizedBox(width: width / 25),
+                                    Flexible(
+                                        child: Text(e.value[
+                                            "WooCommerceEventsTimeZone"])),
+                                  ],
+                                ),
+                                SizedBox(height: width / 20),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Slots",
+                                      style: TextStyle(color: grayText),
+                                    ),
+                                    SizedBox(width: width / 7),
+                                    Flexible(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          e.value["WooCommerceEventsBookingOptions"][e
+                                                          .value[
+                                                      "WooCommerceEventsBookingOptionIDs"]
+                                                  [0]]["label"]
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontFamily: "popinsemi"),
+                                        ),
+                                        Column(
+                                          children:
+                                              value.asMap().entries.map((j) {
+                                            return Row(
+                                              children: [
+                                                Text(
+                                                  time[j.value.toString()]
+                                                      ["date"],
+                                                  style: TextStyle(
+                                                      color: grayText),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: width / 40),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: width / 50,
+                                                      vertical: width / 100),
+                                                  decoration: BoxDecoration(
+                                                      color: blueTheme,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              width)),
+                                                  child: Text(
+                                                    "10/10",
+                                                    style: TextStyle(
+                                                        fontSize: width / 50,
+                                                        color: Colors.white),
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          }).toList(),
+                                        )
+                                      ],
+                                    )),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        );
+                      }
+                      return Text("kosong");
+                    },
+                    future: detail,
+                  ),
+                ),
+              );
+            },
+          )
+        : showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft:
+                        Radius.circular(MediaQuery.of(context).size.width / 20),
+                    topRight: Radius.circular(
+                        MediaQuery.of(context).size.width / 20))),
+            context: context,
+            builder: (context) {
+              final width = MediaQuery.of(context).size.width;
+              final height = MediaQuery.of(context).size.height;
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(width / 15),
+                  child: FutureBuilder(
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return Text("loading");
+                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasData) {
+                        List data = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsProductID"] ==
+                                widget.idDetail)
+                            .toList();
+                        // print(data[0]);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Details",
+                              style: TextStyle(
+                                  fontSize: width / 15,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 40),
+                            Text(
+                              arguments[0],
+                              style: TextStyle(
+                                  fontSize: width / 22,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 20),
+                            Container(
+                              // height: 5,
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    e.value["WooCommerceEventsBookingOptions"][e
-                                                    .value[
-                                                "WooCommerceEventsBookingOptionIDs"]
-                                            [0]]["label"]
-                                        .toString(),
-                                    style: TextStyle(fontFamily: "popinsemi"),
-                                  ),
                                   Column(
-                                    children: value.asMap().entries.map((j) {
-                                      return Row(
-                                        children: [
-                                          Text(
-                                            time[j.value.toString()]["date"],
-                                            style: TextStyle(color: grayText),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                left: width / 40),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: width / 50,
-                                                vertical: width / 100),
-                                            decoration: BoxDecoration(
-                                                color: blueTheme,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        width)),
-                                            child: Text(
-                                              "10/10",
-                                              style: TextStyle(
-                                                  fontSize: width / 50,
-                                                  color: Colors.white),
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    }).toList(),
-                                  )
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.green,
+                                        jumlah: widget.check,
+                                        title: "Checked In",
+                                      ),
+                                      SizedBox(
+                                        height: width / 30,
+                                      ),
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.grey,
+                                        jumlah: widget.notCheck,
+                                        title: "Not Checked In",
+                                      ),
+                                    ],
+                                  ),
                                 ],
-                              )),
-                            ],
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  );
-                }
-                return Text("kosong");
-              },
-              future: detail,
-            ),
-          ),
-        );
-      },
-    );
+                              ),
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "When",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5.5),
+                                Flexible(
+                                    child:
+                                        Text(data[0]["WooCommerceEventsDate"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5),
+                                Flexible(
+                                    child: Text(
+                                        "${data[0]["WooCommerceEventsHour"]}:${data[0]["WooCommerceEventsMinutes"]} - ${data[0]["WooCommerceEventsHourEnd"]}:${data[0]["WooCommerceEventsMinutesEnd"]}")),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Where",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 6),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsLocation"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time Zone",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 10),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsTimeZone"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                          ],
+                        );
+                      }
+                      return Text("kosong");
+                    },
+                    future: detail,
+                  ),
+                ),
+              );
+            });
   }
 
 
@@ -330,6 +489,7 @@ class _DetailTiketState extends State<DetailTiket> {
 
   @override
   Widget build(BuildContext context) {
+    print(controller.sessions["session_2"]![0].isAfter(DateTime.now()));
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
@@ -639,7 +799,23 @@ class _DetailTiketState extends State<DetailTiket> {
           children: [
             OutlinedButton(
               onPressed: () {
-                changeStatus("Not Checked In");
+                (data["WooCommerceEventsStatus"] != "Not Checked In")
+                    ? changeStatus("Not Checked In")
+                    : Dialogs.materialDialog(
+                        color: Get.isDarkMode ? bgDark : Colors.white,
+                        context: context,
+                        title: "Gagal",
+                        titleAlign: TextAlign.center,
+                        titleStyle: TextStyle(
+                          fontSize: Get.width / 20,
+                          fontFamily: 'popinsemi',
+                        ),
+                        msg: "Sudah Check-out",
+                        msgStyle: TextStyle(color: grayText),
+                        actions: [
+                            TextButton(
+                                onPressed: () => Get.back(), child: Text("Ok"))
+                          ]);
               },
               style: OutlinedButton.styleFrom(
                   elevation: 0,

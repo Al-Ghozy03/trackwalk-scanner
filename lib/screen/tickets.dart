@@ -10,6 +10,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import '../service/api_service.dart';
+import '../widget/CheckIcons.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
@@ -31,6 +32,8 @@ class _TicketState extends State<Ticket> {
   final arguments = Get.arguments;
   List data = [];
   List dataDetail = [];
+  int checkedIn = 0;
+  int notCheckedIn = 0;
 
   void dialogDetails() {
     widget.type != "single"
@@ -194,20 +197,148 @@ class _TicketState extends State<Ticket> {
                         MediaQuery.of(context).size.width / 20))),
             context: context,
             builder: (context) {
-              return SingleChildScrollView();
+              final width = MediaQuery.of(context).size.width;
+              final height = MediaQuery.of(context).size.height;
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(width / 15),
+                  child: FutureBuilder(
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return Text("loading");
+                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasData) {
+                        List data = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsProductID"] == widget.id)
+                            .toList();
+                        print(data[0]);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Details",
+                              style: TextStyle(
+                                  fontSize: width / 15,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 40),
+                            Text(
+                              arguments[0],
+                              style: TextStyle(
+                                  fontSize: width / 22,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 20),
+                            Container(
+                              // height: 5,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.green,
+                                        jumlah: checkedIn,
+                                        title: "Checked In",
+                                      ),
+                                      SizedBox(
+                                        height: width / 30,
+                                      ),
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.grey,
+                                        jumlah: notCheckedIn,
+                                        title: "Not Checked In",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "When",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5.5),
+                                Flexible(
+                                    child:
+                                        Text(data[0]["WooCommerceEventsDate"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5),
+                                Flexible(
+                                    child: Text(
+                                        "${data[0]["WooCommerceEventsHour"]}:${data[0]["WooCommerceEventsMinutes"]} - ${data[0]["WooCommerceEventsHourEnd"]}:${data[0]["WooCommerceEventsMinutesEnd"]}")),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Where",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 6),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsLocation"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time Zone",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 10),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsTimeZone"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
+                          ],
+                        );
+                      }
+                      return Text("kosong");
+                    },
+                    future: detail,
+                  ),
+                ),
+              );
             });
   }
 
   void modalFilter() {
     showModalBottomSheet(
-      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       isScrollControlled: true,
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
-        topRight: Radius.circular(MediaQuery.of(context).size.width / 20),
-      )),
-      clipBehavior: Clip.antiAlias,
+              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
+              topRight:
+                  Radius.circular(MediaQuery.of(context).size.width / 20))),
       context: context,
       builder: (context) {
         final width = MediaQuery.of(context).size.width;
@@ -504,6 +635,17 @@ class _TicketState extends State<Ticket> {
                           ],
                         );
                       if (snapshot.hasData) {
+                        List checked = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsStatus"] == "Checked In")
+                            .toList();
+                        List notChecked = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsStatus"] ==
+                                "Not Checked In")
+                            .toList();
+                        checkedIn = checked.length;
+                        notCheckedIn = notChecked.length;
                         return _listBuilder(width, height, filter);
                       } else {
                         return Text("kosong");
@@ -529,6 +671,8 @@ class _TicketState extends State<Ticket> {
                   QR(
                     type: widget.type,
                     id: widget.id,
+                     check: checkedIn,
+                              notCheck: notCheckedIn,
                   ),
                   transition: Transition.circularReveal,
                   arguments: arguments);
@@ -580,6 +724,8 @@ class _TicketState extends State<Ticket> {
                               id: values[i]["WooCommerceEventsTicketID"],
                               type: widget.type,
                               idDetail: widget.id,
+                              check: checkedIn,
+                              notCheck: notCheckedIn,
                             ),
                             transition: Transition.rightToLeft,
                             arguments: arguments)
@@ -706,6 +852,8 @@ class _TicketState extends State<Ticket> {
                               id: values[i]["WooCommerceEventsTicketID"],
                               type: widget.type,
                               idDetail: widget.id,
+                              check: checkedIn,
+                              notCheck: notCheckedIn,
                             ),
                             transition: Transition.rightToLeft,
                             arguments: arguments);
