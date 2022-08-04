@@ -32,6 +32,8 @@ class _TicketState extends State<Ticket> {
   final arguments = Get.arguments;
   List data = [];
   List dataDetail = [];
+  int checkedIn = 0;
+  int notCheckedIn = 0;
 
   void dialogDetails() {
     widget.type != "single"
@@ -242,7 +244,7 @@ class _TicketState extends State<Ticket> {
                                       CheckIcon(
                                         width: width,
                                         color: Colors.green,
-                                        jumlah: "8",
+                                        jumlah: checkedIn,
                                         title: "Checked In",
                                       ),
                                       SizedBox(
@@ -251,7 +253,7 @@ class _TicketState extends State<Ticket> {
                                       CheckIcon(
                                         width: width,
                                         color: Colors.grey,
-                                        jumlah: "8",
+                                        jumlah: notCheckedIn,
                                         title: "Not Checked In",
                                       ),
                                     ],
@@ -310,7 +312,9 @@ class _TicketState extends State<Ticket> {
                                   style: TextStyle(color: grayText),
                                 ),
                                 SizedBox(width: width / 10),
-                                Flexible(child: Text(data[0]["WooCommerceEventsTimeZone"])),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsTimeZone"])),
                               ],
                             ),
                             SizedBox(height: width / 20),
@@ -629,6 +633,17 @@ class _TicketState extends State<Ticket> {
                           ],
                         );
                       if (snapshot.hasData) {
+                        List checked = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsStatus"] == "Checked In")
+                            .toList();
+                        List notChecked = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsStatus"] ==
+                                "Not Checked In")
+                            .toList();
+                        checkedIn = checked.length;
+                        notCheckedIn = notChecked.length;
                         return _listBuilder(width, height, filter);
                       } else {
                         return Text("kosong");

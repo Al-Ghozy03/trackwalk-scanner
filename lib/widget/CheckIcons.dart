@@ -38,7 +38,7 @@ class _CheckIconState extends State<CheckIcon> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AutoSizeText(
-                  widget.jumlah,
+                  widget.jumlah.toString(),
                   style: TextStyle(
                       fontFamily: "popinsemi", fontWeight: FontWeight.bold),
                   presetFontSizes: [widget.width / 23, 10, 14],
