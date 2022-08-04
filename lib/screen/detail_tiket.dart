@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 import 'package:track_walk_admin/widget/email.dart';
@@ -45,6 +46,20 @@ class _DetailTiketState extends State<DetailTiket> {
     });
   }
 
+  Map<String, List<DateTime>> sessions = {
+    "session_1": [
+      DateTime.parse(
+          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 06:30"),
+      DateTime.parse(
+          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 10:00"),
+    ],
+    "session_2": [
+      DateTime.parse(
+          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 16:00"),
+      DateTime.parse(
+          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 17:30"),
+    ]
+  };
   Future changeStatus(String status) async {
     setState(() {
       isLoading = true;
@@ -70,6 +85,110 @@ class _DetailTiketState extends State<DetailTiket> {
       });
       refetch();
       return false;
+    }
+  }
+
+  void validationChangeStatus(data) {
+    if (data["WooCommerceEventsVariations"].runtimeType != List<dynamic>) {
+      if (data["WooCommerceEventsVariations"]["Seasons"]
+          .toString()
+          .toLowerCase()
+          .contains("session 1")) {
+        if (DateTime.now().isAfter(sessions["session_1"]![0]) &&
+            DateTime.now().isBefore(sessions["session_1"]![1])) {
+          changeStatus("Checked in");
+        } else {
+          Dialogs.materialDialog(
+              color: Get.isDarkMode ? bgDark : Colors.white,
+              context: context,
+              title: "Gagal",
+              titleAlign: TextAlign.center,
+              titleStyle: TextStyle(
+                fontSize: Get.width / 20,
+                fontFamily: 'popinsemi',
+              ),
+              msg: "Sesi telah berakhir",
+              msgStyle: TextStyle(color: grayText),
+              actions: [
+                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+              ]);
+        }
+      } else if (data["WooCommerceEventsVariations"]["Seasons"]
+          .toString()
+          .toLowerCase()
+          .contains("session 2")) {
+        if (DateTime.now().isAfter(sessions["session_2"]![0]) &&
+            DateTime.now().isBefore(sessions["session_2"]![1])) {
+          changeStatus("Checked in");
+        } else {
+          Dialogs.materialDialog(
+              color: Get.isDarkMode ? bgDark : Colors.white,
+              context: context,
+              title: "Gagal",
+              titleAlign: TextAlign.center,
+              titleStyle: TextStyle(
+                fontSize: Get.width / 20,
+                fontFamily: 'popinsemi',
+              ),
+              msg: "Sesi telah berakhir",
+              msgStyle: TextStyle(color: grayText),
+              actions: [
+                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+              ]);
+        }
+      } else {
+        print("bukan sesi 1 atau 2");
+      }
+    } else {
+      if (data["WooCommerceEventsBookingSlot"]
+          .toString()
+          .toLowerCase()
+          .contains("session 1")) {
+        if (DateTime.now().isAfter(sessions["session_1"]![0]) &&
+            DateTime.now().isBefore(sessions["session_1"]![1])) {
+          changeStatus("Checked in");
+        } else {
+          Dialogs.materialDialog(
+              color: Get.isDarkMode ? bgDark : Colors.white,
+              context: context,
+              title: "Gagal",
+              titleAlign: TextAlign.center,
+              titleStyle: TextStyle(
+                fontSize: Get.width / 20,
+                fontFamily: 'popinsemi',
+              ),
+              msg: "Sesi telah berakhir",
+              msgStyle: TextStyle(color: grayText),
+              actions: [
+                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+              ]);
+        }
+      } else if (data["WooCommerceEventsBookingSlot"]
+          .toString()
+          .toLowerCase()
+          .contains("session 2")) {
+        if (DateTime.now().isAfter(sessions["session_2"]![0]) &&
+            DateTime.now().isBefore(sessions["session_2"]![1])) {
+          changeStatus("Checked in");
+        } else {
+          Dialogs.materialDialog(
+              color: Get.isDarkMode ? bgDark : Colors.white,
+              context: context,
+              title: "Gagal",
+              titleAlign: TextAlign.center,
+              titleStyle: TextStyle(
+                fontSize: Get.width / 20,
+                fontFamily: 'popinsemi',
+              ),
+              msg: "Sesi telah berakhir",
+              msgStyle: TextStyle(color: grayText),
+              actions: [
+                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+              ]);
+        }
+      } else {
+        print("bukan sesi 1 atau 2");
+      }
     }
   }
 
@@ -470,7 +589,7 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
-                changeStatus("Checked In");
+                validationChangeStatus(data);
               },
               child: isLoading
                   ? _loadingButton(width)

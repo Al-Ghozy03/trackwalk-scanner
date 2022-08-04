@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.track_walk_admin">
+<<<<<<< HEAD
    <uses-permission android:name="android.permission.VIBRATE"/>
    <!-- Provide required visibility configuration for API level 30 and above -->
 <queries>
@@ -14,6 +15,10 @@
     <data android:scheme="tel" />
   </intent>
 </queries>
+=======
+   <uses-permission 
+   android:name="android.permission.INTERNET"/>
+>>>>>>> a47c11b111956f489a0e3a6076b85676d3304510
    <application
         android:label="track_walk_admin"
         android:name="${applicationName}"
