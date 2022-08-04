@@ -49,11 +49,8 @@ dependencies:
   auto_size_text: ^3.0.0
   provider: ^6.0.3
   lottie: ^1.3.0
-<<<<<<< HEAD
   url_launcher: ^6.1.5
-=======
   material_dialogs: ^1.1.3
->>>>>>> a47c11b111956f489a0e3a6076b85676d3304510
 
 dev_dependencies:
   flutter_test:
