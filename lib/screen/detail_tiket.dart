@@ -1,20 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, curly_braces_in_flow_control_structures, must_be_immutable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, curly_braces_in_flow_control_structures, must_be_immutable, avoid_print, unrelated_type_equality_checks
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
+import 'package:track_walk_admin/service/getx_service.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 import 'package:track_walk_admin/widget/email.dart';
 import 'package:track_walk_admin/widget/phone.dart';
 import '../service/api_service.dart';
 import 'package:http/http.dart' as http;
-
-import '../service/url_service.dart';
 
 class DetailTiket extends StatefulWidget {
   final id;
@@ -36,8 +34,7 @@ class _DetailTiketState extends State<DetailTiket> {
   late Future detail;
   bool isLoading = false;
   String email = "";
-  // List dataDetail = [];
-  // List data = [];
+  final Controller controller = Get.put(Controller());
 
   FutureOr refetch() {
     setState(() {
@@ -46,20 +43,6 @@ class _DetailTiketState extends State<DetailTiket> {
     });
   }
 
-  Map<String, List<DateTime>> sessions = {
-    "session_1": [
-      DateTime.parse(
-          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 06:30"),
-      DateTime.parse(
-          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 10:00"),
-    ],
-    "session_2": [
-      DateTime.parse(
-          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 16:00"),
-      DateTime.parse(
-          "${DateFormat.y().format(DateTime.now())}-${DateFormat.M().format(DateTime.now()).length == 1 ? "0${DateFormat.M().format(DateTime.now())}" : DateFormat.M().format(DateTime.now())}-${DateFormat.d().format(DateTime.now()).length == 1 ? "0${DateFormat.d().format(DateTime.now())}" : DateFormat.d().format(DateTime.now())} 17:30"),
-    ]
-  };
   Future changeStatus(String status) async {
     setState(() {
       isLoading = true;
@@ -94,8 +77,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 1")) {
-        if (DateTime.now().isAfter(sessions["session_1"]![0]) &&
-            DateTime.now().isBefore(sessions["session_1"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
+            DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
           changeStatus("Checked in");
         } else {
           Dialogs.materialDialog(
@@ -117,8 +100,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 2")) {
-        if (DateTime.now().isAfter(sessions["session_2"]![0]) &&
-            DateTime.now().isBefore(sessions["session_2"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
+            DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
           changeStatus("Checked in");
         } else {
           Dialogs.materialDialog(
@@ -144,8 +127,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 1")) {
-        if (DateTime.now().isAfter(sessions["session_1"]![0]) &&
-            DateTime.now().isBefore(sessions["session_1"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
+            DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
           changeStatus("Checked in");
         } else {
           Dialogs.materialDialog(
@@ -167,8 +150,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 2")) {
-        if (DateTime.now().isAfter(sessions["session_2"]![0]) &&
-            DateTime.now().isBefore(sessions["session_2"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
+            DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
           changeStatus("Checked in");
         } else {
           Dialogs.materialDialog(
@@ -336,13 +319,14 @@ class _DetailTiketState extends State<DetailTiket> {
     );
   }
 
+
   @override
   void initState() {
     ticket = ApiService().singleTicket(widget.id);
     detail = ApiService().event();
-
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +370,96 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   Widget _builder(width, data) {
-    // print(data["WooCommerceEventsVariations"]["Seasons"]);
+    String time1 = "";
+    String time2 = "";
+    String time3 = "";
+    String time4 = "";
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+
+    if (data["WooCommerceEventsVariations"] != List<dynamic>) {
+      if (data["WooCommerceEventsBookingSlot"]
+          .toString()
+          .toLowerCase()
+          .contains("session 1")) {
+        time1 =
+            "${data["WooCommerceEventsBookingSlot"].toString().substring(12, 14)}:${data["WooCommerceEventsBookingSlot"].toString().substring(15, 17)}";
+        time2 =
+            "${data["WooCommerceEventsBookingSlot"].toString().substring(20, 22)}:${data["WooCommerceEventsBookingSlot"].toString().substring(23, 26)}";
+        Map<String, List<DateTime>> sessions = {
+          "session_1": [
+            DateTime.parse(
+                "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time1.trim()}"),
+            DateTime.parse(
+                "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time2.trim()}"),
+          ]
+        };
+        controller.addSession(sessions);
+      } else if (data["WooCommerceEventsBookingSlot"]
+          .toString()
+          .toLowerCase()
+          .contains("session 2")) {
+        time3 =
+            "${data["WooCommerceEventsBookingSlot"].toString().substring(12, 14)}:${data["WooCommerceEventsBookingSlot"].toString().substring(15, 17)}";
+        time4 =
+            "${data["WooCommerceEventsBookingSlot"].toString().substring(20, 22)}:${data["WooCommerceEventsBookingSlot"].toString().substring(23, 26)}";
+        Map<String, List<DateTime>> sessions = {
+          "session_2": [
+            DateTime.parse(
+                "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time3.trim()}"),
+            DateTime.parse(
+                "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time4.trim()}"),
+          ]
+        };
+        controller.addSession(sessions);
+      } else {
+        print("bukan sesi 1 atau 2");
+      }
+    } else {
+      if (data["WooCommerceEventsVariations"]["Seasons"]
+          .toString()
+          .contains(".")) {
+        if (data["WooCommerceEventsVariations"]["Seasons"]
+            .toString()
+            .toLowerCase()
+            .contains("session 1")) {
+          time1 =
+              "${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(12, 14)}:${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(15, 17)}";
+          time2 =
+              "${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(20, 22)}:${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(23, 26)}";
+
+          Map<String, List<DateTime>> sessions = {
+            "session_1": [
+              DateTime.parse(
+                  "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time1.trim()}"),
+              DateTime.parse(
+                  "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time2.trim()}"),
+            ]
+          };
+          controller.addSession(sessions);
+        } else if (data["WooCommerceEventsVariations"]["Seasons"]
+            .toString()
+            .toLowerCase()
+            .contains("session 2")) {
+          time3 =
+              "${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(12, 14)}:${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(15, 17)}";
+          time4 =
+              "${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(20, 22)}:${data["WooCommerceEventsVariations"]["Seasons"].toString().substring(23, 26)}";
+          Map<String, List<DateTime>> sessions = {
+            "session_1": [
+              DateTime.parse(
+                  "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time3.trim()}"),
+              DateTime.parse(
+                  "${DateFormat.y().format(date)}-${DateFormat.M().format(date).length == 1 ? "0${DateFormat.M().format(date)}" : DateFormat.M().format(date)}-${DateFormat.d().format(date).length == 1 ? "0${DateFormat.d().format(date)}" : DateFormat.d().format(date)} ${time4.trim()}"),
+            ]
+          };
+          controller.addSession(sessions);
+        } else {
+          print("bukan sesi 1 atau 2");
+        }
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

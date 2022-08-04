@@ -1,8 +1,8 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../service/url_service.dart';
 
 class Phone extends StatefulWidget {
   final data;
@@ -19,7 +19,6 @@ class _PhoneState extends State<Phone> {
   @override
   void initState() {
     phone = widget.data["customerPhone"];
-    // TODO: implement initState
     super.initState();
   }
 

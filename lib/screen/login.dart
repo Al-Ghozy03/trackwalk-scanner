@@ -327,7 +327,6 @@ class _LoginState extends State<Login> {
       password.text = storage.read("password");
     }
 
-    // TODO: implement initState
     super.initState();
   }
 

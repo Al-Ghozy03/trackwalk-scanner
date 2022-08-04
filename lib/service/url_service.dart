@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes, deprecated_member_use
+
 import 'package:url_launcher/url_launcher.dart' as UL;
 
 class Utils {
