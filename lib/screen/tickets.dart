@@ -200,14 +200,13 @@ class _TicketState extends State<Ticket> {
 
   void modalFilter() {
     showModalBottomSheet(
-      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       isScrollControlled: true,
+      backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
-        topRight: Radius.circular(MediaQuery.of(context).size.width / 20),
-      )),
-      clipBehavior: Clip.antiAlias,
+              topLeft: Radius.circular(MediaQuery.of(context).size.width / 20),
+              topRight:
+                  Radius.circular(MediaQuery.of(context).size.width / 20))),
       context: context,
       builder: (context) {
         final width = MediaQuery.of(context).size.width;
