@@ -211,7 +211,7 @@ class _TicketState extends State<Ticket> {
                         Text(
                           "Motorcycle / Bicycle Parking Ticket Add-on",
                           style: TextStyle(
-                              fontSize: width / 15, fontFamily: "popinsemi"),
+                              fontSize: width / 22, fontFamily: "popinsemi"),
                         ),
                         SizedBox(height: width / 20),
                         Container(
