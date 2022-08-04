@@ -725,8 +725,8 @@ class _DetailTiketState extends State<DetailTiket> {
           children: [
             OutlinedButton(
               onPressed: () {
-                (data["WooCommerceEventsStatus"] != "Check-out")
-                    ? changeStatus("Check-out")
+                (data["WooCommerceEventsStatus"] != "Not Checked In")
+                    ? changeStatus("Not Checked In")
                     : Dialogs.materialDialog(
                         color: Get.isDarkMode ? bgDark : Colors.white,
                         context: context,
