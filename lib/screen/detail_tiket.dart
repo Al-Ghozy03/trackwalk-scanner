@@ -16,6 +16,7 @@ import '../service/api_service.dart';
 import 'package:http/http.dart' as http;
 
 import '../service/url_service.dart';
+import '../widget/CheckIcons.dart';
 
 class DetailTiket extends StatefulWidget {
   final id;
@@ -344,7 +345,7 @@ class _DetailTiketState extends State<DetailTiket> {
               );
             },
           )
-        : showModalBottomSheet(   
+        : showModalBottomSheet(
             isScrollControlled: true,
             backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
             shape: RoundedRectangleBorder(
@@ -359,111 +360,129 @@ class _DetailTiketState extends State<DetailTiket> {
               final height = MediaQuery.of(context).size.height;
               return SingleChildScrollView(
                 child: Padding(
-                    padding: EdgeInsets.all(width / 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Details",
-                          style: TextStyle(
-                              fontSize: width / 15, fontFamily: "popinsemi"),
-                        ),
-                        SizedBox(height: width / 40),
-                        Text(
-                          "Motorcycle / Bicycle Parking Ticket Add-on",
-                          style: TextStyle(
-                              fontSize: width / 15, fontFamily: "popinsemi"),
-                        ),
-                        SizedBox(height: width / 20),
-                        Container(
-                          height: 10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.circle,
-                                      size: width / 20,
-                                      color: Colors.green,
-                                    ),
-                                    SizedBox(width: width / 30),
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          AutoSizeText(
-                                            "Check-in",
-                                            style: TextStyle(
-                                                fontFamily: "popinsemi"),
-                                            presetFontSizes: [
-                                              width / 15,
-                                              10,
-                                              8
-                                            ],
-                                          ),
-                                        ],
+                  padding: EdgeInsets.all(width / 15),
+                  child: FutureBuilder(
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done)
+                        return Text("loading");
+                      if (snapshot.hasError) return Text("error");
+                      if (snapshot.hasData) {
+                        List data = snapshot.data
+                            .where((e) =>
+                                e["WooCommerceEventsProductID"] == widget.idDetail)
+                            .toList();
+                        // print(data[0]);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Details",
+                              style: TextStyle(
+                                  fontSize: width / 15,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 40),
+                            Text(
+                              arguments[0],
+                              style: TextStyle(
+                                  fontSize: width / 22,
+                                  fontFamily: "popinsemi"),
+                            ),
+                            SizedBox(height: width / 20),
+                            Container(
+                              // height: 5,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.green,
+                                        jumlah: "8",
+                                        title: "Checked In",
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                      SizedBox(
+                                        height: width / 30,
+                                      ),
+                                      CheckIcon(
+                                        width: width,
+                                        color: Colors.grey,
+                                        jumlah: "8",
+                                        title: "Not Checked In",
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: width / 20),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "When",
-                              style: TextStyle(color: grayText),
                             ),
-                            SizedBox(width: width / 15),
-                            Flexible(child: Text("Jan 04, 2022")),
-                          ],
-                        ),
-                        SizedBox(height: width / 20),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Time",
-                              style: TextStyle(color: grayText),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "When",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5.5),
+                                Flexible(
+                                    child:
+                                        Text(data[0]["WooCommerceEventsDate"])),
+                              ],
                             ),
-                            SizedBox(width: width / 25),
-                            Flexible(child: Text("00:00 - 00:00")),
-                          ],
-                        ),
-                        SizedBox(height: width / 20),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Where",
-                              style: TextStyle(color: grayText),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 5),
+                                Flexible(
+                                    child: Text(
+                                        "${data[0]["WooCommerceEventsHour"]}:${data[0]["WooCommerceEventsMinutes"]} - ${data[0]["WooCommerceEventsHourEnd"]}:${data[0]["WooCommerceEventsMinutesEnd"]}")),
+                              ],
                             ),
-                            SizedBox(width: width / 25),
-                            Flexible(
-                                child: Text(
-                                    "Pertamina Mandalika, Internasional Street Circuit")),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Time Zone",
-                              style: TextStyle(color: grayText),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Where",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 6),
+                                Flexible(
+                                    child: Text(
+                                        data[0]["WooCommerceEventsLocation"])),
+                              ],
                             ),
-                            SizedBox(width: width / 25),
-                            Flexible(child: Text("Asia/Singapore")),
+                            SizedBox(height: width / 20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time Zone",
+                                  style: TextStyle(color: grayText),
+                                ),
+                                SizedBox(width: width / 10),
+                                Flexible(child: Text(data[0]["WooCommerceEventsTimeZone"])),
+                              ],
+                            ),
+                            SizedBox(height: width / 20),
                           ],
-                        ),
-                      ],
-                    )),
+                        );
+                      }
+                      return Text("kosong");
+                    },
+                    future: detail,
+                  ),
+                ),
               );
             });
   }
