@@ -109,7 +109,7 @@ class _DetailTiketState extends State<DetailTiket> {
           .contains("session 2")) {
         if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
             DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
-          changeStatus("Checked in");
+          changeStatus("Checked In");
         } else {
           Dialogs.materialDialog(
               color: Get.isDarkMode ? bgDark : Colors.white,
@@ -136,7 +136,7 @@ class _DetailTiketState extends State<DetailTiket> {
           .contains("session 1")) {
         if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
             DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
-          changeStatus("Checked in");
+          changeStatus("Checked In");
         } else {
           Dialogs.materialDialog(
               color: Get.isDarkMode ? bgDark : Colors.white,
@@ -159,7 +159,7 @@ class _DetailTiketState extends State<DetailTiket> {
           .contains("session 2")) {
         if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
             DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
-          changeStatus("Checked in");
+          changeStatus("Checked In");
         } else {
           Dialogs.materialDialog(
               color: Get.isDarkMode ? bgDark : Colors.white,
@@ -862,7 +862,9 @@ class _DetailTiketState extends State<DetailTiket> {
                       date.month == DateTime.now().month) {
                     changeStatus("Checked In");
                   } else {
-                    Dialogs.materialDialog(
+                  (data["WooCommerceEventsStatus"] != "Checked In")
+                    ? validationChangeStatus(data)
+                    : Dialogs.materialDialog(
                         color: Get.isDarkMode ? bgDark : Colors.white,
                         context: context,
                         title: "Gagal",
