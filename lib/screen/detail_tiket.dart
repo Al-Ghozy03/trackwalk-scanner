@@ -830,7 +830,23 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
-                validationChangeStatus(data);
+                  (data["WooCommerceEventsStatus"] != "Checked in")
+                    ? validationChangeStatus(data)
+                    : Dialogs.materialDialog(
+                        color: Get.isDarkMode ? bgDark : Colors.white,
+                        context: context,
+                        title: "Gagal",
+                        titleAlign: TextAlign.center,
+                        titleStyle: TextStyle(
+                          fontSize: Get.width / 20,
+                          fontFamily: 'popinsemi',
+                        ),
+                        msg: "Sudah Check-in",
+                        msgStyle: TextStyle(color: grayText),
+                        actions: [
+                            TextButton(
+                                onPressed: () => Get.back(), child: Text("Ok"))
+                          ]);
               },
               child: isLoading
                   ? _loadingButton(width)
