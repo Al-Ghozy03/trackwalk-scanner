@@ -10,7 +10,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'package:track_walk_admin/screen/qr_scanner.dart';
 import '../service/api_service.dart';
-import '../widget/CheckIcons.dart';
+import '../widget/check_icons.dart';
 import '../widget/custom_shimmer.dart';
 
 class Ticket extends StatefulWidget {
@@ -493,26 +493,22 @@ class _TicketState extends State<Ticket> {
 
   @override
   Widget build(BuildContext context) {
-    var filter = arguments[1].runtimeType != DateTime
+    var filter = widget.type == "single"
         ? data.where((element) {
-            DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+            DateTime bookingDate = DateTime.fromMillisecondsSinceEpoch(
                 int.parse(element["WooCommerceEventsBookingDateTimestamp"]) *
                     1000);
-            return DateFormat.yMEd().format(timestamp) ==
-                    DateFormat.yMEd().format(DateTime.now()) &&
-                element["WooCommerceEventsBookingDate"] != "" &&
-                (element["WooCommerceEventsAttendeeName"]
-                        .toLowerCase()
+            return (element["customerFirstName"]
                         .toString()
+                        .toLowerCase()
                         .contains(keyword.toLowerCase()) ||
-                    element["customerFirstName"]
-                        .toLowerCase()
+                    element["WooCommerceEventsAttendeeName"]
                         .toString()
-                        .contains(keyword.toLowerCase()) ||
-                    element["customerFirstName"]
                         .toLowerCase()
-                        .toString()
-                        .contains(keyword.toLowerCase()));
+                        .contains(keyword.toLowerCase())) &&
+                (bookingDate.day == DateTime.now().day &&
+                    bookingDate.month == DateTime.now().month &&
+                    bookingDate.year == DateTime.now().year);
           }).toList()
         : data.where((element) {
             DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
@@ -668,12 +664,12 @@ class _TicketState extends State<Ticket> {
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
               Get.to(
-                  QR(
-                    type: widget.type,
-                    id: widget.id,
-                     check: checkedIn,
-                              notCheck: notCheckedIn,
-                  ),
+                  () => QR(
+                        type: widget.type,
+                        id: widget.id,
+                        check: checkedIn,
+                        notCheck: notCheckedIn,
+                      ),
                   transition: Transition.circularReveal,
                   arguments: arguments);
             },
@@ -720,13 +716,13 @@ class _TicketState extends State<Ticket> {
                 return InkWell(
                   onTap: () {
                     Get.to(
-                            DetailTiket(
-                              id: values[i]["WooCommerceEventsTicketID"],
-                              type: widget.type,
-                              idDetail: widget.id,
-                              check: checkedIn,
-                              notCheck: notCheckedIn,
-                            ),
+                            () => DetailTiket(
+                                  id: values[i]["WooCommerceEventsTicketID"],
+                                  type: widget.type,
+                                  idDetail: widget.id,
+                                  check: checkedIn,
+                                  notCheck: notCheckedIn,
+                                ),
                             transition: Transition.rightToLeft,
                             arguments: arguments)
                         ?.then((value) {
@@ -788,6 +784,7 @@ class _TicketState extends State<Ticket> {
                     });
                   },
                   child: Container(
+                    padding: EdgeInsets.symmetric(vertical: width / 45),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -835,8 +832,7 @@ class _TicketState extends State<Ticket> {
                   ),
                 );
               },
-              separatorBuilder: (context, index) =>
-                  SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
+              separatorBuilder: (context, index) => Divider(thickness: 0.8),
               itemCount: values.length,
             ),
           )
@@ -848,13 +844,13 @@ class _TicketState extends State<Ticket> {
                     return InkWell(
                       onTap: () {
                         Get.to(
-                            DetailTiket(
-                              id: values[i]["WooCommerceEventsTicketID"],
-                              type: widget.type,
-                              idDetail: widget.id,
-                              check: checkedIn,
-                              notCheck: notCheckedIn,
-                            ),
+                            () => DetailTiket(
+                                  id: values[i]["WooCommerceEventsTicketID"],
+                                  type: widget.type,
+                                  idDetail: widget.id,
+                                  check: checkedIn,
+                                  notCheck: notCheckedIn,
+                                ),
                             transition: Transition.rightToLeft,
                             arguments: arguments);
                       },

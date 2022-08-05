@@ -16,8 +16,6 @@ class CustomCheck extends StatefulWidget {
 class _CustomCheckState extends State<CustomCheck> {
   bool loading = false;
   bool isChecked = false;
-  // late Future todoUpdate;
-  // late String check;
   void remember(bool value) {
     isChecked = value;
     storage.write("remember_me", value);
@@ -31,8 +29,6 @@ class _CustomCheckState extends State<CustomCheck> {
 
   @override
   void initState() {
-    // todoUpdate = ApiService().updateTodo(isChecked, id);
-
     super.initState();
   }
 
@@ -43,7 +39,6 @@ class _CustomCheckState extends State<CustomCheck> {
         setState(() {
           isChecked = !isChecked;
         });
-        // print(check);
       },
       child: AnimatedContainer(
         height: 23,

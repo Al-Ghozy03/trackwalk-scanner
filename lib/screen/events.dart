@@ -324,22 +324,22 @@ class _EventState extends State<Event> {
               onTap: () {
                 if (filter[i]["WooCommerceEventsType"].toString() == "single") {
                   Get.to(
-                      Ticket(
-                        id: filter[i]["WooCommerceEventsProductID"],
-                        img: filter[i]["WooCommerceEventsTicketLogo"],
-                        type: "single",
-                      ),
+                      () => Ticket(
+                            id: filter[i]["WooCommerceEventsProductID"],
+                            img: filter[i]["WooCommerceEventsTicketLogo"],
+                            type: "single",
+                          ),
                       arguments: [
                         filter[i]["WooCommerceEventsName"],
                         "${filter[i]["WooCommerceEventsDateDay"]} ${filter[i]["WooCommerceEventsDateMonth"]} ${filter[i]["WooCommerceEventsDateYear"]}"
                       ]);
                 } else {
                   Get.to(
-                      Calendar(
-                        image: filter[i]["WooCommerceEventsTicketLogo"],
-                        id: filter[i]["WooCommerceEventsProductID"],
-                        type: filter[i]["WooCommerceEventsType"],
-                      ),
+                      () => Calendar(
+                            image: filter[i]["WooCommerceEventsTicketLogo"],
+                            id: filter[i]["WooCommerceEventsProductID"],
+                            type: filter[i]["WooCommerceEventsType"],
+                          ),
                       arguments: filter[i]["WooCommerceEventsName"],
                       transition: Transition.rightToLeftWithFade);
                 }

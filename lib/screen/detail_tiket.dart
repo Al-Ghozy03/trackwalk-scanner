@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/service/getx_service.dart';
-import 'package:track_walk_admin/widget/CheckIcons.dart';
+import 'package:track_walk_admin/widget/check_icons.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 import 'package:track_walk_admin/widget/email.dart';
 import 'package:track_walk_admin/widget/phone.dart';
@@ -86,7 +86,7 @@ class _DetailTiketState extends State<DetailTiket> {
           .contains("session 1")) {
         if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
             DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
-          changeStatus("Checked in");
+          changeStatus("Checked In");
         } else {
           Dialogs.materialDialog(
               color: Get.isDarkMode ? bgDark : Colors.white,
@@ -532,8 +532,11 @@ class _DetailTiketState extends State<DetailTiket> {
     String time2 = "";
     String time3 = "";
     String time4 = "";
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+    DateTime date = DateTime.now();
+    if (widget.type != "single") {
+      date = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+    }
 
     if (data["WooCommerceEventsVariations"] != List<dynamic>) {
       if (data["WooCommerceEventsBookingSlot"]
@@ -830,9 +833,36 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
-                  (data["WooCommerceEventsStatus"] != "Checked in")
-                    ? validationChangeStatus(data)
-                    : Dialogs.materialDialog(
+                if (widget.type != "single") {
+                  (data["WooCommerceEventsStatus"].toString().toLowerCase() !=
+                          "Checked In".toLowerCase())
+                      ? validationChangeStatus(data)
+                      : Dialogs.materialDialog(
+                          color: Get.isDarkMode ? bgDark : Colors.white,
+                          context: context,
+                          title: "Gagal",
+                          titleAlign: TextAlign.center,
+                          titleStyle: TextStyle(
+                            fontSize: Get.width / 20,
+                            fontFamily: 'popinsemi',
+                          ),
+                          msg: "Sudah Check-in",
+                          msgStyle: TextStyle(color: grayText),
+                          actions: [
+                              TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text("Ok"))
+                            ]);
+                } else {
+                  DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(data["WooCommerceEventsBookingDateTimestamp"]) *
+                          1000);
+                  if (date.year == DateTime.now().year &&
+                      date.day == DateTime.now().day &&
+                      date.month == DateTime.now().month) {
+                    changeStatus("Checked In");
+                  } else {
+                    Dialogs.materialDialog(
                         color: Get.isDarkMode ? bgDark : Colors.white,
                         context: context,
                         title: "Gagal",
@@ -841,12 +871,14 @@ class _DetailTiketState extends State<DetailTiket> {
                           fontSize: Get.width / 20,
                           fontFamily: 'popinsemi',
                         ),
-                        msg: "Sudah Check-in",
+                        msg: "Sesi telah berakhir",
                         msgStyle: TextStyle(color: grayText),
                         actions: [
-                            TextButton(
-                                onPressed: () => Get.back(), child: Text("Ok"))
-                          ]);
+                          TextButton(
+                              onPressed: () => Get.back(), child: Text("Ok"))
+                        ]);
+                  }
+                }
               },
               child: isLoading
                   ? _loadingButton(width)

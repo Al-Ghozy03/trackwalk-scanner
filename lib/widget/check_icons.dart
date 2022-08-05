@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class CheckIcon extends StatefulWidget {
 class _CheckIconState extends State<CheckIcon> {
   @override
   Widget build(BuildContext context) {
+    var jumlah = widget.jumlah;
     return Container(
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start,
@@ -38,7 +39,7 @@ class _CheckIconState extends State<CheckIcon> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AutoSizeText(
-                  widget.jumlah.toString(),
+                  jumlah.toString(),
                   style: TextStyle(
                       fontFamily: "popinsemi", fontWeight: FontWeight.bold),
                   presetFontSizes: [widget.width / 23, 10, 14],
