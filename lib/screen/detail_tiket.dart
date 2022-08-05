@@ -488,7 +488,7 @@ class _DetailTiketState extends State<DetailTiket> {
 
   @override
   Widget build(BuildContext context) {
-    print("${controller.sessions["session_1"]} ini datanya");
+    // print("${controller.sessions["session_1"]} ini datanya");
     print(widget.id);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print, must_be_immutable, prefer_typing_uninitialized_variables
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -84,9 +85,11 @@ class _QRState extends State<QR> {
                 color: (hasil == "It's not a ticket" ||
                         hasil == "Not Ticket For This Event")
                     ? Colors.red
-                    : (hasil == "Success")
-                        ? Color.fromARGB(120, 76, 175, 79)
-                        : blueTheme,
+                    : (hasil == "This Ticket Is Not Valid")
+                        ? Color.fromARGB(255, 255, 193, 59)
+                        : (hasil == "Success")
+                            ? Color.fromARGB(120, 76, 175, 79)
+                            : blueTheme,
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
@@ -100,9 +103,11 @@ class _QRState extends State<QR> {
               color: (hasil == "It's not a ticket" ||
                       hasil == "Not Ticket For This Event")
                   ? Colors.red
-                  : (hasil == "Success")
-                      ? Color.fromARGB(120, 76, 175, 79)
-                      : blueTheme,
+                  : (hasil == "This Ticket Is Not Valid")
+                      ? Color.fromARGB(255, 255, 193, 59)
+                      : (hasil == "Success")
+                          ? Color.fromARGB(120, 76, 175, 79)
+                          : blueTheme,
             ),
           ),
         ),
@@ -133,10 +138,12 @@ class _QRState extends State<QR> {
         borderRadius: BorderRadius.circular(8),
         color: (hasil == "It's not a ticket" ||
                 hasil == "Not Ticket For This Event")
-            ? Color.fromARGB(104, 244, 67, 54)
-            : (hasil == "Success")
-                ? Color.fromARGB(120, 76, 175, 79)
-                : Colors.white24,
+            ? Colors.red
+            : (hasil == "This Ticket Is Not Valid")
+                ? Color.fromARGB(255, 255, 193, 59)
+                : (hasil == "Success")
+                    ? Color.fromARGB(120, 76, 175, 79)
+                    : blueTheme,
       ),
       child: Text(
         "$hasil",
@@ -156,9 +163,11 @@ class _QRState extends State<QR> {
         color: (hasil == "It's not a ticket" ||
                 hasil == "Not Ticket For This Event")
             ? Colors.red
-            : (hasil == "Success")
-                ? Color.fromARGB(120, 76, 175, 79)
-                : blueTheme,
+            : (hasil == "This Ticket Is Not Valid")
+                ? Color.fromARGB(255, 255, 193, 59)
+                : (hasil == "Success")
+                    ? Color.fromARGB(120, 76, 175, 79)
+                    : blueTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -196,9 +205,11 @@ class _QRState extends State<QR> {
           borderColor: (hasil == "It's not a ticket" ||
                   hasil == "Not Ticket For This Event")
               ? Colors.red
-              : (hasil == "Success")
-                  ? Color.fromARGB(120, 76, 175, 79)
-                  : blueTheme,
+              : (hasil == "This Ticket Is Not Valid")
+                  ? Color.fromARGB(255, 255, 193, 59)
+                  : (hasil == "Success")
+                      ? Color.fromARGB(120, 76, 175, 79)
+                      : blueTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -212,7 +223,7 @@ class _QRState extends State<QR> {
     controller.scannedDataStream.listen((bar) {
       setState(() {
         this.barcode = bar;
-        print(bar);
+        // print(bar);
         Timer(Duration(microseconds: 1), () {
           future(bar);
         });
@@ -241,10 +252,26 @@ class _QRState extends State<QR> {
             setState(() {
               hasil = "Scan A Code";
             });
+            
           }
         });
       } else {
-        if (value["WooCommerceEventsBookingDate"] != "") {
+        if (value["WooCommerceEventsBookingDate"] == null) {
+          if (mounted) {
+            setState(() {
+              hasil = "This Ticket Is Not Valid";
+            });
+             Timer(Duration(seconds: 5), () {
+              if (mounted) {
+                setState(() {
+                  hasil = "Scan A Code";
+                });
+              }
+            });
+          }
+        } else {
+          log(value["WooCommerceEventsBookingDate"].toString());
+
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
               widget.id.toString()) {
             setState(() {
@@ -282,12 +309,6 @@ class _QRState extends State<QR> {
                   ),
                   transition: Transition.circularReveal,
                   arguments: arguments);
-            });
-          }
-        } else {
-          if (mounted) {
-            setState(() {
-              hasil = "It's not a ticket";
             });
           }
         }
