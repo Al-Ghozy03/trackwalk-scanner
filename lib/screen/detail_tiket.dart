@@ -536,8 +536,13 @@ class _DetailTiketState extends State<DetailTiket> {
     String time4 = "";
     DateTime date = DateTime.now();
     if (widget.type != "single") {
-      date = DateTime.fromMillisecondsSinceEpoch(
-          int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+      if (data["WooCommerceEventsBookingDateTimestamp"] != "") {
+        date = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(data["WooCommerceEventsBookingDateTimestamp"]) * 1000);
+      } else {
+        date = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
+      }
     }
     if (data["WooCommerceEventsVariations"] != List<dynamic>) {
       if (data["WooCommerceEventsBookingSlot"]
@@ -863,23 +868,24 @@ class _DetailTiketState extends State<DetailTiket> {
                       date.month == DateTime.now().month) {
                     changeStatus("Checked In");
                   } else {
-                  (data["WooCommerceEventsStatus"] != "Checked In")
-                    ? validationChangeStatus(data)
-                    : Dialogs.materialDialog(
-                        color: Get.isDarkMode ? bgDark : Colors.white,
-                        context: context,
-                        title: "Gagal",
-                        titleAlign: TextAlign.center,
-                        titleStyle: TextStyle(
-                          fontSize: Get.width / 20,
-                          fontFamily: 'popinsemi',
-                        ),
-                        msg: "Sesi telah berakhir",
-                        msgStyle: TextStyle(color: grayText),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Get.back(), child: Text("Ok"))
-                        ]);
+                    (data["WooCommerceEventsStatus"] != "Checked In")
+                        ? validationChangeStatus(data)
+                        : Dialogs.materialDialog(
+                            color: Get.isDarkMode ? bgDark : Colors.white,
+                            context: context,
+                            title: "Gagal",
+                            titleAlign: TextAlign.center,
+                            titleStyle: TextStyle(
+                              fontSize: Get.width / 20,
+                              fontFamily: 'popinsemi',
+                            ),
+                            msg: "Sesi telah berakhir",
+                            msgStyle: TextStyle(color: grayText),
+                            actions: [
+                                TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: Text("Ok"))
+                              ]);
                   }
                 }
               },
