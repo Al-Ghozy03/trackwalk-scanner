@@ -252,22 +252,67 @@ class _QRState extends State<QR> {
             setState(() {
               hasil = "Scan A Code";
             });
-            
           }
         });
       } else {
-        if (value["WooCommerceEventsBookingDate"] == null) {
-          if (mounted) {
-            setState(() {
-              hasil = "This Ticket Is Not Valid";
-            });
-             Timer(Duration(seconds: 5), () {
+        if (value["data"]["WooCommerceEventsBookingDate"] == null ||
+            value["data"]["WooCommerceEventsBookingDate"] == "") {
+          print('ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
+          if (widget.type != "single") {
+            if (mounted) {
+              setState(() {
+                hasil = "This Ticket Is Not Valid";
+              });
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+            }
+          } else {
+            // log(value["WooCommerceEventsBookingDate"].toString());
+
+            if (value["data"]["WooCommerceEventsProductID"].toString() !=
+                widget.id.toString()) {
+              setState(() {
+                hasil = "Not Ticket For This Event";
+              });
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+            } else {
               if (mounted) {
                 setState(() {
-                  hasil = "Scan A Code";
+                  hasil = "Success";
                 });
               }
-            });
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+              Timer(Duration(seconds: 1), () {
+                // controller!.pauseCamera();
+                Get.to(
+                    DetailTiket(
+                      id: bar.code,
+                      type: widget.type,
+                      idDetail: widget.id,
+                      check: widget.check,
+                      notCheck: widget.notCheck,
+                    ),
+                    transition: Transition.circularReveal,
+                    arguments: arguments);
+              });
+            }
           }
         } else {
           log(value["WooCommerceEventsBookingDate"].toString());
