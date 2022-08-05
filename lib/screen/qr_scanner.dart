@@ -244,44 +244,52 @@ class _QRState extends State<QR> {
           }
         });
       } else {
-        if (value["data"]["WooCommerceEventsProductID"].toString() !=
-            widget.id.toString()) {
-          setState(() {
-            hasil = "Not Ticket For This Event";
-          });
-          Timer(Duration(seconds: 5), () {
+        if (value["WooCommerceEventsBookingDate"] != "") {
+          if (value["data"]["WooCommerceEventsProductID"].toString() !=
+              widget.id.toString()) {
+            setState(() {
+              hasil = "Not Ticket For This Event";
+            });
+            Timer(Duration(seconds: 5), () {
+              if (mounted) {
+                setState(() {
+                  hasil = "Scan A Code";
+                });
+              }
+            });
+          } else {
             if (mounted) {
               setState(() {
-                hasil = "Scan A Code";
+                hasil = "Success";
               });
             }
-          });
+            Timer(Duration(seconds: 5), () {
+              if (mounted) {
+                setState(() {
+                  hasil = "Scan A Code";
+                });
+              }
+            });
+            Timer(Duration(seconds: 1), () {
+              // controller!.pauseCamera();
+              Get.to(
+                  DetailTiket(
+                    id: bar.code,
+                    type: widget.type,
+                    idDetail: widget.id,
+                    check: widget.check,
+                    notCheck: widget.notCheck,
+                  ),
+                  transition: Transition.circularReveal,
+                  arguments: arguments);
+            });
+          }
         } else {
           if (mounted) {
             setState(() {
-              hasil = "Success";
+              hasil = "It's not a ticket";
             });
           }
-          Timer(Duration(seconds: 5), () {
-            if (mounted) {
-              setState(() {
-                hasil = "Scan A Code";
-              });
-            }
-          });
-          Timer(Duration(seconds: 1), () {
-            // controller!.pauseCamera();
-            Get.to(
-                DetailTiket(
-                  id: bar.code,
-                  type: widget.type,
-                  idDetail: widget.id,
-                  check: widget.check,
-                  notCheck: widget.notCheck,
-                ),
-                transition: Transition.circularReveal,
-                arguments: arguments);
-          });
         }
       }
     });
