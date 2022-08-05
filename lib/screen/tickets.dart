@@ -730,61 +730,61 @@ class _TicketState extends State<Ticket> {
                             transition: Transition.rightToLeft,
                             arguments: arguments)
                         ?.then((value) {
-                      // ticket = ApiService().ticket(widget.id);
-                      // ticket.then((value) {
-                      //   setState(() {
-                      //     data = value;
-                      //     var filter = arguments[1].runtimeType != DateTime
-                      //         ? data.where((element) {
-                      //             DateTime timestamp =
-                      //                 DateTime.fromMillisecondsSinceEpoch(
-                      //                     int.parse(element[
-                      //                             "WooCommerceEventsBookingDateTimestamp"]) *
-                      //                         1000);
-                      //             return DateFormat.yMEd().format(timestamp) ==
-                      //                     DateFormat.yMEd()
-                      //                         .format(DateTime.now()) &&
-                      //                 (element["WooCommerceEventsAttendeeName"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(
-                      //                             keyword.toLowerCase()) ||
-                      //                     element["customerFirstName"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(
-                      //                             keyword.toLowerCase()) ||
-                      //                     element["customerFirstName"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(keyword.toLowerCase()));
-                      //           }).toList()
-                      //         : data.where((element) {
-                      //             DateTime timestamp =
-                      //                 DateTime.fromMillisecondsSinceEpoch(
-                      //                     int.parse(element[
-                      //                             "WooCommerceEventsBookingDateTimestamp"]) *
-                      //                         1000);
-                      //             return DateFormat.yMEd().format(timestamp) ==
-                      //                     DateFormat.yMEd()
-                      //                         .format(arguments[1]) &&
-                      //                 (element["WooCommerceEventsAttendeeName"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(
-                      //                             keyword.toLowerCase()) ||
-                      //                     element["customerFirstName"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(
-                      //                             keyword.toLowerCase()) ||
-                      //                     element["WooCommerceEventsTicketID"]
-                      //                         .toLowerCase()
-                      //                         .toString()
-                      //                         .contains(keyword.toLowerCase()));
-                      //           }).toList();
-                      //   });
-                      // });
+                      ticket = ApiService().ticket(widget.id);
+                      ticket.then((value) {
+                        setState(() {
+                          data = value;
+                          var filter = arguments[1].runtimeType != DateTime
+                              ? data.where((element) {
+                                  DateTime timestamp =
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(element[
+                                                  "WooCommerceEventsBookingDateTimestamp"]) *
+                                              1000);
+                                  return DateFormat.yMEd().format(timestamp) ==
+                                          DateFormat.yMEd()
+                                              .format(DateTime.now()) &&
+                                      (element["WooCommerceEventsAttendeeName"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(
+                                                  keyword.toLowerCase()) ||
+                                          element["customerFirstName"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(
+                                                  keyword.toLowerCase()) ||
+                                          element["customerFirstName"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(keyword.toLowerCase()));
+                                }).toList()
+                              : data.where((element) {
+                                  DateTime timestamp =
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(element[
+                                                  "WooCommerceEventsBookingDateTimestamp"]) *
+                                              1000);
+                                  return DateFormat.yMEd().format(timestamp) ==
+                                          DateFormat.yMEd()
+                                              .format(arguments[1]) &&
+                                      (element["WooCommerceEventsAttendeeName"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(
+                                                  keyword.toLowerCase()) ||
+                                          element["customerFirstName"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(
+                                                  keyword.toLowerCase()) ||
+                                          element["WooCommerceEventsTicketID"]
+                                              .toLowerCase()
+                                              .toString()
+                                              .contains(keyword.toLowerCase()));
+                                }).toList();
+                        });
+                      });
                     });
                   },
                   child: Container(

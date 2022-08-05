@@ -79,6 +79,7 @@ class _DetailTiketState extends State<DetailTiket> {
 
   void validationChangeStatus(data) {
     if (data["WooCommerceEventsVariations"].runtimeType != List<dynamic>) {
+      print("bukan list");
       if (data["WooCommerceEventsVariations"]["Seasons"]
           .toString()
           .toLowerCase()
@@ -478,7 +479,6 @@ class _DetailTiketState extends State<DetailTiket> {
             });
   }
 
-
   @override
   void initState() {
     ticket = ApiService().singleTicket(widget.id);
@@ -486,10 +486,8 @@ class _DetailTiketState extends State<DetailTiket> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    print(controller.sessions["session_2"]![0].isAfter(DateTime.now()));
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
@@ -757,12 +755,6 @@ class _DetailTiketState extends State<DetailTiket> {
                           : "Nan",
                       width),
                   SizedBox(height: width / 20),
-                  // _info(
-                  //     "Email",
-                  //     (data["customerEmail"] != "")
-                  //         ? data["customerEmail"]
-                  //         : "Nan",
-                  //     width),
                   (data["customerEmail"] != "")
                       ? Email(data: data, width: width)
                       : _info("Email", "Nan", width),
