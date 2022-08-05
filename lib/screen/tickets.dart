@@ -637,7 +637,7 @@ class _TicketState extends State<Ticket> {
                       if (snapshot.hasData) {
                         List checked = snapshot.data
                             .where((e) =>
-                                e["WooCommerceEventsStatus"] == "Checked In")
+                                e["WooCommerceEventsStatus"] == "Checked in")
                             .toList();
                         List notChecked = snapshot.data
                             .where((e) =>

@@ -647,12 +647,12 @@ class _DetailTiketState extends State<DetailTiket> {
               Text(
                 data["WooCommerceEventsStatus"],
                 style: TextStyle(
-                    color: (data["WooCommerceEventsStatus"] != "Checked In")
+                    color: (data["WooCommerceEventsStatus"] != "Checked in")
                         ? grayText
                         : greenText,
                     fontSize: width / 27,
                     fontWeight:
-                        (data["WooCommerceEventsStatus"] != "Checked In")
+                        (data["WooCommerceEventsStatus"] != "Checked in")
                             ? FontWeight.normal
                             : FontWeight.bold),
               ),
