@@ -10,6 +10,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'dart:ui' as ui;
 import '../service/api_service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class QR extends StatefulWidget {
   String type;
@@ -34,6 +35,8 @@ class _QRState extends State<QR> {
   String? hasil;
   late final Timer timer;
   final arguments = Get.arguments;
+  bool isLoading = false;
+  ProgressDialog? progressDialog;
 
   @override
   void dispose() {
@@ -75,6 +78,19 @@ class _QRState extends State<QR> {
     final themeData = Theme.of(context).brightness == ui.Brightness.dark
         ? "DarkTheme"
         : "LightTheme";
+    progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal,showLogs: true);
+    progressDialog?.style(
+      
+      progressWidget: Container(
+          padding: EdgeInsets.all(15.0), child: CircularProgressIndicator()),
+      borderRadius: 10.0,
+      backgroundColor: themeData == "DarkTheme" ? bgDark : Colors.white,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: themeData == "DarkTheme" ? Colors.white : Colors.black,
+          fontSize: 13.0,
+          fontWeight: FontWeight.w400),
+    );
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -226,6 +242,11 @@ class _QRState extends State<QR> {
         // print(bar);
         Timer(Duration(microseconds: 1), () {
           future(bar);
+          progressDialog?.show();
+
+          setState(() {
+            isLoading = true;
+          });
         });
       });
     });
@@ -239,12 +260,15 @@ class _QRState extends State<QR> {
   // }
 
   void future(bar) {
+    controller?.pauseCamera();
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
+        progressDialog?.hide();
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
+            isLoading = false;
           });
         }
         Timer(Duration(seconds: 5), () {
@@ -257,11 +281,15 @@ class _QRState extends State<QR> {
       } else {
         if (value["data"]["WooCommerceEventsBookingDate"] == null ||
             value["data"]["WooCommerceEventsBookingDate"] == "") {
-          print('ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
+          print(
+              'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
           if (widget.type != "single") {
+            progressDialog?.hide();
+
             if (mounted) {
               setState(() {
                 hasil = "This Ticket Is Not Valid";
+                isLoading = true;
               });
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -276,8 +304,11 @@ class _QRState extends State<QR> {
 
             if (value["data"]["WooCommerceEventsProductID"].toString() !=
                 widget.id.toString()) {
+              progressDialog?.hide();
+
               setState(() {
                 hasil = "Not Ticket For This Event";
+                isLoading = true;
               });
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -287,9 +318,12 @@ class _QRState extends State<QR> {
                 }
               });
             } else {
+              progressDialog?.hide();
+
               if (mounted) {
                 setState(() {
                   hasil = "Success";
+                  isLoading = true;
                 });
               }
               Timer(Duration(seconds: 5), () {
@@ -299,9 +333,9 @@ class _QRState extends State<QR> {
                   });
                 }
               });
-              Timer(Duration(seconds: 1), () {
+              Timer(Duration(microseconds: 1), () {
                 // controller!.pauseCamera();
-                Get.to(
+                Get.off(
                     DetailTiket(
                       id: bar.code,
                       type: widget.type,
@@ -319,8 +353,11 @@ class _QRState extends State<QR> {
 
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
               widget.id.toString()) {
+            progressDialog?.hide();
+
             setState(() {
               hasil = "Not Ticket For This Event";
+              isLoading = true;
             });
             Timer(Duration(seconds: 5), () {
               if (mounted) {
@@ -330,9 +367,12 @@ class _QRState extends State<QR> {
               }
             });
           } else {
+            progressDialog?.hide();
+
             if (mounted) {
               setState(() {
                 hasil = "Success";
+                isLoading = true;
               });
             }
             Timer(Duration(seconds: 5), () {
@@ -342,9 +382,9 @@ class _QRState extends State<QR> {
                 });
               }
             });
-            Timer(Duration(seconds: 1), () {
+            Timer(Duration(microseconds: 1), () {
               // controller!.pauseCamera();
-              Get.to(
+              Get.off(
                   DetailTiket(
                     id: bar.code,
                     type: widget.type,
