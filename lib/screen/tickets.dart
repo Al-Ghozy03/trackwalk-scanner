@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new, unrelated_type_equality_checks
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -479,6 +480,77 @@ class _TicketState extends State<Ticket> {
     );
   }
 
+  void navigateToDetail(List values, int i) {
+    Get.to(
+            () => DetailTiket(
+                  id: values[i]["WooCommerceEventsTicketID"],
+                  type: widget.type,
+                  idDetail: widget.id,
+                  check: checkedIn,
+                  notCheck: notCheckedIn,
+                ),
+            transition: Transition.rightToLeft,
+            arguments: arguments)
+        ?.then((value) {
+      ticket = ApiService().ticket(widget.id);
+      ticket.then((value) {
+        setState(() {
+          data = value;
+          var filter = arguments[1].runtimeType != DateTime
+              ? data.where((element) {
+                  DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(element[
+                              "WooCommerceEventsBookingDateTimestamp"]) *
+                          1000);
+                  return DateFormat.yMEd().format(timestamp) ==
+                          DateFormat.yMEd().format(DateTime.now()) &&
+                      (element["WooCommerceEventsAttendeeName"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()) ||
+                          element["customerFirstName"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()) ||
+                          element["customerFirstName"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()));
+                }).toList()
+              : data.where((element) {
+                  DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(element[
+                              "WooCommerceEventsBookingDateTimestamp"]) *
+                          1000);
+                  return DateFormat.yMEd().format(timestamp) ==
+                          DateFormat.yMEd().format(arguments[1]) &&
+                      (element["WooCommerceEventsAttendeeName"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()) ||
+                          element["customerFirstName"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()) ||
+                          element["WooCommerceEventsTicketID"]
+                              .toLowerCase()
+                              .toString()
+                              .contains(keyword.toLowerCase()));
+                }).toList();
+        });
+      });
+    });
+  }
+
+  void refresh() {
+    setState(() {
+      ticket = ApiService().ticket(widget.id);
+      ticket.then((value) {
+        data = value;
+      });
+    });
+  }
+
   @override
   void initState() {
     ticket = ApiService().ticket(widget.id);
@@ -579,9 +651,9 @@ class _TicketState extends State<Ticket> {
                                   fontFamily: "popinsemi"),
                             ),
                             Text(
-                              arguments[1].runtimeType == String
-                                  ? arguments[1]
-                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                              widget.type == "single"
+                                  ? "${DateFormat.d().format(DateTime.now())} ${DateFormat.MMMM().format(DateTime.now())} ${DateFormat.y().format(DateTime.now())}"
+                                  : "${DateFormat.d().format(DateTime.now())} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                               style: TextStyle(
                                   fontSize: width / 27, color: grayText),
                             ),
@@ -708,222 +780,144 @@ class _TicketState extends State<Ticket> {
   }
 
   Widget _listBuilder(height, width, List values) {
-    return (values.isNotEmpty)
-        ? Container(
-            height: height * 1.19,
-            child: ListView.separated(
-              itemBuilder: (_, i) {
+    if (values.isEmpty)
+      return Column(
+        children: [
+          LottieBuilder.asset("assets/json/67375-no-data.json"),
+          Container(
+            width: width / 3,
+            child: AutoSizeText(
+              "Ooops, No Ticket In This Date",
+              style: TextStyle(fontFamily: "popinsemi"),
+              presetFontSizes: [20, 15],
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      );
+    if (GetPlatform.isIOS)
+      return CupertinoScrollbar(
+        child: Container(
+          height: height,
+          child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              CupertinoSliverRefreshControl(
+                onRefresh: () async => refresh(),
+              ),
+              SliverList(
+                  delegate: SliverChildBuilderDelegate((_, i) {
                 return InkWell(
-                  onTap: () {
-                    Get.to(
-                            () => DetailTiket(
-                                  id: values[i]["WooCommerceEventsTicketID"],
-                                  type: widget.type,
-                                  idDetail: widget.id,
-                                  check: checkedIn,
-                                  notCheck: notCheckedIn,
-                                ),
-                            transition: Transition.rightToLeft,
-                            arguments: arguments)
-                        ?.then((value) {
-                      ticket = ApiService().ticket(widget.id);
-                      ticket.then((value) {
-                        setState(() {
-                          data = value;
-                          var filter = arguments[1].runtimeType != DateTime
-                              ? data.where((element) {
-                                  DateTime timestamp =
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          int.parse(element[
-                                                  "WooCommerceEventsBookingDateTimestamp"]) *
-                                              1000);
-                                  return DateFormat.yMEd().format(timestamp) ==
-                                          DateFormat.yMEd()
-                                              .format(DateTime.now()) &&
-                                      (element["WooCommerceEventsAttendeeName"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(
-                                                  keyword.toLowerCase()) ||
-                                          element["customerFirstName"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(
-                                                  keyword.toLowerCase()) ||
-                                          element["customerFirstName"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(keyword.toLowerCase()));
-                                }).toList()
-                              : data.where((element) {
-                                  DateTime timestamp =
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          int.parse(element[
-                                                  "WooCommerceEventsBookingDateTimestamp"]) *
-                                              1000);
-                                  return DateFormat.yMEd().format(timestamp) ==
-                                          DateFormat.yMEd()
-                                              .format(arguments[1]) &&
-                                      (element["WooCommerceEventsAttendeeName"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(
-                                                  keyword.toLowerCase()) ||
-                                          element["customerFirstName"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(
-                                                  keyword.toLowerCase()) ||
-                                          element["WooCommerceEventsTicketID"]
-                                              .toLowerCase()
-                                              .toString()
-                                              .contains(keyword.toLowerCase()));
-                                }).toList();
-                        });
-                      });
-                    });
-                  },
+                  onTap: () => navigateToDetail(values, i),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: width / 45),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.circle,
-                                size: width / 20,
-                                color: values[i]["WooCommerceEventsStatus"]
-                                            .toLowerCase() !=
-                                        "checked in"
-                                    ? Colors.grey
-                                    : Colors.green,
-                              ),
-                              SizedBox(width: width / 30),
-                              Flexible(
+                            child: Row(
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: width / 20,
+                              color: values[i]["WooCommerceEventsStatus"]
+                                          .toLowerCase() !=
+                                      "checked in"
+                                  ? Colors.grey
+                                  : Colors.green,
+                            ),
+                            SizedBox(width: width / 30),
+                            Flexible(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AutoSizeText(
-                                      (values[i]["customerFirstName"] == "")
-                                          ? values[i]
-                                              ["WooCommerceEventsTicketID"]
-                                          : values[i]["customerFirstName"],
-                                      style: TextStyle(fontFamily: "popinsemi"),
-                                      presetFontSizes: [width / 45, 14, 12],
-                                    ),
-                                    AutoSizeText(
-                                      presetFontSizes: [width / 55, 12, 10],
-                                      values[i]["WooCommerceEventsStatus"]
-                                          .toString(),
-                                      style: TextStyle(color: grayText),
-                                    )
-                                  ],
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  values[i]["customerFirstName"] == ""
+                                      ? values[i]["WooCommerceEventsTicketID"]
+                                      : values[i]["customerFirstName"],
+                                  style: TextStyle(
+                                      fontSize: width / 45,
+                                      fontFamily: "popinsemi"),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                Text(
+                                  values[i]["WooCommerceEventsStatus"],
+                                  style: TextStyle(fontSize: width / 55),
+                                )
+                              ],
+                            ))
+                          ],
+                        )),
                         Icon(Iconsax.arrow_right_3,
                             size: width / 40, color: grayText)
                       ],
                     ),
                   ),
                 );
-              },
-              separatorBuilder: (context, index) => Divider(thickness: 0.8),
-              itemCount: values.length,
-            ),
-          )
-        : (values.isNotEmpty)
-            ? Container(
-                height: height * 1.19,
-                child: ListView.separated(
-                  itemBuilder: (_, i) {
-                    return InkWell(
-                      onTap: () {
-                        Get.to(
-                            () => DetailTiket(
-                                  id: values[i]["WooCommerceEventsTicketID"],
-                                  type: widget.type,
-                                  idDetail: widget.id,
-                                  check: checkedIn,
-                                  notCheck: notCheckedIn,
-                                ),
-                            transition: Transition.rightToLeft,
-                            arguments: arguments);
-                      },
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: width / 20,
-                                    color: values[i]["WooCommerceEventsStatus"]
-                                                .toLowerCase() !=
-                                            "checked in"
-                                        ? Colors.grey
-                                        : Colors.green,
-                                  ),
-                                  SizedBox(width: width / 30),
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AutoSizeText(
-                                          (values[i]["customerFirstName"] == "")
-                                              ? values[i]
-                                                  ["WooCommerceEventsTicketID"]
-                                              : values[i]["customerFirstName"],
-                                          style: TextStyle(
-                                              fontFamily: "popinsemi"),
-                                          presetFontSizes: [width / 45, 14, 12],
-                                        ),
-                                        AutoSizeText(
-                                          presetFontSizes: [width / 55, 12, 10],
-                                          values[i]["WooCommerceEventsStatus"]
-                                              .toString(),
-                                          style: TextStyle(color: grayText),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
+              }, childCount: values.length))
+            ],
+          ),
+        ),
+      );
+    return Container(
+      height: height,
+      child: RefreshIndicator(
+        onRefresh: () async => refresh(),
+        child: ListView.separated(
+            itemBuilder: (_, i) {
+              return InkWell(
+                onTap: () => navigateToDetail(values, i),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: width / 45),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                          child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            size: width / 20,
+                            color: values[i]["WooCommerceEventsStatus"]
+                                        .toLowerCase() !=
+                                    "checked in"
+                                ? Colors.grey
+                                : Colors.green,
+                          ),
+                          SizedBox(width: width / 30),
+                          Flexible(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                values[i]["customerFirstName"] == ""
+                                    ? values[i]["WooCommerceEventsTicketID"]
+                                    : values[i]["customerFirstName"],
+                                style: TextStyle(
+                                    fontSize: width / 45,
+                                    fontFamily: "popinsemi"),
                               ),
-                            ),
-                            Icon(Iconsax.arrow_right_3,
-                                size: width / 40, color: grayText)
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => SizedBox(
-                      height: width / 15, child: Divider(thickness: 0.8)),
-                  itemCount: values.length,
-                ),
-              )
-            : Column(
-                children: [
-                  LottieBuilder.asset("assets/json/67375-no-data.json"),
-                  Container(
-                    width: width / 3,
-                    child: AutoSizeText(
-                      "Ooops, No Ticket In This Date",
-                      style: TextStyle(fontFamily: "popinsemi"),
-                      presetFontSizes: [20, 15],
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
+                              Text(
+                                values[i]["WooCommerceEventsStatus"],
+                                style: TextStyle(fontSize: width / 55),
+                              )
+                            ],
+                          ))
+                        ],
+                      )),
+                      Icon(Iconsax.arrow_right_3,
+                          size: width / 40, color: grayText)
+                    ],
                   ),
-                ],
+                ),
               );
+            },
+            separatorBuilder: (_, i) => Divider(
+                  thickness: 0.8,
+                ),
+            itemCount: values.length),
+      ),
+    );
   }
 
   Widget _searchBar(width, height) {
@@ -932,29 +926,41 @@ class _TicketState extends State<Ticket> {
       children: [
         Container(
           width: width * 0.75,
-          child: TextField(
-            onChanged: (value) {
-              setState(() {
-                keyword = value;
-              });
-            },
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: Icon(Iconsax.search_normal_1, color: grayText),
-                hintText: "Search",
-                filled: storage.read("isDark"),
-                fillColor: inputDark,
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40),
-                    borderSide: storage.read("isDark")
-                        ? BorderSide.none
-                        : BorderSide(color: grayText)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width / 40),
-                    borderSide: storage.read("isDark")
-                        ? BorderSide.none
-                        : BorderSide(color: grayText))),
-          ),
+          child: GetPlatform.isIOS
+              ? CupertinoSearchTextField(
+                  onChanged: (value) {
+                    setState(() {
+                      keyword = value;
+                    });
+                  },
+                  style: TextStyle(
+                      color: Get.isDarkMode ? Colors.white : Colors.black),
+                  padding: EdgeInsets.symmetric(vertical: width / 30),
+                )
+              : TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      keyword = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      prefixIcon:
+                          Icon(Iconsax.search_normal_1, color: grayText),
+                      hintText: "Search",
+                      filled: storage.read("isDark"),
+                      fillColor: inputDark,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width / 40),
+                          borderSide: storage.read("isDark")
+                              ? BorderSide.none
+                              : BorderSide(color: grayText)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(width / 40),
+                          borderSide: storage.read("isDark")
+                              ? BorderSide.none
+                              : BorderSide(color: grayText))),
+                ),
         ),
         InkWell(
           onTap: () {

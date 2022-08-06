@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:alert/alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -36,6 +37,46 @@ class _LoginState extends State<Login> {
       "username": username.text,
       "password": password.text
     });
+    if (url.text != "https://track-dev.xplorin.id") {
+      setState(() {
+        isLoading = false;
+      });
+      if (GetPlatform.isIOS) {
+        showCupertinoDialog(
+          context: context,
+          builder: (context) => CupertinoAlertDialog(
+            title: Text("Sign-in Error"),
+            content: Text("Incorrect URL, Username or Password"),
+            actions: [
+              CupertinoDialogAction(
+                child: Text("Ok"),
+                onPressed: () => Get.back(),
+              )
+            ],
+          ),
+        );
+      } else {
+        Dialogs.materialDialog(
+            color: Get.isDarkMode ? bgDark : Colors.white,
+            context: context,
+            title: "Sign-in Error",
+            titleAlign: TextAlign.center,
+            titleStyle: TextStyle(
+              fontSize: Get.width / 20,
+              fontFamily: 'popinsemi',
+            ),
+            msg: "Incorect URL, Username or Password",
+            msgStyle: TextStyle(color: grayText),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
+            ]);
+      }
+      return;
+    }
     if (res.statusCode == 400) {
       setState(() {
         isLoading = false;
@@ -56,24 +97,40 @@ class _LoginState extends State<Login> {
             "auth", {"username": username.text, "password": password.text});
         Get.off(Event());
       } else {
-        Dialogs.materialDialog(
-            color: Get.isDarkMode ? bgDark : Colors.white,
+        if (GetPlatform.isIOS) {
+          showCupertinoDialog(
             context: context,
-            title: "Sign-in Error",
-            titleAlign: TextAlign.center,
-            titleStyle: TextStyle(
-              fontSize: Get.width / 20,
-              fontFamily: 'popinsemi',
+            builder: (context) => CupertinoAlertDialog(
+              title: Text("Sign-in Error"),
+              content: Text("Incorect URL, Username or Password"),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text("Ok"),
+                  onPressed: () => Get.back(),
+                )
+              ],
             ),
-            msg: "Incorect URL, Username or Password",
-            msgStyle: TextStyle(color: grayText),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Ok"))
-            ]);
+          );
+        } else {
+          Dialogs.materialDialog(
+              color: Get.isDarkMode ? bgDark : Colors.white,
+              context: context,
+              title: "Sign-in Error",
+              titleAlign: TextAlign.center,
+              titleStyle: TextStyle(
+                fontSize: Get.width / 20,
+                fontFamily: 'popinsemi',
+              ),
+              msg: "Incorect URL, Username or Password",
+              msgStyle: TextStyle(color: grayText),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Ok"))
+              ]);
+        }
       }
       return true;
     } else {
@@ -105,114 +162,162 @@ class _LoginState extends State<Login> {
   Widget _usernameField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
-        keyboardType: TextInputType.text,
-        controller: username,
-        decoration: InputDecoration(
-            filled: Get.isDarkMode,
-            fillColor: inputDark,
-            enabledBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
+      child: GetPlatform.isIOS
+          ? CupertinoTextField(
+              controller: username,
+              style: TextStyle(
+                  color: Get.isDarkMode ? Colors.white : Colors.black),
+              padding: EdgeInsets.all(width / 30),
+              decoration: BoxDecoration(
+                  color: inputDark,
+                  borderRadius: BorderRadius.circular(width / 40)),
+              placeholder: "Username",
+            )
+          : TextFormField(
+              keyboardType: TextInputType.text,
+              controller: username,
+              decoration: InputDecoration(
+                  filled: Get.isDarkMode,
+                  fillColor: inputDark,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  prefixIcon: Icon(
+                    Iconsax.user,
+                    color: grayText,
+                  ),
+                  labelStyle: TextStyle(
+                      color: Get.isDarkMode ? Colors.white : Colors.black),
+                  labelText: 'Username',
+                  contentPadding: EdgeInsets.symmetric(vertical: 0)),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
-            ),
-            prefixIcon: Icon(
-              Iconsax.user,
-              color: grayText,
-            ),
-            labelStyle:
-                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
-            labelText: 'Username',
-            contentPadding: EdgeInsets.symmetric(vertical: 0)),
-      ),
     );
   }
 
   Widget _urlField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextFormField(
-        keyboardType: TextInputType.text,
-        controller: url,
-        decoration: InputDecoration(
-            filled: Get.isDarkMode,
-            fillColor: inputDark,
-            enabledBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
+      child: GetPlatform.isIOS
+          ? CupertinoTextField(
+              controller: url,
+              style: TextStyle(
+                  color: Get.isDarkMode ? Colors.white : Colors.black),
+              padding: EdgeInsets.all(width / 30),
+              decoration: BoxDecoration(
+                  color: inputDark,
+                  borderRadius: BorderRadius.circular(width / 40)),
+              placeholder: "Url",
+            )
+          : TextFormField(
+              keyboardType: TextInputType.text,
+              controller: url,
+              decoration: InputDecoration(
+                  filled: Get.isDarkMode,
+                  fillColor: inputDark,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  prefixIcon: Icon(
+                    Iconsax.global,
+                    color: grayText,
+                  ),
+                  labelStyle: TextStyle(
+                      color: Get.isDarkMode ? Colors.white : Colors.black),
+                  labelText: 'URL',
+                  contentPadding: EdgeInsets.symmetric(vertical: 0)),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
-            ),
-            prefixIcon: Icon(
-              Iconsax.global,
-              color: grayText,
-            ),
-            labelStyle:
-                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
-            labelText: 'URL',
-            contentPadding: EdgeInsets.symmetric(vertical: 0)),
-      ),
     );
   }
 
   Widget _passwordField(width) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: TextField(
-        keyboardType: TextInputType.text,
-        obscureText: hidePassword,
-        controller: password,
-        decoration: InputDecoration(
-            filled: Get.isDarkMode,
-            fillColor: inputDark,
-            enabledBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
+      child: GetPlatform.isIOS
+          ? CupertinoTextField(
+              suffix: hidePassword
+                  ? IconButton(
+                      onPressed: _togglePassword,
+                      icon: Icon(
+                        Iconsax.eye_slash,
+                        color: grayText,
+                      ))
+                  : IconButton(
+                      onPressed: _togglePassword,
+                      icon: Icon(
+                        Iconsax.eye,
+                        color: grayText,
+                      )),
+              controller: password,
+              obscureText: hidePassword,
+              style: TextStyle(
+                  color: Get.isDarkMode ? Colors.white : Colors.black),
+              padding: EdgeInsets.all(width / 30),
+              decoration: BoxDecoration(
+                  color: inputDark,
+                  borderRadius: BorderRadius.circular(width / 40)),
+              placeholder: "Password",
+              keyboardType: TextInputType.visiblePassword,
+            )
+          : TextField(
+              keyboardType: TextInputType.text,
+              obscureText: hidePassword,
+              controller: password,
+              decoration: InputDecoration(
+                  filled: Get.isDarkMode,
+                  fillColor: inputDark,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: Get.isDarkMode
+                        ? BorderSide.none
+                        : BorderSide(color: grayText),
+                    borderRadius: BorderRadius.circular(width / 40),
+                  ),
+                  suffixIcon: hidePassword
+                      ? IconButton(
+                          onPressed: _togglePassword,
+                          icon: Icon(
+                            Iconsax.eye_slash,
+                            color: grayText,
+                          ))
+                      : IconButton(
+                          onPressed: _togglePassword,
+                          icon: Icon(
+                            Iconsax.eye,
+                            color: grayText,
+                          )),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Iconsax.key,
+                    color: grayText,
+                  ),
+                  labelStyle: TextStyle(
+                      color: Get.isDarkMode ? Colors.white : Colors.black),
+                  labelText: 'Password',
+                  contentPadding: EdgeInsets.symmetric(vertical: 0)),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: Get.isDarkMode
-                  ? BorderSide.none
-                  : BorderSide(color: grayText),
-              borderRadius: BorderRadius.circular(width / 40),
-            ),
-            suffixIcon: hidePassword
-                ? IconButton(
-                    onPressed: _togglePassword,
-                    icon: Icon(
-                      Iconsax.eye_slash,
-                      color: grayText,
-                    ))
-                : IconButton(
-                    onPressed: _togglePassword,
-                    icon: Icon(
-                      Iconsax.eye,
-                      color: grayText,
-                    )),
-            border: InputBorder.none,
-            prefixIcon: Icon(
-              Iconsax.key,
-              color: grayText,
-            ),
-            labelStyle:
-                TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
-            labelText: 'Password',
-            contentPadding: EdgeInsets.symmetric(vertical: 0)),
-      ),
     );
   }
 
@@ -307,7 +412,7 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                _rememberSettings(width, username.text, password.text),
+                // _rememberSettings(width, username.text, password.text),
                 _loginButton(width),
               ],
             ),
@@ -318,24 +423,15 @@ class _LoginState extends State<Login> {
   }
 
   @override
-  void initState() {
-    var username1 = storage.read("username");
-    var password2 = storage.read("password");
-
-    if (storage.read("username") != null) {
-      username.text = storage.read("username");
-      password.text = storage.read("password");
-    }
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (Get.isDarkMode) {
+      storage.write("isDark", true);
+    } else {
+      storage.write("isDark", false);
+    }
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             Container(

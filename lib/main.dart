@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: bgDark),
       themeMode: ThemeMode.system,
       title: 'TrackWalk',
-      home: storage.read("auth") == null ? Login() : Event(),
+      home: storage.read("auth") != null ? Login() : Event(),
     );
   }
 }

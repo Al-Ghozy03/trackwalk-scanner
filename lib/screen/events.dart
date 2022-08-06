@@ -24,6 +24,7 @@ class _EventState extends State<Event> {
   String keyword = "";
   DateTime pre_backpress = DateTime.now();
   List data = [];
+
   void modalFilter() {
     showModalBottomSheet(
       backgroundColor: Get.isDarkMode ? bgDark : Colors.white,
@@ -42,12 +43,6 @@ class _EventState extends State<Event> {
             padding: EdgeInsets.all(width / 15),
             child: StatefulBuilder(
               builder: (context, StateSetter stateSetter) {
-                // List filter = [
-                //   "All Events",
-                //   "One-day Events",
-                //   "Multi-day Events",
-                //   "Bookable Events"
-                // ];
                 List sort = [
                   "Event Name : A-Z",
                   "Event Name : Z-A",
@@ -122,6 +117,15 @@ class _EventState extends State<Event> {
     );
   }
 
+  void refresh() {
+    setState(() {
+      event = ApiService().event();
+      event.then((value) {
+        data = value;
+      });
+    });
+  }
+
   @override
   void initState() {
     event = ApiService().event();
@@ -136,7 +140,6 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
-    // print(DateTime.fromMillisecondsSinceEpoch(1657368000 * 1000));
     if (Get.isDarkMode) {
       storage.write("isDark", true);
     } else {
@@ -260,9 +263,16 @@ class _EventState extends State<Event> {
       return CupertinoScrollbar(
           child: Container(
         height: height * 0.75,
-        child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (_, i) {
+        child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () async {
+                refresh();
+              },
+            ),
+            SliverList(
+                delegate: SliverChildBuilderDelegate((context, i) {
               return InkWell(
                 onTap: () {
                   Get.to(
@@ -282,8 +292,6 @@ class _EventState extends State<Event> {
                       Flexible(
                         child: Row(
                           children: [
-                            Icon(Iconsax.calendar_tick, size: width / 10),
-                            SizedBox(width: width / 30),
                             Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,10 +302,100 @@ class _EventState extends State<Event> {
                                         fontFamily: "popinsemi",
                                         fontSize: width * 0.05),
                                   ),
-                                  Text(filter[i]["WooCommerceEventsType"],
+                                  Text(
+                                      filter[i]["WooCommerceEventsType"] ==
+                                              "single"
+                                          ? "Add on"
+                                          : "Bookable Events",
                                       style: TextStyle(
                                         fontSize: width * 0.035,
-                                        color: grayText,
+                                        color: filter[i]
+                                                    ["WooCommerceEventsType"] ==
+                                                "single"
+                                            ? Colors.red
+                                            : Colors.green,
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(Iconsax.arrow_right_3,
+                          size: width / 20, color: grayText)
+                    ],
+                  ),
+                ),
+              );
+            }, childCount: filter.length))
+          ],
+        ),
+      ));
+    return Container(
+      height: height * 0.75,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          refresh();
+        },
+        child: ListView.separated(
+            itemBuilder: (_, i) {
+              return InkWell(
+                onTap: () {
+                  if (filter[i]["WooCommerceEventsType"].toString() ==
+                      "single") {
+                    Get.to(
+                        () => Ticket(
+                              id: filter[i]["WooCommerceEventsProductID"],
+                              img: filter[i]["WooCommerceEventsTicketLogo"],
+                              type: "single",
+                            ),
+                        arguments: [
+                          filter[i]["WooCommerceEventsName"],
+                          "${filter[i]["WooCommerceEventsDateDay"]} ${filter[i]["WooCommerceEventsDateMonth"]} ${filter[i]["WooCommerceEventsDateYear"]}"
+                        ]);
+                  } else {
+                    Get.to(
+                        () => Calendar(
+                              image: filter[i]["WooCommerceEventsTicketLogo"],
+                              id: filter[i]["WooCommerceEventsProductID"],
+                              type: filter[i]["WooCommerceEventsType"],
+                            ),
+                        arguments: filter[i]["WooCommerceEventsName"],
+                        transition: Transition.rightToLeftWithFade);
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: width / 35),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    filter[i]["WooCommerceEventsName"],
+                                    style: TextStyle(
+                                        fontFamily: "popinsemi",
+                                        fontSize: width * 0.05),
+                                  ),
+                                  Text(
+                                      filter[i]["WooCommerceEventsType"]
+                                                  .toString() ==
+                                              "single"
+                                          ? "Add on"
+                                          : "Bookable Events",
+                                      style: TextStyle(
+                                        fontSize: width * 0.035,
+                                        color:
+                                            filter[i]["WooCommerceEventsType"]
+                                                        .toString() ==
+                                                    "single"
+                                                ? Colors.red
+                                                : Colors.green,
                                       ))
                                 ],
                               ),
@@ -315,83 +413,7 @@ class _EventState extends State<Event> {
             separatorBuilder: (context, index) =>
                 SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
             itemCount: filter.length),
-      ));
-    return Container(
-      height: height * 0.75,
-      child: ListView.separated(
-          itemBuilder: (_, i) {
-            return InkWell(
-              onTap: () {
-                if (filter[i]["WooCommerceEventsType"].toString() == "single") {
-                  Get.to(
-                      () => Ticket(
-                            id: filter[i]["WooCommerceEventsProductID"],
-                            img: filter[i]["WooCommerceEventsTicketLogo"],
-                            type: "single",
-                          ),
-                      arguments: [
-                        filter[i]["WooCommerceEventsName"],
-                        "${filter[i]["WooCommerceEventsDateDay"]} ${filter[i]["WooCommerceEventsDateMonth"]} ${filter[i]["WooCommerceEventsDateYear"]}"
-                      ]);
-                } else {
-                  Get.to(
-                      () => Calendar(
-                            image: filter[i]["WooCommerceEventsTicketLogo"],
-                            id: filter[i]["WooCommerceEventsProductID"],
-                            type: filter[i]["WooCommerceEventsType"],
-                          ),
-                      arguments: filter[i]["WooCommerceEventsName"],
-                      transition: Transition.rightToLeftWithFade);
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: width / 35),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  filter[i]["WooCommerceEventsName"],
-                                  style: TextStyle(
-                                      fontFamily: "popinsemi",
-                                      fontSize: width * 0.05),
-                                ),
-                                Text(
-                                    filter[i]["WooCommerceEventsType"]
-                                                .toString() ==
-                                            "single"
-                                        ? "Add on"
-                                        : "Bookable Events",
-                                    style: TextStyle(
-                                      fontSize: width * 0.035,
-                                      color: filter[i]["WooCommerceEventsType"]
-                                                  .toString() ==
-                                              "single"
-                                          ? Colors.red
-                                          : Colors.green,
-                                    ))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(Iconsax.arrow_right_3,
-                        size: width / 20, color: grayText)
-                  ],
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) =>
-              SizedBox(height: width / 15, child: Divider(thickness: 0.8)),
-          itemCount: filter.length),
+      ),
     );
   }
 

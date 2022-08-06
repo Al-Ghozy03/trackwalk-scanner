@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -88,20 +89,34 @@ class _DetailTiketState extends State<DetailTiket> {
             DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
           changeStatus("Checked In");
         } else {
-          Dialogs.materialDialog(
-              color: Get.isDarkMode ? bgDark : Colors.white,
-              context: context,
-              title: "Gagal",
-              titleAlign: TextAlign.center,
-              titleStyle: TextStyle(
-                fontSize: Get.width / 20,
-                fontFamily: 'popinsemi',
-              ),
-              msg: "Sesi telah berakhir",
-              msgStyle: TextStyle(color: grayText),
-              actions: [
-                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
-              ]);
+          GetPlatform.isIOS
+              ? showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: Text("Gagal"),
+                    content: Text("Sesi telah berakhir"),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () => Get.back(),
+                      )
+                    ],
+                  ),
+                )
+              : Dialogs.materialDialog(
+                  color: Get.isDarkMode ? bgDark : Colors.white,
+                  context: context,
+                  title: "Gagal",
+                  titleAlign: TextAlign.center,
+                  titleStyle: TextStyle(
+                    fontSize: Get.width / 20,
+                    fontFamily: 'popinsemi',
+                  ),
+                  msg: "Sesi telah berakhir",
+                  msgStyle: TextStyle(color: grayText),
+                  actions: [
+                      TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+                    ]);
         }
       } else if (data["WooCommerceEventsVariations"]["Seasons"]
           .toString()
@@ -111,20 +126,34 @@ class _DetailTiketState extends State<DetailTiket> {
             DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
           changeStatus("Checked In");
         } else {
-          Dialogs.materialDialog(
-              color: Get.isDarkMode ? bgDark : Colors.white,
-              context: context,
-              title: "Gagal",
-              titleAlign: TextAlign.center,
-              titleStyle: TextStyle(
-                fontSize: Get.width / 20,
-                fontFamily: 'popinsemi',
-              ),
-              msg: "Sesi telah berakhir",
-              msgStyle: TextStyle(color: grayText),
-              actions: [
-                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
-              ]);
+          GetPlatform.isIOS
+              ? showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: Text("Gagal"),
+                    content: Text("Sesi telah berakhir"),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () => Get.back(),
+                      )
+                    ],
+                  ),
+                )
+              : Dialogs.materialDialog(
+                  color: Get.isDarkMode ? bgDark : Colors.white,
+                  context: context,
+                  title: "Gagal",
+                  titleAlign: TextAlign.center,
+                  titleStyle: TextStyle(
+                    fontSize: Get.width / 20,
+                    fontFamily: 'popinsemi',
+                  ),
+                  msg: "Sesi telah berakhir",
+                  msgStyle: TextStyle(color: grayText),
+                  actions: [
+                      TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+                    ]);
         }
       } else {
         print("bukan sesi 1 atau 2");
@@ -138,20 +167,34 @@ class _DetailTiketState extends State<DetailTiket> {
             DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
           changeStatus("Checked In");
         } else {
-          Dialogs.materialDialog(
-              color: Get.isDarkMode ? bgDark : Colors.white,
-              context: context,
-              title: "Gagal",
-              titleAlign: TextAlign.center,
-              titleStyle: TextStyle(
-                fontSize: Get.width / 20,
-                fontFamily: 'popinsemi',
-              ),
-              msg: "Sesi telah berakhir",
-              msgStyle: TextStyle(color: grayText),
-              actions: [
-                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
-              ]);
+          GetPlatform.isIOS
+              ? showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: Text("Gagal"),
+                    content: Text("Sesi telah berakhir"),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () => Get.back(),
+                      )
+                    ],
+                  ),
+                )
+              : Dialogs.materialDialog(
+                  color: Get.isDarkMode ? bgDark : Colors.white,
+                  context: context,
+                  title: "Gagal",
+                  titleAlign: TextAlign.center,
+                  titleStyle: TextStyle(
+                    fontSize: Get.width / 20,
+                    fontFamily: 'popinsemi',
+                  ),
+                  msg: "Sesi telah berakhir",
+                  msgStyle: TextStyle(color: grayText),
+                  actions: [
+                      TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+                    ]);
         }
       } else if (data["WooCommerceEventsBookingSlot"]
           .toString()
@@ -161,20 +204,34 @@ class _DetailTiketState extends State<DetailTiket> {
             DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
           changeStatus("Checked In");
         } else {
-          Dialogs.materialDialog(
-              color: Get.isDarkMode ? bgDark : Colors.white,
-              context: context,
-              title: "Gagal",
-              titleAlign: TextAlign.center,
-              titleStyle: TextStyle(
-                fontSize: Get.width / 20,
-                fontFamily: 'popinsemi',
-              ),
-              msg: "Sesi telah berakhir",
-              msgStyle: TextStyle(color: grayText),
-              actions: [
-                TextButton(onPressed: () => Get.back(), child: Text("Ok"))
-              ]);
+          GetPlatform.isIOS
+              ? showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: Text("Gagal"),
+                    content: Text("Sesi telah berakhir"),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () => Get.back(),
+                      )
+                    ],
+                  ),
+                )
+              : Dialogs.materialDialog(
+                  color: Get.isDarkMode ? bgDark : Colors.white,
+                  context: context,
+                  title: "Gagal",
+                  titleAlign: TextAlign.center,
+                  titleStyle: TextStyle(
+                    fontSize: Get.width / 20,
+                    fontFamily: 'popinsemi',
+                  ),
+                  msg: "Sesi telah berakhir",
+                  msgStyle: TextStyle(color: grayText),
+                  actions: [
+                      TextButton(onPressed: () => Get.back(), child: Text("Ok"))
+                    ]);
         }
       } else {
         print("bukan sesi 1 atau 2");
@@ -634,7 +691,9 @@ class _DetailTiketState extends State<DetailTiket> {
             onPressed: () {
               Get.back();
             },
-            icon: Icon(Iconsax.arrow_left)),
+            icon: GetPlatform.isIOS
+                ? Icon(Icons.arrow_back_ios_rounded)
+                : Icon(Iconsax.arrow_left)),
         SizedBox(height: width / 20),
         Container(
           padding: EdgeInsets.all(width / 25),
@@ -802,21 +861,36 @@ class _DetailTiketState extends State<DetailTiket> {
               onPressed: () {
                 (data["WooCommerceEventsStatus"] != "Not Checked In")
                     ? changeStatus("Not Checked In")
-                    : Dialogs.materialDialog(
-                        color: Get.isDarkMode ? bgDark : Colors.white,
-                        context: context,
-                        title: "Gagal",
-                        titleAlign: TextAlign.center,
-                        titleStyle: TextStyle(
-                          fontSize: Get.width / 20,
-                          fontFamily: 'popinsemi',
-                        ),
-                        msg: "Sudah Check-out",
-                        msgStyle: TextStyle(color: grayText),
-                        actions: [
-                            TextButton(
-                                onPressed: () => Get.back(), child: Text("Ok"))
-                          ]);
+                    : GetPlatform.isIOS
+                        ? showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CupertinoAlertDialog(
+                              title: Text("Gagal"),
+                              content: Text("Sudah Check-out"),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: Text("Ok"),
+                                  onPressed: () => Get.back(),
+                                )
+                              ],
+                            ),
+                          )
+                        : Dialogs.materialDialog(
+                            color: Get.isDarkMode ? bgDark : Colors.white,
+                            context: context,
+                            title: "Gagal",
+                            titleAlign: TextAlign.center,
+                            titleStyle: TextStyle(
+                              fontSize: Get.width / 20,
+                              fontFamily: 'popinsemi',
+                            ),
+                            msg: "Sudah Check-out",
+                            msgStyle: TextStyle(color: grayText),
+                            actions: [
+                                TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: Text("Ok"))
+                              ]);
               },
               style: OutlinedButton.styleFrom(
                   elevation: 0,
@@ -839,26 +913,79 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
+                DateTime expired = DateTime.fromMillisecondsSinceEpoch(
+                    int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) *
+                        1000);
+                if (expired.year == DateTime.now().year &&
+                    expired.day == DateTime.now().day &&
+                    expired.month == DateTime.now().month) {
+                  if (GetPlatform.isIOS) {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) => CupertinoAlertDialog(
+                        title: Text("Gagal"),
+                        content: Text("Tiket sudah expired"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: Text("Ok"),
+                            onPressed: () => Get.back(),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    Dialogs.materialDialog(
+                        color: Get.isDarkMode ? bgDark : Colors.white,
+                        context: context,
+                        title: "Gagal",
+                        titleAlign: TextAlign.center,
+                        titleStyle: TextStyle(
+                          fontSize: Get.width / 20,
+                          fontFamily: 'popinsemi',
+                        ),
+                        msg: "Tiket sudah expired",
+                        msgStyle: TextStyle(color: grayText),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Get.back(), child: Text("Ok"))
+                        ]);
+                  }
+                  return;
+                }
                 if (widget.type != "single") {
                   (data["WooCommerceEventsStatus"].toString().toLowerCase() !=
                           "Checked In".toLowerCase())
                       ? validationChangeStatus(data)
-                      : Dialogs.materialDialog(
-                          color: Get.isDarkMode ? bgDark : Colors.white,
-                          context: context,
-                          title: "Gagal",
-                          titleAlign: TextAlign.center,
-                          titleStyle: TextStyle(
-                            fontSize: Get.width / 20,
-                            fontFamily: 'popinsemi',
-                          ),
-                          msg: "Sudah Check-in",
-                          msgStyle: TextStyle(color: grayText),
-                          actions: [
-                              TextButton(
-                                  onPressed: () => Get.back(),
-                                  child: Text("Ok"))
-                            ]);
+                      : GetPlatform.isIOS
+                          ? showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: Text("Gagal"),
+                                content: Text("Sudah Check-in"),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: Text("Ok"),
+                                    onPressed: () => Get.back(),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Dialogs.materialDialog(
+                              color: Get.isDarkMode ? bgDark : Colors.white,
+                              context: context,
+                              title: "Gagal",
+                              titleAlign: TextAlign.center,
+                              titleStyle: TextStyle(
+                                fontSize: Get.width / 20,
+                                fontFamily: 'popinsemi',
+                              ),
+                              msg: "Sudah Check-in",
+                              msgStyle: TextStyle(color: grayText),
+                              actions: [
+                                  TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: Text("Ok"))
+                                ]);
                 } else {
                   DateTime date = DateTime.fromMillisecondsSinceEpoch(
                       int.parse(data["WooCommerceEventsBookingDateTimestamp"]) *
@@ -912,7 +1039,9 @@ class _DetailTiketState extends State<DetailTiket> {
             onPressed: () {
               Get.back();
             },
-            icon: Icon(Iconsax.arrow_left)),
+            icon: GetPlatform.isIOS
+                ? Icon(Icons.arrow_back_ios_rounded)
+                : Icon(Iconsax.arrow_left)),
         SizedBox(height: width / 20),
         Container(
           padding: EdgeInsets.all(width / 25),
