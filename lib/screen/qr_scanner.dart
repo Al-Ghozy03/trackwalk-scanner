@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print, must_be_immutable, prefer_typing_uninitialized_variables
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'dart:ui' as ui;
 import '../service/api_service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class QR extends StatefulWidget {
   String type;
@@ -33,6 +35,8 @@ class _QRState extends State<QR> {
   String? hasil;
   late final Timer timer;
   final arguments = Get.arguments;
+  bool isLoading = false;
+  ProgressDialog? progressDialog;
 
   @override
   void dispose() {
@@ -74,6 +78,19 @@ class _QRState extends State<QR> {
     final themeData = Theme.of(context).brightness == ui.Brightness.dark
         ? "DarkTheme"
         : "LightTheme";
+    progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal,showLogs: true);
+    progressDialog?.style(
+      
+      progressWidget: Container(
+          padding: EdgeInsets.all(15.0), child: CircularProgressIndicator()),
+      borderRadius: 10.0,
+      backgroundColor: themeData == "DarkTheme" ? bgDark : Colors.white,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: themeData == "DarkTheme" ? Colors.white : Colors.black,
+          fontSize: 13.0,
+          fontWeight: FontWeight.w400),
+    );
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -84,9 +101,11 @@ class _QRState extends State<QR> {
                 color: (hasil == "It's not a ticket" ||
                         hasil == "Not Ticket For This Event")
                     ? Colors.red
-                    : (hasil == "Success")
-                        ? Color.fromARGB(120, 76, 175, 79)
-                        : blueTheme,
+                    : (hasil == "This Ticket Is Not Valid")
+                        ? Color.fromARGB(255, 255, 193, 59)
+                        : (hasil == "Success")
+                            ? Color.fromARGB(120, 76, 175, 79)
+                            : blueTheme,
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
@@ -100,9 +119,11 @@ class _QRState extends State<QR> {
               color: (hasil == "It's not a ticket" ||
                       hasil == "Not Ticket For This Event")
                   ? Colors.red
-                  : (hasil == "Success")
-                      ? Color.fromARGB(120, 76, 175, 79)
-                      : blueTheme,
+                  : (hasil == "This Ticket Is Not Valid")
+                      ? Color.fromARGB(255, 255, 193, 59)
+                      : (hasil == "Success")
+                          ? Color.fromARGB(120, 76, 175, 79)
+                          : blueTheme,
             ),
           ),
         ),
@@ -133,10 +154,12 @@ class _QRState extends State<QR> {
         borderRadius: BorderRadius.circular(8),
         color: (hasil == "It's not a ticket" ||
                 hasil == "Not Ticket For This Event")
-            ? Color.fromARGB(104, 244, 67, 54)
-            : (hasil == "Success")
-                ? Color.fromARGB(120, 76, 175, 79)
-                : Colors.white24,
+            ? Colors.red
+            : (hasil == "This Ticket Is Not Valid")
+                ? Color.fromARGB(255, 255, 193, 59)
+                : (hasil == "Success")
+                    ? Color.fromARGB(120, 76, 175, 79)
+                    : blueTheme,
       ),
       child: Text(
         "$hasil",
@@ -156,9 +179,11 @@ class _QRState extends State<QR> {
         color: (hasil == "It's not a ticket" ||
                 hasil == "Not Ticket For This Event")
             ? Colors.red
-            : (hasil == "Success")
-                ? Color.fromARGB(120, 76, 175, 79)
-                : blueTheme,
+            : (hasil == "This Ticket Is Not Valid")
+                ? Color.fromARGB(255, 255, 193, 59)
+                : (hasil == "Success")
+                    ? Color.fromARGB(120, 76, 175, 79)
+                    : blueTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -196,9 +221,11 @@ class _QRState extends State<QR> {
           borderColor: (hasil == "It's not a ticket" ||
                   hasil == "Not Ticket For This Event")
               ? Colors.red
-              : (hasil == "Success")
-                  ? Color.fromARGB(120, 76, 175, 79)
-                  : blueTheme,
+              : (hasil == "This Ticket Is Not Valid")
+                  ? Color.fromARGB(255, 255, 193, 59)
+                  : (hasil == "Success")
+                      ? Color.fromARGB(120, 76, 175, 79)
+                      : blueTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -212,9 +239,14 @@ class _QRState extends State<QR> {
     controller.scannedDataStream.listen((bar) {
       setState(() {
         this.barcode = bar;
-        print(bar);
+        // print(bar);
         Timer(Duration(microseconds: 1), () {
           future(bar);
+          progressDialog?.show();
+
+          setState(() {
+            isLoading = true;
+          });
         });
       });
     });
@@ -228,12 +260,15 @@ class _QRState extends State<QR> {
   // }
 
   void future(bar) {
+    controller?.pauseCamera();
     late Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
+        progressDialog?.hide();
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
+            isLoading = false;
           });
         }
         Timer(Duration(seconds: 5), () {
@@ -244,11 +279,85 @@ class _QRState extends State<QR> {
           }
         });
       } else {
-        if (value["WooCommerceEventsBookingDate"] != "") {
+        if (value["data"]["WooCommerceEventsBookingDate"] == null ||
+            value["data"]["WooCommerceEventsBookingDate"] == "") {
+          print(
+              'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
+          if (widget.type != "single") {
+            progressDialog?.hide();
+
+            if (mounted) {
+              setState(() {
+                hasil = "This Ticket Is Not Valid";
+                isLoading = true;
+              });
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+            }
+          } else {
+            // log(value["WooCommerceEventsBookingDate"].toString());
+
+            if (value["data"]["WooCommerceEventsProductID"].toString() !=
+                widget.id.toString()) {
+              progressDialog?.hide();
+
+              setState(() {
+                hasil = "Not Ticket For This Event";
+                isLoading = true;
+              });
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+            } else {
+              progressDialog?.hide();
+
+              if (mounted) {
+                setState(() {
+                  hasil = "Success";
+                  isLoading = true;
+                });
+              }
+              Timer(Duration(seconds: 5), () {
+                if (mounted) {
+                  setState(() {
+                    hasil = "Scan A Code";
+                  });
+                }
+              });
+              Timer(Duration(microseconds: 1), () {
+                // controller!.pauseCamera();
+                Get.off(
+                    DetailTiket(
+                      id: bar.code,
+                      type: widget.type,
+                      idDetail: widget.id,
+                      check: widget.check,
+                      notCheck: widget.notCheck,
+                    ),
+                    transition: Transition.circularReveal,
+                    arguments: arguments);
+              });
+            }
+          }
+        } else {
+          log(value["WooCommerceEventsBookingDate"].toString());
+
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
               widget.id.toString()) {
+            progressDialog?.hide();
+
             setState(() {
               hasil = "Not Ticket For This Event";
+              isLoading = true;
             });
             Timer(Duration(seconds: 5), () {
               if (mounted) {
@@ -258,9 +367,12 @@ class _QRState extends State<QR> {
               }
             });
           } else {
+            progressDialog?.hide();
+
             if (mounted) {
               setState(() {
                 hasil = "Success";
+                isLoading = true;
               });
             }
             Timer(Duration(seconds: 5), () {
@@ -270,9 +382,9 @@ class _QRState extends State<QR> {
                 });
               }
             });
-            Timer(Duration(seconds: 1), () {
+            Timer(Duration(microseconds: 1), () {
               // controller!.pauseCamera();
-              Get.to(
+              Get.off(
                   DetailTiket(
                     id: bar.code,
                     type: widget.type,
@@ -282,12 +394,6 @@ class _QRState extends State<QR> {
                   ),
                   transition: Transition.circularReveal,
                   arguments: arguments);
-            });
-          }
-        } else {
-          if (mounted) {
-            setState(() {
-              hasil = "It's not a ticket";
             });
           }
         }
