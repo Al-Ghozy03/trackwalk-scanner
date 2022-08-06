@@ -12,7 +12,7 @@ class Calendar extends StatefulWidget {
   String id;
   String type;
   Calendar(
-      {super.key, required this.image, required this.id, required this.type});
+      {key,  this.image,  this.id,  this.type});
   @override
   State<Calendar> createState() => _CalendarState();
 }

@@ -8,12 +8,7 @@ class CheckIcon extends StatefulWidget {
   final color;
   final jumlah;
   final title;
-  const CheckIcon(
-      {super.key,
-      required this.width,
-      required this.color,
-      required this.jumlah,
-      required this.title});
+  const CheckIcon({key, this.width, this.color, this.jumlah, this.title});
 
   @override
   State<CheckIcon> createState() => _CheckIconState();

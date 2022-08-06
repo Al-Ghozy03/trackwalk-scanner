@@ -23,7 +23,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({key});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: bgDark),
       themeMode: ThemeMode.system,
       title: 'TrackWalk',
-      home: storage.read("auth") != null ? Login() : Event(),
+      home: storage.read("auth") == null ? Login() : Event(),
     );
   }
 }

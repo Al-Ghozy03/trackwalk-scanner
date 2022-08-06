@@ -24,12 +24,12 @@ class DetailTiket extends StatefulWidget {
   final check;
   final notCheck;
   DetailTiket(
-      {super.key,
-      required this.id,
-      required this.type,
-      required this.idDetail,
-      required this.check,
-      required this.notCheck});
+      {key,
+       this.id,
+       this.type,
+       this.idDetail,
+       this.check,
+       this.notCheck});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -37,8 +37,8 @@ class DetailTiket extends StatefulWidget {
 
 class _DetailTiketState extends State<DetailTiket> {
   final arguments = Get.arguments;
-  late Future ticket;
-  late Future detail;
+ Future ticket;
+ Future detail;
   bool isLoading = false;
   String email = "";
   final Controller controller = Get.put(Controller());
@@ -79,14 +79,14 @@ class _DetailTiketState extends State<DetailTiket> {
   }
 
   void validationChangeStatus(data) {
-    if (data["WooCommerceEventsVariations"].runtimeType != List<dynamic>) {
+    if (data["WooCommerceEventsVariations"].runtimeType != List) {
       print("bukan list");
       if (data["WooCommerceEventsVariations"]["Seasons"]
           .toString()
           .toLowerCase()
           .contains("session 1")) {
-        if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
-            DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_1"][0]) &&
+            DateTime.now().isBefore(controller.sessions["session_1"][1])) {
           changeStatus("Checked In");
         } else {
           GetPlatform.isIOS
@@ -122,8 +122,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 2")) {
-        if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
-            DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_2"][0]) &&
+            DateTime.now().isBefore(controller.sessions["session_2"][1])) {
           changeStatus("Checked In");
         } else {
           GetPlatform.isIOS
@@ -163,8 +163,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 1")) {
-        if (DateTime.now().isAfter(controller.sessions["session_1"]![0]) &&
-            DateTime.now().isBefore(controller.sessions["session_1"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_1"][0]) &&
+            DateTime.now().isBefore(controller.sessions["session_1"][1])) {
           changeStatus("Checked In");
         } else {
           GetPlatform.isIOS
@@ -200,8 +200,8 @@ class _DetailTiketState extends State<DetailTiket> {
           .toString()
           .toLowerCase()
           .contains("session 2")) {
-        if (DateTime.now().isAfter(controller.sessions["session_2"]![0]) &&
-            DateTime.now().isBefore(controller.sessions["session_2"]![1])) {
+        if (DateTime.now().isAfter(controller.sessions["session_2"][0]) &&
+            DateTime.now().isBefore(controller.sessions["session_2"][1])) {
           changeStatus("Checked In");
         } else {
           GetPlatform.isIOS
@@ -601,7 +601,7 @@ class _DetailTiketState extends State<DetailTiket> {
             int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000);
       }
     }
-    if (data["WooCommerceEventsVariations"] != List<dynamic>) {
+    if (data["WooCommerceEventsVariations"] != List) {
       if (data["WooCommerceEventsBookingSlot"]
           .toString()
           .toLowerCase()

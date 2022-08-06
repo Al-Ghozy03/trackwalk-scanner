@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new, unrelated_type_equality_checks
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, non_constant_identifier_names, unused_local_variable, curly_braces_in_flow_control_structures, must_be_immutable, deprecated_member_use, avoid_print, unnecessary_new, unred_type_equality_checks
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +18,7 @@ class Ticket extends StatefulWidget {
   String type;
   String id;
   String img;
-  Ticket({super.key, required this.id, required this.img, required this.type});
+  Ticket({key,  this.id,  this.img,  this.type});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -27,8 +27,8 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
-  late Future ticket;
-  late Future detail;
+   Future ticket;
+   Future detail;
   String keyword = "";
   final arguments = Get.arguments;
   List data = [];

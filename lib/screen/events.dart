@@ -12,7 +12,7 @@ import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
 
 class Event extends StatefulWidget {
-  const Event({super.key});
+  const Event({key});
 
   @override
   State<Event> createState() => _EventState();
@@ -20,7 +20,7 @@ class Event extends StatefulWidget {
 
 class _EventState extends State<Event> {
   int activeIndexSort = 0;
-  late Future event;
+  Future event;
   String keyword = "";
   DateTime pre_backpress = DateTime.now();
   List data = [];

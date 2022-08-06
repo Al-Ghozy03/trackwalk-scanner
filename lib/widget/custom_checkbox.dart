@@ -6,7 +6,7 @@ import 'package:track_walk_admin/service/api_service.dart';
 class CustomCheck extends StatefulWidget {
   String username;
   String password;
-  CustomCheck({Key? key, required this.password, required this.username})
+  CustomCheck({Key key,  this.password,  this.username})
       : super(key: key);
 
   @override

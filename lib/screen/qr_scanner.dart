@@ -18,11 +18,11 @@ class QR extends StatefulWidget {
   final check;
   final notCheck;
   QR(
-      {super.key,
-      required this.type,
-      required this.id,
-      required this.check,
-      required this.notCheck});
+      {key,
+       this.type,
+       this.id,
+       this.check,
+       this.notCheck});
 
   @override
   State<QR> createState() => _QRState();
@@ -30,13 +30,13 @@ class QR extends StatefulWidget {
 
 class _QRState extends State<QR> {
   final qrkey = GlobalKey(debugLabel: "QR");
-  Barcode? barcode;
-  QRViewController? controller;
-  String? hasil;
-  late final Timer timer;
+  Barcode barcode;
+  QRViewController controller;
+  String hasil;
+  Timer timer;
   final arguments = Get.arguments;
   bool isLoading = false;
-  ProgressDialog? progressDialog;
+  ProgressDialog progressDialog;
 
   @override
   void dispose() {
@@ -48,9 +48,9 @@ class _QRState extends State<QR> {
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller!.pauseCamera();
+      controller.pauseCamera();
     }
-    controller!.resumeCamera();
+    controller.resumeCamera();
   }
 
   void codeScan() {
@@ -191,12 +191,12 @@ class _QRState extends State<QR> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
-            icon: FutureBuilder<bool?>(
+            icon: FutureBuilder(
               future: controller?.getFlashStatus(),
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
                   return Icon(
-                    snapshot.data! ? Icons.flash_on : Icons.flash_off,
+                    snapshot.data ? Icons.flash_on : Icons.flash_off,
                     color: Colors.white,
                   );
                 } else {
@@ -261,7 +261,7 @@ class _QRState extends State<QR> {
 
   void future(bar) {
     controller?.pauseCamera();
-    late Future ticket;
+    Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
         progressDialog?.hide();

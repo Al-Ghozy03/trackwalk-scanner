@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 class Phone extends StatefulWidget {
   final data;
   final width;
-  const Phone({super.key, required this.data, required this.width});
+  const Phone({key, this.data, this.width});
 
   @override
   State<Phone> createState() => _PhoneState();
@@ -25,12 +25,12 @@ class _PhoneState extends State<Phone> {
   @override
   Widget build(BuildContext context) {
     return _info(
-      "Phone",
-      (widget.data["customerPhone"] != "")
-          ? widget.data["customerPhone"]
-          : "Nan",
-      widget.width, phone
-    );
+        "Phone",
+        (widget.data["customerPhone"] != "")
+            ? widget.data["customerPhone"]
+            : "Nan",
+        widget.width,
+        phone);
   }
 }
 

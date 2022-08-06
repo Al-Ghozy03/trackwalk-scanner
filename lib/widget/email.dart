@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 class Email extends StatefulWidget {
   final data;
   final width;
-  const Email({super.key, required this.data, required this.width});
+  const Email({key,  this.data,  this.width});
 
   @override
   State<Email> createState() => _EmailState();
@@ -24,7 +24,7 @@ class _EmailState extends State<Email> {
 
   @override
   Widget build(BuildContext context) {
-    String? encodeQueryParameters(Map<String, String> params) {
+    String encodeQueryParameters(Map<String, String> params) {
       return params.entries
           .map((MapEntry<String, String> e) =>
               '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
