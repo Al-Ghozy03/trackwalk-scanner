@@ -913,6 +913,7 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
+                print(data["WooCommerceEventsTicketExpireTimestamp"]);
                 DateTime expired = DateTime.fromMillisecondsSinceEpoch(
                     int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) *
                         1000);
