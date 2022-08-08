@@ -79,7 +79,8 @@ class _TicketState extends State<Ticket> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Details",
@@ -88,7 +89,9 @@ class _TicketState extends State<Ticket> {
                                           fontFamily: "popinsemi"),
                                     ),
                                     IconButton(
-                                        onPressed: () {Get.back();},
+                                        onPressed: () {
+                                          Get.back();
+                                        },
                                         icon: Icon(Iconsax.close_circle))
                                   ],
                                 ),
@@ -225,11 +228,21 @@ class _TicketState extends State<Ticket> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Details",
-                              style: TextStyle(
-                                  fontSize: width / 15,
-                                  fontFamily: "popinsemi"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Details",
+                                  style: TextStyle(
+                                      fontSize: width / 15,
+                                      fontFamily: "popinsemi"),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: Icon(Iconsax.close_circle))
+                              ],
                             ),
                             SizedBox(height: width / 40),
                             Text(
