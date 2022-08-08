@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
       "username": username.text,
       "password": password.text
     });
-    if (url.text != "https://track-dev.xplorin.id" || url.text != "https://track-dev.xplorin.id/") {
+    if (url.text != "https://track-dev.xplorin.id") {
       setState(() {
         isLoading = false;
       });
