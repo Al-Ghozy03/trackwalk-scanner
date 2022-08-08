@@ -283,11 +283,22 @@ class _DetailTiketState extends State<DetailTiket> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Details",
-                                  style: TextStyle(
-                                      fontSize: width / 15,
-                                      fontFamily: "popinsemi"),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Details",
+                                      style: TextStyle(
+                                          fontSize: width / 15,
+                                          fontFamily: "popinsemi"),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        icon: Icon(Iconsax.close_circle))
+                                  ],
                                 ),
                                 SizedBox(height: width / 40),
                                 Text(arguments[0]),
@@ -423,11 +434,21 @@ class _DetailTiketState extends State<DetailTiket> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Details",
-                              style: TextStyle(
-                                  fontSize: width / 15,
-                                  fontFamily: "popinsemi"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Details",
+                                  style: TextStyle(
+                                      fontSize: width / 15,
+                                      fontFamily: "popinsemi"),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: Icon(Iconsax.close_circle))
+                              ],
                             ),
                             SizedBox(height: width / 40),
                             Text(
