@@ -674,7 +674,7 @@ class _TicketState extends State<Ticket> {
                             Text(
                               widget.type == "single"
                                   ? "${DateFormat.d().format(DateTime.now())} ${DateFormat.MMMM().format(DateTime.now())} ${DateFormat.y().format(DateTime.now())}"
-                                  : "${DateFormat.d().format(DateTime.now())} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
+                                  : "${DateFormat.d().format(arguments[1])} ${DateFormat.MMMM().format(arguments[1])} ${DateFormat.y().format(arguments[1])}",
                               style: TextStyle(
                                   fontSize: width / 27, color: grayText),
                             ),
