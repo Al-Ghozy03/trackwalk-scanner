@@ -24,12 +24,7 @@ class DetailTiket extends StatefulWidget {
   final check;
   final notCheck;
   DetailTiket(
-      {key,
-       this.id,
-       this.type,
-       this.idDetail,
-       this.check,
-       this.notCheck});
+      {key, this.id, this.type, this.idDetail, this.check, this.notCheck});
 
   @override
   State<DetailTiket> createState() => _DetailTiketState();
@@ -37,8 +32,8 @@ class DetailTiket extends StatefulWidget {
 
 class _DetailTiketState extends State<DetailTiket> {
   final arguments = Get.arguments;
- Future ticket;
- Future detail;
+  Future ticket;
+  Future detail;
   bool isLoading = false;
   String email = "";
   final Controller controller = Get.put(Controller());
@@ -156,7 +151,7 @@ class _DetailTiketState extends State<DetailTiket> {
                     ]);
         }
       } else {
-        print("bukan sesi 1 atau 2");
+        print("bukan sesi 1 atau 2 yg 1");
       }
     } else {
       if (data["WooCommerceEventsBookingSlot"]
@@ -234,7 +229,7 @@ class _DetailTiketState extends State<DetailTiket> {
                     ]);
         }
       } else {
-        print("bukan sesi 1 atau 2");
+        print("bukan sesi 1 atau 2 yg 2");
       }
     }
   }
@@ -545,7 +540,6 @@ class _DetailTiketState extends State<DetailTiket> {
 
   @override
   Widget build(BuildContext context) {
-    // print("${controller.sessions["session_1"]} ini datanya");
     print(widget.id);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -637,7 +631,7 @@ class _DetailTiketState extends State<DetailTiket> {
         };
         controller.addSession(sessions);
       } else {
-        print("bukan sesi 1 atau 2");
+        print("bukan sesi 1 atau 2 yg 3");
       }
     } else {
       if (data["WooCommerceEventsVariations"]["Seasons"]
@@ -679,7 +673,7 @@ class _DetailTiketState extends State<DetailTiket> {
           };
           controller.addSession(sessions);
         } else {
-          print("bukan sesi 1 atau 2");
+          print("bukan sesi 1 atau 2 yg 4");
         }
       }
     }
@@ -913,9 +907,17 @@ class _DetailTiketState extends State<DetailTiket> {
                 ),
               ),
               onPressed: () {
-                DateTime expired = DateTime.fromMillisecondsSinceEpoch(
-                    int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) *
-                        1000);
+                DateTime expired;
+                if (widget.type == "single") {
+                  expired = DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(data["WooCommerceEventsBookingDateTimestamp"]) *
+                          1000);
+                  print(expired);
+                } else {
+                  expired = DateTime.fromMillisecondsSinceEpoch(int.parse(
+                          data["WooCommerceEventsTicketExpireTimestamp"]) *
+                      1000);
+                }
                 if (expired.year == DateTime.now().year &&
                     expired.day == DateTime.now().day &&
                     expired.month == DateTime.now().month) {

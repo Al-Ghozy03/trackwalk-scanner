@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
 import 'package:flutter/material.dart';

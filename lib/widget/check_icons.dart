@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_unnecessary_containers, use_key_in_widget_constructors
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,6 @@ class _CheckIconState extends State<CheckIcon> {
     var jumlah = widget.jumlah;
     return Container(
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
