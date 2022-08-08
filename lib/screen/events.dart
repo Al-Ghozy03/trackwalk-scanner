@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/calendar.dart';
+import 'package:track_walk_admin/screen/login.dart';
 import 'package:track_walk_admin/screen/tickets.dart';
 import 'package:track_walk_admin/service/api_service.dart';
 import 'package:track_walk_admin/widget/custom_shimmer.dart';
@@ -159,12 +160,28 @@ class _EventState extends State<Event> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Events",
-                    style: TextStyle(
-                      fontSize: width / 13,
-                      fontFamily: "popinsemi",
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Events",
+                        style: TextStyle(
+                          fontSize: width / 13,
+                          fontFamily: "popinsemi",
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          storage.remove("auth");
+                          Get.off(() => Login(),
+                              transition: Transition.rightToLeftWithFade);
+                        },
+                        child: Text(
+                          "Sign out",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(height: width / 20),
                   _searchBar(width, height),

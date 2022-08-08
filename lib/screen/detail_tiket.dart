@@ -704,6 +704,11 @@ class _DetailTiketState extends State<DetailTiket> {
       }
     }
 
+    DateTime dateExpiration = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(data["WooCommerceEventsBookingDateTimestamp"]) * 1000);
+    DateTime newDateExpiration = DateTime(
+        dateExpiration.year, dateExpiration.month, dateExpiration.day + 1);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -791,7 +796,7 @@ class _DetailTiketState extends State<DetailTiket> {
                         SizedBox(height: width / 40),
                         _info(
                             "Ticket Expiration",
-                            "${DateFormat.yMMMMEEEEd().format(DateTime.fromMillisecondsSinceEpoch(int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000))} ${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(data["WooCommerceEventsTicketExpireTimestamp"]) * 1000))}",
+                            DateFormat.yMMMMEEEEd().format(newDateExpiration).toString(),
                             width),
                         SizedBox(height: width / 40),
                         _info("Slot", data["WooCommerceEventsBookingSlot"],
