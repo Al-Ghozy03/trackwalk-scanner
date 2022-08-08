@@ -18,7 +18,7 @@ class Ticket extends StatefulWidget {
   String type;
   String id;
   String img;
-  Ticket({key,  this.id,  this.img,  this.type});
+  Ticket({key, this.id, this.img, this.type});
 
   @override
   State<Ticket> createState() => _TicketState();
@@ -27,8 +27,8 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> {
   int activeIndexFilter = 0;
   int activeIndexSort = 0;
-   Future ticket;
-   Future detail;
+  Future ticket;
+  Future detail;
   String keyword = "";
   final arguments = Get.arguments;
   List data = [];
@@ -78,11 +78,19 @@ class _TicketState extends State<Ticket> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Details",
-                                  style: TextStyle(
-                                      fontSize: width / 15,
-                                      fontFamily: "popinsemi"),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Details",
+                                      style: TextStyle(
+                                          fontSize: width / 15,
+                                          fontFamily: "popinsemi"),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {Get.back();},
+                                        icon: Icon(Iconsax.close_circle))
+                                  ],
                                 ),
                                 SizedBox(height: width / 40),
                                 Text(arguments[0]),
