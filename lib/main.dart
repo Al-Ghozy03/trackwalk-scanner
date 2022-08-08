@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       title: 'TrackWalk',
       home: storage.read("auth") == null ? Login() : Event(),
+      builder: EasyLoading.init(),
     );
   }
 }
