@@ -184,8 +184,8 @@ class _QRState extends State<QR> {
                     color: Colors.white,
                   );
                 } else {
-                  return IconsButton(
-                    iconData: Icons.flash_off,
+                  return IconButton(
+                    icon: Icon(Icons.flash_off),
                     onPressed: () {
                       GetPlatform.isIOS
                           ? showCupertinoDialog(
