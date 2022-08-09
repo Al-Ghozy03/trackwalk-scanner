@@ -71,7 +71,6 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
-    // controller!.pauseCamera();
     controller?.resumeCamera();
     final width = MediaQuery.of(context).size.width;
     final height = Get.height;
