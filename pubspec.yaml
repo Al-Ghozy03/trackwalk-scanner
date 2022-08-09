@@ -69,7 +69,7 @@ dev_dependencies:
 
 
 flutter_native_splash:
-  image: "assets/img/Mandalika.png"
+  image: "assets/img/TRACKEWALK.png"
   color: "#FFFFFF"
   color_dark: "#181920"
 
