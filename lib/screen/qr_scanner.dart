@@ -197,7 +197,7 @@ class _QRState extends State<QR> {
                                   CupertinoDialogAction(
                                     child: Text(
                                       "Ok",
-                                      style: TextStyle(color: blueTheme),
+                                      style: TextStyle(color: greenTheme),
                                     ),
                                     onPressed: () => Get.back(),
                                   )
@@ -220,7 +220,7 @@ class _QRState extends State<QR> {
                                       onPressed: () => Get.back(),
                                       child: Text(
                                         "Ok",
-                                        style: TextStyle(color: blueTheme),
+                                        style: TextStyle(color: greenTheme),
                                       ))
                                 ]);
                     },

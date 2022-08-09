@@ -213,7 +213,7 @@ class _DetailTiketState extends State<DetailTiket> {
                         CupertinoDialogAction(
                           child: Text(
                             "Ok",
-                            style: TextStyle(color: blueTheme),
+                            style: TextStyle(color: greenTheme),
                           ),
                           onPressed: () => Get.back(),
                         )
@@ -236,7 +236,7 @@ class _DetailTiketState extends State<DetailTiket> {
                             onPressed: () => Get.back(),
                             child: Text(
                               "Ok",
-                              style: TextStyle(color: blueTheme),
+                              style: TextStyle(color: greenTheme),
                             ))
                       ]);
           }
