@@ -244,12 +244,13 @@ class _QRState extends State<QR> {
     Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
+        EasyLoading.dismiss();
+
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
             isLoading = false;
           });
-          EasyLoading.dismiss();
         }
         Timer(Duration(seconds: 5), () {
           if (mounted) {
@@ -259,17 +260,20 @@ class _QRState extends State<QR> {
           }
         });
       } else {
+        EasyLoading.dismiss();
+
         if (value["data"]["WooCommerceEventsBookingDate"] == null ||
             value["data"]["WooCommerceEventsBookingDate"] == "") {
           print(
               'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
           if (widget.type != "single") {
+            EasyLoading.dismiss();
+
             if (mounted) {
               setState(() {
                 hasil = "This Ticket Is Not Valid";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -280,6 +284,7 @@ class _QRState extends State<QR> {
             }
           } else {
             // log(value["WooCommerceEventsBookingDate"].toString());
+            EasyLoading.dismiss();
 
             if (value["data"]["WooCommerceEventsProductID"].toString() !=
                 widget.id.toString()) {
@@ -287,7 +292,6 @@ class _QRState extends State<QR> {
                 hasil = "Not Ticket For This Event";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -296,13 +300,12 @@ class _QRState extends State<QR> {
                 }
               });
             } else {
-              // EasyLoading.dismiss();
+              EasyLoading.dismiss();
               if (mounted) {
                 setState(() {
                   hasil = "Success";
                   isLoading = true;
                 });
-                EasyLoading.dismiss();
               }
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -327,6 +330,8 @@ class _QRState extends State<QR> {
             }
           }
         } else {
+          EasyLoading.dismiss();
+
           log(value["WooCommerceEventsBookingDate"].toString());
 
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
@@ -335,7 +340,6 @@ class _QRState extends State<QR> {
               hasil = "Not Ticket For This Event";
               isLoading = true;
             });
-            EasyLoading.dismiss();
             Timer(Duration(seconds: 5), () {
               if (mounted) {
                 setState(() {
@@ -344,12 +348,13 @@ class _QRState extends State<QR> {
               }
             });
           } else {
+            EasyLoading.dismiss();
+
             if (mounted) {
               setState(() {
                 hasil = "Success";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
             }
             Timer(Duration(seconds: 5), () {
               if (mounted) {

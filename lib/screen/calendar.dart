@@ -110,6 +110,7 @@ class _CalendarState extends State<Calendar> {
                         },
                         style: ElevatedButton.styleFrom(
                             elevation: 0,
+                            backgroundColor: blueTheme,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(width / 40))),
