@@ -796,7 +796,9 @@ class _DetailTiketState extends State<DetailTiket> {
                         SizedBox(height: width / 40),
                         _info(
                             "Ticket Expiration",
-                            DateFormat.yMMMMEEEEd().format(newDateExpiration).toString(),
+                            DateFormat.yMMMMEEEEd()
+                                .format(newDateExpiration)
+                                .toString(),
                             width),
                         SizedBox(height: width / 40),
                         _info("Slot", data["WooCommerceEventsBookingSlot"],
@@ -926,13 +928,16 @@ class _DetailTiketState extends State<DetailTiket> {
                   : Text(
                       "Check-out",
                       style: TextStyle(
-                          fontFamily: "popinsemi", fontSize: width / 20),
+                          fontFamily: "popinsemi",
+                          fontSize: width / 20,
+                          color: blueTheme),
                     ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 shadowColor: Colors.black.withOpacity(0),
+                backgroundColor: blueTheme,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(width / 50),
                 ),
