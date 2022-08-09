@@ -62,7 +62,7 @@ Widget _info(String title, String value, width, lauch) {
         },
         child: Text(
           (value == "") ? "Nan" : value,
-          style: TextStyle(fontSize: width / 25, color: blueTheme),
+          style: TextStyle(fontSize: width / 25, color: greenTheme),
         ),
       ),
     ],

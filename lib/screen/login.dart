@@ -31,52 +31,12 @@ class _LoginState extends State<Login> {
     setState(() {
       isLoading = true;
     });
-    final res = await http.post(Uri.parse("$baseUrl/login_status"), headers: {
+    final res = await http.post(Uri.parse("${url.text}/wp-json/fooevents/v1/login_status"), headers: {
       'Content-type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json',
       "username": username.text,
       "password": password.text
     });
-    if (url.text != "https://track-dev.xplorin.id") {
-      setState(() {
-        isLoading = false;
-      });
-      if (GetPlatform.isIOS) {
-        showCupertinoDialog(
-          context: context,
-          builder: (context) => CupertinoAlertDialog(
-            title: Text("Sign-in Error"),
-            content: Text("Incorrect URL, Username or Password"),
-            actions: [
-              CupertinoDialogAction(
-                child: Text("Ok"),
-                onPressed: () => Get.back(),
-              )
-            ],
-          ),
-        );
-      } else {
-        Dialogs.materialDialog(
-            color: Get.isDarkMode ? bgDark : Colors.white,
-            context: context,
-            title: "Sign-in Error",
-            titleAlign: TextAlign.center,
-            titleStyle: TextStyle(
-              fontSize: Get.width / 20,
-              fontFamily: 'popinsemi',
-            ),
-            msg: "Incorect URL, Username or Password",
-            msgStyle: TextStyle(color: grayText),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Ok"))
-            ]);
-      }
-      return;
-    }
     if (res.statusCode == 400) {
       setState(() {
         isLoading = false;
@@ -93,8 +53,11 @@ class _LoginState extends State<Login> {
       });
       var message = jsonDecode(res.body)["message"];
       if (message) {
-        storage.write(
-            "auth", {"username": username.text, "password": password.text});
+        storage.write("auth", {
+          "url": url.text,
+          "username": username.text,
+          "password": password.text
+        });
         Get.off(Event());
       } else {
         if (GetPlatform.isIOS) {
@@ -151,7 +114,7 @@ class _LoginState extends State<Login> {
             child: Container(
               height: width * 0.3,
               child: Image(
-                image: AssetImage('assets/img/Mandalika.png'),
+                image: AssetImage('assets/img/TRACKEWALK.png'),
                 fit: BoxFit.fill,
               ),
             ))
@@ -355,7 +318,7 @@ class _LoginState extends State<Login> {
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: width / 7),
               elevation: 0,
-              primary: blueTheme,
+              primary: greenTheme,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(width),
               ),
@@ -443,8 +406,8 @@ class _LoginState extends State<Login> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xff004E92),
-                      Color(0xff2F80ED),
+                      Color(0xff02A557),
+                      Color(0xff02A588),
                     ],
                   ),
                   borderRadius: BorderRadius.only(

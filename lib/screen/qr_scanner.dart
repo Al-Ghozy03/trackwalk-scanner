@@ -2,15 +2,17 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'dart:ui' as ui;
 import '../service/api_service.dart';
-// import 'package:progress_dialog/progress_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class QR extends StatefulWidget {
@@ -66,7 +68,6 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
-    // controller!.pauseCamera();
     controller?.resumeCamera();
     final width = MediaQuery.of(context).size.width;
     final height = Get.height;
@@ -88,7 +89,7 @@ class _QRState extends State<QR> {
                         ? Color.fromARGB(255, 255, 193, 59)
                         : (hasil == "Success")
                             ? Color.fromARGB(120, 76, 175, 79)
-                            : blueTheme,
+                            : greenTheme,
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
@@ -106,7 +107,7 @@ class _QRState extends State<QR> {
                       ? Color.fromARGB(255, 255, 193, 59)
                       : (hasil == "Success")
                           ? Color.fromARGB(120, 76, 175, 79)
-                          : blueTheme,
+                          : greenTheme,
             ),
           ),
         ),
@@ -142,7 +143,7 @@ class _QRState extends State<QR> {
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
-                    : blueTheme,
+                    : greenTheme,
       ),
       child: Text(
         "$hasil",
@@ -166,7 +167,7 @@ class _QRState extends State<QR> {
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
-                    : blueTheme,
+                    : greenTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -183,7 +184,48 @@ class _QRState extends State<QR> {
                     color: Colors.white,
                   );
                 } else {
-                  return const SizedBox();
+                  return IconButton(
+                    icon: Icon(Icons.flash_off),
+                    onPressed: () {
+                      GetPlatform.isIOS
+                          ? showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: Text("Fail"),
+                                content: Text("You Don't Have Flashlight"),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: Text(
+                                      "Ok",
+                                      style: TextStyle(color: greenTheme),
+                                    ),
+                                    onPressed: () => Get.back(),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Dialogs.materialDialog(
+                              color: Get.isDarkMode ? bgDark : Colors.white,
+                              context: context,
+                              title: "Fail",
+                              titleAlign: TextAlign.center,
+                              titleStyle: TextStyle(
+                                fontSize: Get.width / 20,
+                                fontFamily: 'popinsemi',
+                              ),
+                              msg: "You Don't Have Flashlight",
+                              msgStyle: TextStyle(color: grayText),
+                              actions: [
+                                  TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: Text(
+                                        "Ok",
+                                        style: TextStyle(color: greenTheme),
+                                      ))
+                                ]);
+                    },
+                    color: Colors.white,
+                  );
                 }
               },
             ),
@@ -208,7 +250,7 @@ class _QRState extends State<QR> {
                   ? Color.fromARGB(255, 255, 193, 59)
                   : (hasil == "Success")
                       ? Color.fromARGB(120, 76, 175, 79)
-                      : blueTheme,
+                      : greenTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,
@@ -246,12 +288,13 @@ class _QRState extends State<QR> {
     Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
+        EasyLoading.dismiss();
+
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
             isLoading = false;
           });
-          EasyLoading.dismiss();
         }
         Timer(Duration(seconds: 5), () {
           if (mounted) {
@@ -261,17 +304,20 @@ class _QRState extends State<QR> {
           }
         });
       } else {
+        EasyLoading.dismiss();
+
         if (value["data"]["WooCommerceEventsBookingDate"] == null ||
             value["data"]["WooCommerceEventsBookingDate"] == "") {
           print(
               'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
           if (widget.type != "single") {
+            EasyLoading.dismiss();
+
             if (mounted) {
               setState(() {
                 hasil = "This Ticket Is Not Valid";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -282,6 +328,7 @@ class _QRState extends State<QR> {
             }
           } else {
             // log(value["WooCommerceEventsBookingDate"].toString());
+            EasyLoading.dismiss();
 
             if (value["data"]["WooCommerceEventsProductID"].toString() !=
                 widget.id.toString()) {
@@ -289,7 +336,6 @@ class _QRState extends State<QR> {
                 hasil = "Not Ticket For This Event";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -298,13 +344,12 @@ class _QRState extends State<QR> {
                 }
               });
             } else {
-              // EasyLoading.dismiss();
+              EasyLoading.dismiss();
               if (mounted) {
                 setState(() {
                   hasil = "Success";
                   isLoading = true;
                 });
-                EasyLoading.dismiss();
               }
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -329,6 +374,8 @@ class _QRState extends State<QR> {
             }
           }
         } else {
+          EasyLoading.dismiss();
+
           log(value["WooCommerceEventsBookingDate"].toString());
 
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
@@ -337,7 +384,6 @@ class _QRState extends State<QR> {
               hasil = "Not Ticket For This Event";
               isLoading = true;
             });
-            EasyLoading.dismiss();
             Timer(Duration(seconds: 5), () {
               if (mounted) {
                 setState(() {
@@ -346,12 +392,13 @@ class _QRState extends State<QR> {
               }
             });
           } else {
+            EasyLoading.dismiss();
+
             if (mounted) {
               setState(() {
                 hasil = "Success";
                 isLoading = true;
               });
-              EasyLoading.dismiss();
             }
             Timer(Duration(seconds: 5), () {
               if (mounted) {

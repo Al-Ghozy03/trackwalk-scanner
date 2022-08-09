@@ -11,7 +11,7 @@ import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
 
 final storage = GetStorage();
-String baseUrl = "https://track-dev.xplorin.id/wp-json/fooevents/v1";
+String baseUrl = "${storage.read("auth")["url"]}/wp-json/fooevents/v1";
 
 class ApiService {
   static final String _login = "login_status";

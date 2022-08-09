@@ -211,7 +211,10 @@ class _DetailTiketState extends State<DetailTiket> {
                       content: Text("Sesi telah berakhir"),
                       actions: [
                         CupertinoDialogAction(
-                          child: Text("Ok"),
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: greenTheme),
+                          ),
                           onPressed: () => Get.back(),
                         )
                       ],
@@ -230,7 +233,11 @@ class _DetailTiketState extends State<DetailTiket> {
                     msgStyle: TextStyle(color: grayText),
                     actions: [
                         TextButton(
-                            onPressed: () => Get.back(), child: Text("Ok"))
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(color: greenTheme),
+                            ))
                       ]);
           }
         } else {
@@ -371,7 +378,7 @@ class _DetailTiketState extends State<DetailTiket> {
                                                       horizontal: width / 50,
                                                       vertical: width / 100),
                                                   decoration: BoxDecoration(
-                                                      color: blueTheme,
+                                                      color: greenTheme,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               width)),
@@ -796,7 +803,9 @@ class _DetailTiketState extends State<DetailTiket> {
                         SizedBox(height: width / 40),
                         _info(
                             "Ticket Expiration",
-                            DateFormat.yMMMMEEEEd().format(newDateExpiration).toString(),
+                            DateFormat.yMMMMEEEEd()
+                                .format(newDateExpiration)
+                                .toString(),
                             width),
                         SizedBox(height: width / 40),
                         _info("Slot", data["WooCommerceEventsBookingSlot"],
@@ -926,13 +935,16 @@ class _DetailTiketState extends State<DetailTiket> {
                   : Text(
                       "Check-out",
                       style: TextStyle(
-                          fontFamily: "popinsemi", fontSize: width / 20),
+                          fontFamily: "popinsemi",
+                          fontSize: width / 20,
+                          color: greenTheme),
                     ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 shadowColor: Colors.black.withOpacity(0),
+                backgroundColor: greenTheme,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(width / 50),
                 ),
@@ -1172,6 +1184,7 @@ class _DetailTiketState extends State<DetailTiket> {
             OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
+                  backgroundColor: greenTheme,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(width / 50))),
@@ -1180,6 +1193,7 @@ class _DetailTiketState extends State<DetailTiket> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                  backgroundColor: greenTheme,
                   elevation: 0,
                   shadowColor: Colors.black.withOpacity(0),
                   shape: RoundedRectangleBorder(

@@ -166,7 +166,7 @@ class _TicketState extends State<Ticket> {
                                                       horizontal: width / 50,
                                                       vertical: width / 100),
                                                   decoration: BoxDecoration(
-                                                      color: blueTheme,
+                                                      color: greenTheme,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               width)),
@@ -402,7 +402,7 @@ class _TicketState extends State<Ticket> {
                                           side: BorderSide(
                                               color:
                                                   activeIndexFilter == data.key
-                                                      ? blueTheme
+                                                      ? greenTheme
                                                       : grayText),
                                           borderRadius:
                                               BorderRadius.circular(width))),
@@ -416,7 +416,7 @@ class _TicketState extends State<Ticket> {
                                     data.value,
                                     style: TextStyle(
                                         color: activeIndexFilter == data.key
-                                            ? blueTheme
+                                            ? greenTheme
                                             : grayText,
                                         fontSize: width / 25,
                                         fontFamily:
@@ -448,7 +448,7 @@ class _TicketState extends State<Ticket> {
                                           side: BorderSide(
                                               color:
                                                   activeIndexSort == value.key
-                                                      ? blueTheme
+                                                      ? greenTheme
                                                       : grayText),
                                           borderRadius:
                                               BorderRadius.circular(width))),
@@ -482,7 +482,7 @@ class _TicketState extends State<Ticket> {
                                     value.value,
                                     style: TextStyle(
                                         color: activeIndexSort == value.key
-                                            ? blueTheme
+                                            ? greenTheme
                                             : grayText,
                                         fontSize: width / 25,
                                         fontFamily: activeIndexSort == value.key
@@ -752,7 +752,7 @@ class _TicketState extends State<Ticket> {
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: blueTheme,
+                primary: greenTheme,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
@@ -990,7 +990,7 @@ class _TicketState extends State<Ticket> {
           child: Container(
             padding: EdgeInsets.all(width / 35),
             decoration: BoxDecoration(
-                color: blueTheme,
+                color: greenTheme,
                 borderRadius: BorderRadius.circular(width / 40)),
             child: Icon(Iconsax.setting_4, color: Colors.white),
           ),

@@ -17,7 +17,7 @@
    <uses-permission 
    android:name="android.permission.INTERNET"/>
    <application
-        android:label="track_walk_admin"
+        android:label="Track Walk"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
