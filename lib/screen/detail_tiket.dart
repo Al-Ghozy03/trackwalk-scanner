@@ -378,7 +378,7 @@ class _DetailTiketState extends State<DetailTiket> {
                                                       horizontal: width / 50,
                                                       vertical: width / 100),
                                                   decoration: BoxDecoration(
-                                                      color: blueTheme,
+                                                      color: greenTheme,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               width)),
@@ -937,14 +937,14 @@ class _DetailTiketState extends State<DetailTiket> {
                       style: TextStyle(
                           fontFamily: "popinsemi",
                           fontSize: width / 20,
-                          color: blueTheme),
+                          color: greenTheme),
                     ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 shadowColor: Colors.black.withOpacity(0),
-                backgroundColor: blueTheme,
+                backgroundColor: greenTheme,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(width / 50),
                 ),
@@ -1184,6 +1184,7 @@ class _DetailTiketState extends State<DetailTiket> {
             OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
+                  backgroundColor: greenTheme,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(width / 50))),
@@ -1192,6 +1193,7 @@ class _DetailTiketState extends State<DetailTiket> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                  backgroundColor: greenTheme,
                   elevation: 0,
                   shadowColor: Colors.black.withOpacity(0),
                   shape: RoundedRectangleBorder(

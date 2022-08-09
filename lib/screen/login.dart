@@ -318,7 +318,7 @@ class _LoginState extends State<Login> {
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: width / 7),
               elevation: 0,
-              primary: blueTheme,
+              primary: greenTheme,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(width),
               ),

@@ -53,7 +53,7 @@ class _CustomCheckState extends State<CustomCheck> {
         child: isChecked
             ? Container(
                 decoration: BoxDecoration(
-                    color: blueTheme, borderRadius: BorderRadius.circular(5)),
+                    color: greenTheme, borderRadius: BorderRadius.circular(5)),
                 child: Icon(
                   Icons.check,
                   color: Colors.white,

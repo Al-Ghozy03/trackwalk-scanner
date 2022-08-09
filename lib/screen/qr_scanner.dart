@@ -89,7 +89,7 @@ class _QRState extends State<QR> {
                         ? Color.fromARGB(255, 255, 193, 59)
                         : (hasil == "Success")
                             ? Color.fromARGB(120, 76, 175, 79)
-                            : blueTheme,
+                            : greenTheme,
                 fontWeight: FontWeight.bold,
                 fontSize: width / 20),
           ),
@@ -107,7 +107,7 @@ class _QRState extends State<QR> {
                       ? Color.fromARGB(255, 255, 193, 59)
                       : (hasil == "Success")
                           ? Color.fromARGB(120, 76, 175, 79)
-                          : blueTheme,
+                          : greenTheme,
             ),
           ),
         ),
@@ -143,7 +143,7 @@ class _QRState extends State<QR> {
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
-                    : blueTheme,
+                    : greenTheme,
       ),
       child: Text(
         "$hasil",
@@ -167,7 +167,7 @@ class _QRState extends State<QR> {
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
-                    : blueTheme,
+                    : greenTheme,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -250,7 +250,7 @@ class _QRState extends State<QR> {
                   ? Color.fromARGB(255, 255, 193, 59)
                   : (hasil == "Success")
                       ? Color.fromARGB(120, 76, 175, 79)
-                      : blueTheme,
+                      : greenTheme,
           borderRadius: 11,
           borderWidth: 10,
           borderLength: 20,

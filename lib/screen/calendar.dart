@@ -63,7 +63,7 @@ class _CalendarState extends State<Calendar> {
                 calendarStyle: CalendarStyle(
                     weekendTextStyle: TextStyle(color: Colors.red),
                     selectedDecoration: BoxDecoration(
-                        color: blueTheme, shape: BoxShape.circle)),
+                        color: greenTheme, shape: BoxShape.circle)),
                 daysOfWeekStyle: DaysOfWeekStyle(
                     weekdayStyle: TextStyle(fontFamily: "popinsemi"),
                     weekendStyle:
@@ -110,7 +110,7 @@ class _CalendarState extends State<Calendar> {
                         },
                         style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            backgroundColor: blueTheme,
+                            backgroundColor: greenTheme,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(width / 40))),

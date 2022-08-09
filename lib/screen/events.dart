@@ -72,7 +72,7 @@ class _EventState extends State<Event> {
                                               BorderRadius.circular(width)),
                                       side: BorderSide(
                                           color: activeIndexSort == e.key
-                                              ? blueTheme
+                                              ? greenTheme
                                               : grayText)),
                                   onPressed: () {
                                     stateSetter(() {
@@ -98,7 +98,7 @@ class _EventState extends State<Event> {
                                     e.value,
                                     style: TextStyle(
                                         color: activeIndexSort == e.key
-                                            ? blueTheme
+                                            ? greenTheme
                                             : grayText,
                                         fontSize: width / 25,
                                         fontFamily: activeIndexSort == e.key
@@ -482,7 +482,7 @@ class _EventState extends State<Event> {
           child: Container(
             padding: EdgeInsets.all(width / 35),
             decoration: BoxDecoration(
-                color: blueTheme,
+                color: greenTheme,
                 borderRadius: BorderRadius.circular(width / 40)),
             child: Icon(Iconsax.setting_4, color: Colors.white),
           ),
