@@ -211,7 +211,10 @@ class _DetailTiketState extends State<DetailTiket> {
                       content: Text("Sesi telah berakhir"),
                       actions: [
                         CupertinoDialogAction(
-                          child: Text("Ok"),
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: blueTheme),
+                          ),
                           onPressed: () => Get.back(),
                         )
                       ],
@@ -230,7 +233,11 @@ class _DetailTiketState extends State<DetailTiket> {
                     msgStyle: TextStyle(color: grayText),
                     actions: [
                         TextButton(
-                            onPressed: () => Get.back(), child: Text("Ok"))
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(color: blueTheme),
+                            ))
                       ]);
           }
         } else {

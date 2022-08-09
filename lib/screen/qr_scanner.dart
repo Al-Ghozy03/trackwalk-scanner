@@ -2,9 +2,12 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
@@ -181,7 +184,48 @@ class _QRState extends State<QR> {
                     color: Colors.white,
                   );
                 } else {
-                  return const SizedBox();
+                  return IconsButton(
+                    iconData: Icons.flash_off,
+                    onPressed: () {
+                      GetPlatform.isIOS
+                          ? showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: Text("Fail"),
+                                content: Text("You Don't Have Flashlight"),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: Text(
+                                      "Ok",
+                                      style: TextStyle(color: blueTheme),
+                                    ),
+                                    onPressed: () => Get.back(),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Dialogs.materialDialog(
+                              color: Get.isDarkMode ? bgDark : Colors.white,
+                              context: context,
+                              title: "Fail",
+                              titleAlign: TextAlign.center,
+                              titleStyle: TextStyle(
+                                fontSize: Get.width / 20,
+                                fontFamily: 'popinsemi',
+                              ),
+                              msg: "You Don't Have Flashlight",
+                              msgStyle: TextStyle(color: grayText),
+                              actions: [
+                                  TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: Text(
+                                        "Ok",
+                                        style: TextStyle(color: blueTheme),
+                                      ))
+                                ]);
+                    },
+                    color: Colors.white,
+                  );
                 }
               },
             ),
