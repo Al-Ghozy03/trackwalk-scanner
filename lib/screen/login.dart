@@ -443,8 +443,8 @@ class _LoginState extends State<Login> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xff004E92),
-                      Color(0xff2F80ED),
+                      Color(0xff02A557),
+                      Color(0xff02A588),
                     ],
                   ),
                   borderRadius: BorderRadius.only(
