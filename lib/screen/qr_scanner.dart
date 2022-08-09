@@ -10,19 +10,14 @@ import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
 import 'dart:ui' as ui;
 import '../service/api_service.dart';
-import 'package:progress_dialog/progress_dialog.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class QR extends StatefulWidget {
   String type;
   final id;
   final check;
   final notCheck;
-  QR(
-      {key,
-       this.type,
-       this.id,
-       this.check,
-       this.notCheck});
+  QR({key, this.type, this.id, this.check, this.notCheck});
 
   @override
   State<QR> createState() => _QRState();
@@ -36,7 +31,6 @@ class _QRState extends State<QR> {
   Timer timer;
   final arguments = Get.arguments;
   bool isLoading = false;
-  ProgressDialog progressDialog;
 
   @override
   void dispose() {
@@ -77,19 +71,7 @@ class _QRState extends State<QR> {
     final themeData = Theme.of(context).brightness == ui.Brightness.dark
         ? "DarkTheme"
         : "LightTheme";
-    progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal,showLogs: true);
-    progressDialog?.style(
-      
-      progressWidget: Container(
-          padding: EdgeInsets.all(15.0), child: CircularProgressIndicator()),
-      borderRadius: 10.0,
-      backgroundColor: themeData == "DarkTheme" ? bgDark : Colors.white,
-      insetAnimCurve: Curves.easeInOut,
-      messageTextStyle: TextStyle(
-          color: themeData == "DarkTheme" ? Colors.white : Colors.black,
-          fontSize: 13.0,
-          fontWeight: FontWeight.w400),
-    );
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -241,8 +223,7 @@ class _QRState extends State<QR> {
         // print(bar);
         Timer(Duration(microseconds: 1), () {
           future(bar);
-          progressDialog?.show();
-
+          EasyLoading.show(status: 'loading...');
           setState(() {
             isLoading = true;
           });
@@ -263,12 +244,12 @@ class _QRState extends State<QR> {
     Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
       if (value["status"] == "error") {
-        progressDialog?.hide();
         if (mounted) {
           setState(() {
             hasil = "It's not a ticket";
             isLoading = false;
           });
+          EasyLoading.dismiss();
         }
         Timer(Duration(seconds: 5), () {
           if (mounted) {
@@ -283,13 +264,12 @@ class _QRState extends State<QR> {
           print(
               'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
           if (widget.type != "single") {
-            progressDialog?.hide();
-
             if (mounted) {
               setState(() {
                 hasil = "This Ticket Is Not Valid";
                 isLoading = true;
               });
+              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -303,12 +283,11 @@ class _QRState extends State<QR> {
 
             if (value["data"]["WooCommerceEventsProductID"].toString() !=
                 widget.id.toString()) {
-              progressDialog?.hide();
-
               setState(() {
                 hasil = "Not Ticket For This Event";
                 isLoading = true;
               });
+              EasyLoading.dismiss();
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
                   setState(() {
@@ -317,13 +296,13 @@ class _QRState extends State<QR> {
                 }
               });
             } else {
-              progressDialog?.hide();
-
+              // EasyLoading.dismiss();
               if (mounted) {
                 setState(() {
                   hasil = "Success";
                   isLoading = true;
                 });
+                EasyLoading.dismiss();
               }
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -352,12 +331,11 @@ class _QRState extends State<QR> {
 
           if (value["data"]["WooCommerceEventsProductID"].toString() !=
               widget.id.toString()) {
-            progressDialog?.hide();
-
             setState(() {
               hasil = "Not Ticket For This Event";
               isLoading = true;
             });
+            EasyLoading.dismiss();
             Timer(Duration(seconds: 5), () {
               if (mounted) {
                 setState(() {
@@ -366,13 +344,12 @@ class _QRState extends State<QR> {
               }
             });
           } else {
-            progressDialog?.hide();
-
             if (mounted) {
               setState(() {
                 hasil = "Success";
                 isLoading = true;
               });
+              EasyLoading.dismiss();
             }
             Timer(Duration(seconds: 5), () {
               if (mounted) {
