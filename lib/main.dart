@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.light,
           fontFamily: "popin",
-          colorScheme: ThemeData().colorScheme.copyWith(primary: blueTheme)),
+          colorScheme: ThemeData().colorScheme.copyWith(primary: greenTheme)),
       darkTheme: ThemeData(
           fontFamily: "popin",
           brightness: Brightness.dark,
