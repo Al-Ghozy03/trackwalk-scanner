@@ -298,12 +298,13 @@ class _QRState extends State<QR> {
                 }
               });
             } else {
-              EasyLoading.dismiss();
+              // EasyLoading.dismiss();
               if (mounted) {
                 setState(() {
                   hasil = "Success";
                   isLoading = true;
                 });
+                EasyLoading.dismiss();
               }
               Timer(Duration(seconds: 5), () {
                 if (mounted) {
@@ -336,6 +337,7 @@ class _QRState extends State<QR> {
               hasil = "Not Ticket For This Event";
               isLoading = true;
             });
+            EasyLoading.dismiss();
             Timer(Duration(seconds: 5), () {
               if (mounted) {
                 setState(() {
@@ -349,6 +351,7 @@ class _QRState extends State<QR> {
                 hasil = "Success";
                 isLoading = true;
               });
+              EasyLoading.dismiss();
             }
             Timer(Duration(seconds: 5), () {
               if (mounted) {
