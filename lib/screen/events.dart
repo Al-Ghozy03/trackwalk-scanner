@@ -193,8 +193,13 @@ class _EventState extends State<Event> {
                       if (snapshot.hasError)
                         return Column(
                           children: [
-                            LottieBuilder.asset(
-                                "assets/json/94992-error-404.json"),
+                            GestureDetector(
+                              onTap: () {
+                                refresh();
+                              },
+                              child: LottieBuilder.asset(
+                                  "assets/json/94992-error-404.json"),
+                            ),
                             Text(
                               "Ooops, something went wrong",
                               style: TextStyle(
