@@ -68,8 +68,12 @@ class _QRState extends State<QR> {
 
   @override
   Widget build(BuildContext context) {
+    EasyLoading.instance
+      ..userInteractions = false
+      ..dismissOnTap = false;
     controller?.resumeCamera();
     final width = MediaQuery.of(context).size.width;
+
     final height = Get.height;
     final themeData = Theme.of(context).brightness == ui.Brightness.dark
         ? "DarkTheme"
@@ -216,13 +220,15 @@ class _QRState extends State<QR> {
                               msg: "You Don't Have Flashlight",
                               msgStyle: TextStyle(color: grayText),
                               actions: [
-                                  TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: Text(
-                                        "Ok",
-                                        style: TextStyle(color: greenTheme),
-                                      ))
-                                ]);
+                                TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text(
+                                    "Ok",
+                                    style: TextStyle(color: greenTheme),
+                                  ),
+                                ),
+                              ],
+                            );
                     },
                     color: Colors.white,
                   );
@@ -267,7 +273,9 @@ class _QRState extends State<QR> {
         // print(bar);
         Timer(Duration(microseconds: 1), () {
           future(bar);
-          EasyLoading.show(status: 'loading...');
+          EasyLoading.show(
+            status: 'loading...',
+          );
           setState(() {
             isLoading = true;
           });
@@ -287,7 +295,8 @@ class _QRState extends State<QR> {
     controller?.pauseCamera();
     Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
-      if (value["status"] == "error") {
+      if (value) {
+        if (value["status"] == "error") {
         EasyLoading.dismiss();
 
         if (mounted) {
@@ -422,6 +431,45 @@ class _QRState extends State<QR> {
             });
           }
         }
+      }
+      } else {
+        EasyLoading.dismiss();
+          GetPlatform.isIOS
+                ? showCupertinoDialog(
+                    context: context,
+                    builder: (context) => CupertinoAlertDialog(
+                      title: Text("Fail"),
+                      content: Text("Something went wrong"),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: greenTheme),
+                          ),
+                          onPressed: () => Get.back(),
+                        )
+                      ],
+                    ),
+                  )
+                : Dialogs.materialDialog(
+                    color: Get.isDarkMode ? bgDark : Colors.white,
+                    context: context,
+                    title: "Fail",
+                    titleAlign: TextAlign.center,
+                    titleStyle: TextStyle(
+                      fontSize: Get.width / 20,
+                      fontFamily: 'popinsemi',
+                    ),
+                    msg: "Something went wrong",
+                    msgStyle: TextStyle(color: grayText),
+                    actions: [
+                        TextButton(
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(color: greenTheme),
+                            ))
+                      ]);
       }
     });
   }
