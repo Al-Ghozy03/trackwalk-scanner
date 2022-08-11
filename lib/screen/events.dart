@@ -146,8 +146,8 @@ class _EventState extends State<Event> {
     } else {
       storage.write("isDark", false);
     }
-    final width = Get.width;
-    final height = Get.height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: WillPopScope(
         child: SafeArea(
@@ -193,8 +193,13 @@ class _EventState extends State<Event> {
                       if (snapshot.hasError)
                         return Column(
                           children: [
-                            LottieBuilder.asset(
-                                "assets/json/94992-error-404.json"),
+                            GestureDetector(
+                              onTap: () {
+                                refresh();
+                              },
+                              child: LottieBuilder.asset(
+                                  "assets/json/94992-error-404.json"),
+                            ),
                             Text(
                               "Ooops, something went wrong",
                               style: TextStyle(

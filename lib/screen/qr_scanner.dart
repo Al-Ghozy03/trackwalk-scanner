@@ -34,9 +34,32 @@ class _QRState extends State<QR> {
   Timer timer;
   final arguments = Get.arguments;
   bool isLoading = false;
+  bool connected = true;
+
+  void connection() async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        if (mounted) {
+          setState(() {
+            connected = true;
+          });
+        }
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      if (mounted) {
+        setState(() {
+          connected = false;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
+    timer?.cancel();
     controller?.dispose();
     super.dispose();
   }
@@ -62,14 +85,19 @@ class _QRState extends State<QR> {
 
   @override
   void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => connection());
     codeScan();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    EasyLoading.instance
+      ..userInteractions = false
+      ..dismissOnTap = false;
     controller?.resumeCamera();
     final width = MediaQuery.of(context).size.width;
+
     final height = Get.height;
     final themeData = Theme.of(context).brightness == ui.Brightness.dark
         ? "DarkTheme"
@@ -83,9 +111,11 @@ class _QRState extends State<QR> {
             "Scan Ticket",
             style: TextStyle(
                 color: (hasil == "It's not a ticket" ||
-                        hasil == "Not Ticket For This Event")
+                        hasil == "Not Ticket For This Event" ||
+                        hasil == "No Connection")
                     ? Colors.red
-                    : (hasil == "This Ticket Is Not Valid")
+                    : (hasil == "This Ticket Is Not Valid" ||
+                            hasil == "Connected")
                         ? Color.fromARGB(255, 255, 193, 59)
                         : (hasil == "Success")
                             ? Color.fromARGB(120, 76, 175, 79)
@@ -101,9 +131,11 @@ class _QRState extends State<QR> {
             icon: Icon(
               Iconsax.close_circle5,
               color: (hasil == "It's not a ticket" ||
-                      hasil == "Not Ticket For This Event")
+                      hasil == "Not Ticket For This Event" ||
+                      hasil == "No Connection")
                   ? Colors.red
-                  : (hasil == "This Ticket Is Not Valid")
+                  : (hasil == "This Ticket Is Not Valid" ||
+                          hasil == "Connected")
                       ? Color.fromARGB(255, 255, 193, 59)
                       : (hasil == "Success")
                           ? Color.fromARGB(120, 76, 175, 79)
@@ -137,9 +169,10 @@ class _QRState extends State<QR> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: (hasil == "It's not a ticket" ||
-                hasil == "Not Ticket For This Event")
+                hasil == "Not Ticket For This Event" ||
+                hasil == "No Connection")
             ? Colors.red
-            : (hasil == "This Ticket Is Not Valid")
+            : (hasil == "This Ticket Is Not Valid" || hasil == "Connected")
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
@@ -161,9 +194,10 @@ class _QRState extends State<QR> {
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
         color: (hasil == "It's not a ticket" ||
-                hasil == "Not Ticket For This Event")
+                hasil == "Not Ticket For This Event" ||
+                hasil == "No Connection")
             ? Colors.red
-            : (hasil == "This Ticket Is Not Valid")
+            : (hasil == "This Ticket Is Not Valid" || hasil == "Connected")
                 ? Color.fromARGB(255, 255, 193, 59)
                 : (hasil == "Success")
                     ? Color.fromARGB(120, 76, 175, 79)
@@ -216,13 +250,15 @@ class _QRState extends State<QR> {
                               msg: "You Don't Have Flashlight",
                               msgStyle: TextStyle(color: grayText),
                               actions: [
-                                  TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: Text(
-                                        "Ok",
-                                        style: TextStyle(color: greenTheme),
-                                      ))
-                                ]);
+                                TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text(
+                                    "Ok",
+                                    style: TextStyle(color: greenTheme),
+                                  ),
+                                ),
+                              ],
+                            );
                     },
                     color: Colors.white,
                   );
@@ -244,9 +280,10 @@ class _QRState extends State<QR> {
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
           borderColor: (hasil == "It's not a ticket" ||
-                  hasil == "Not Ticket For This Event")
+                  hasil == "Not Ticket For This Event" ||
+                  hasil == "No Connection")
               ? Colors.red
-              : (hasil == "This Ticket Is Not Valid")
+              : (hasil == "This Ticket Is Not Valid" || hasil == "Connected")
                   ? Color.fromARGB(255, 255, 193, 59)
                   : (hasil == "Success")
                       ? Color.fromARGB(120, 76, 175, 79)
@@ -266,8 +303,28 @@ class _QRState extends State<QR> {
         this.barcode = bar;
         // print(bar);
         Timer(Duration(microseconds: 1), () {
-          future(bar);
-          EasyLoading.show(status: 'loading...');
+          if (connected) {
+            EasyLoading.show(
+              status: 'loading...',
+            );
+            future(bar);
+          } else {
+            Timer.periodic(
+                Duration(seconds: 20), (Timer t) => EasyLoading.dismiss());
+            setState(() {
+              hasil = "No Connection";
+              if (connected) {
+                hasil = "Connected";
+              }
+            });
+            Timer(Duration(seconds: 5), () {
+              if (mounted) {
+                setState(() {
+                  hasil = "Scan A Code";
+                });
+              }
+            });
+          }
           setState(() {
             isLoading = true;
           });
