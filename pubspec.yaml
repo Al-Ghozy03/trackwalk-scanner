@@ -73,7 +73,7 @@ flutter_icons:
   image_path: assets/img/playstore.png
 
 flutter_native_splash:
-  image: "assets/img/TRACKEWALK.png"
+  image: "assets/img/Pacto.png"
   color: "#FFFFFF"
   color_dark: "#181920"
 
