@@ -487,7 +487,7 @@ class _EventState extends State<Event> {
           child: Container(
             padding: EdgeInsets.all(width / 35),
             decoration: BoxDecoration(
-                color: greenTheme,
+                color: orangeTheme,
                 borderRadius: BorderRadius.circular(width / 40)),
             child: Icon(Iconsax.setting_4, color: Colors.white),
           ),

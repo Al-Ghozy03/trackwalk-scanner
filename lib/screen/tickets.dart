@@ -752,7 +752,7 @@ class _TicketState extends State<Ticket> {
         width: width,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: greenTheme,
+                primary: orangeTheme,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0))),
             onPressed: () {
@@ -990,7 +990,7 @@ class _TicketState extends State<Ticket> {
           child: Container(
             padding: EdgeInsets.all(width / 35),
             decoration: BoxDecoration(
-                color: greenTheme,
+                color: orangeTheme,
                 borderRadius: BorderRadius.circular(width / 40)),
             child: Icon(Iconsax.setting_4, color: Colors.white),
           ),

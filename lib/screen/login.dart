@@ -31,12 +31,14 @@ class _LoginState extends State<Login> {
     setState(() {
       isLoading = true;
     });
-    final res = await http.post(Uri.parse("${url.text}/wp-json/fooevents/v1/login_status"), headers: {
-      'Content-type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json',
-      "username": username.text,
-      "password": password.text
-    });
+    final res = await http.post(
+        Uri.parse("${url.text}/wp-json/fooevents/v1/login_status"),
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+          "username": username.text,
+          "password": password.text
+        });
     if (res.statusCode == 400) {
       setState(() {
         isLoading = false;
@@ -114,7 +116,7 @@ class _LoginState extends State<Login> {
             child: Container(
               height: width * 0.3,
               child: Image(
-                image: AssetImage('assets/img/TRACKEWALK.png'),
+                image: AssetImage('assets/img/Marathon2022.png'),
                 fit: BoxFit.fill,
               ),
             ))
@@ -318,7 +320,7 @@ class _LoginState extends State<Login> {
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: width / 7),
               elevation: 0,
-              primary: greenTheme,
+              primary: orangeTheme,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(width),
               ),
@@ -406,8 +408,8 @@ class _LoginState extends State<Login> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xff02A557),
-                      Color(0xff02A588),
+                      orangeTheme,  
+                      orange2Theme,
                     ],
                   ),
                   borderRadius: BorderRadius.only(

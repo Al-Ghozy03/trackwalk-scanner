@@ -9,3 +9,6 @@ Color bgDark = Color(0xff181920);
 Color inputDark = Color(0xff252A34);
 Color iconWhite = Color(0xFFffffff);
 Color greenText = Color(0xFF27AE60);
+Color orangeTheme = Color(0xFFFCC101);
+Color orange2Theme = Color(0xFFFFC80B);
+
