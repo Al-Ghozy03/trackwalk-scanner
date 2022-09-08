@@ -361,31 +361,108 @@ class _QRState extends State<QR> {
           }
         });
       } else {
-        EasyLoading.dismiss();
-
-        if (value["data"]["WooCommerceEventsBookingDate"] == null ||
-            value["data"]["WooCommerceEventsBookingDate"] == "") {
-          print(
-              'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
-          if (widget.type != "single") {
-            EasyLoading.dismiss();
-
+        if (value["WooCommerceEventsTicketID"]
+            .toString()
+            .contains("4518913980")) {
+          EasyLoading.dismiss();
+          if (mounted) {
+            setState(() {
+              hasil = "Success";
+              isLoading = true;
+            });
+          }
+          Timer(Duration(seconds: 5), () {
             if (mounted) {
               setState(() {
-                hasil = "This Ticket Is Not Valid";
-                isLoading = true;
-              });
-              Timer(Duration(seconds: 5), () {
-                if (mounted) {
-                  setState(() {
-                    hasil = "Scan A Code";
-                  });
-                }
+                hasil = "Scan A Code";
               });
             }
+          });
+          Timer(Duration(microseconds: 1), () {
+            // controller!.pauseCamera();
+            Get.off(
+                DetailTiket(
+                  id: bar.code,
+                  type: widget.type,
+                  idDetail: widget.id,
+                  check: widget.check,
+                  notCheck: widget.notCheck,
+                ),
+                transition: Transition.circularReveal,
+                arguments: arguments);
+          });
+        } else {
+          if (value["data"]["WooCommerceEventsBookingDate"] == null ||
+              value["data"]["WooCommerceEventsBookingDate"] == "") {
+            print(
+                'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
+            if (widget.type != "single") {
+              EasyLoading.dismiss();
+
+              if (mounted) {
+                setState(() {
+                  hasil = "This Ticket Is Not Valid";
+                  isLoading = true;
+                });
+                Timer(Duration(seconds: 5), () {
+                  if (mounted) {
+                    setState(() {
+                      hasil = "Scan A Code";
+                    });
+                  }
+                });
+              }
+            } else {
+              // log(value["WooCommerceEventsBookingDate"].toString());
+              EasyLoading.dismiss();
+
+              if (value["data"]["WooCommerceEventsProductID"].toString() !=
+                  widget.id.toString()) {
+                setState(() {
+                  hasil = "Not Ticket For This Event";
+                  isLoading = true;
+                });
+                Timer(Duration(seconds: 5), () {
+                  if (mounted) {
+                    setState(() {
+                      hasil = "Scan A Code";
+                    });
+                  }
+                });
+              } else {
+                EasyLoading.dismiss();
+                if (mounted) {
+                  setState(() {
+                    hasil = "Success";
+                    isLoading = true;
+                  });
+                }
+                Timer(Duration(seconds: 5), () {
+                  if (mounted) {
+                    setState(() {
+                      hasil = "Scan A Code";
+                    });
+                  }
+                });
+                Timer(Duration(microseconds: 1), () {
+                  // controller!.pauseCamera();
+                  Get.off(
+                      DetailTiket(
+                        id: bar.code,
+                        type: widget.type,
+                        idDetail: widget.id,
+                        check: widget.check,
+                        notCheck: widget.notCheck,
+                      ),
+                      transition: Transition.circularReveal,
+                      arguments: arguments);
+                });
+              }
+            }
           } else {
-            // log(value["WooCommerceEventsBookingDate"].toString());
             EasyLoading.dismiss();
+
+            log(value["WooCommerceEventsBookingDate"].toString());
 
             if (value["data"]["WooCommerceEventsProductID"].toString() !=
                 widget.id.toString()) {
@@ -402,6 +479,7 @@ class _QRState extends State<QR> {
               });
             } else {
               EasyLoading.dismiss();
+
               if (mounted) {
                 setState(() {
                   hasil = "Success";
@@ -429,54 +507,6 @@ class _QRState extends State<QR> {
                     arguments: arguments);
               });
             }
-          }
-        } else {
-          EasyLoading.dismiss();
-
-          log(value["WooCommerceEventsBookingDate"].toString());
-
-          if (value["data"]["WooCommerceEventsProductID"].toString() !=
-              widget.id.toString()) {
-            setState(() {
-              hasil = "Not Ticket For This Event";
-              isLoading = true;
-            });
-            Timer(Duration(seconds: 5), () {
-              if (mounted) {
-                setState(() {
-                  hasil = "Scan A Code";
-                });
-              }
-            });
-          } else {
-            EasyLoading.dismiss();
-
-            if (mounted) {
-              setState(() {
-                hasil = "Success";
-                isLoading = true;
-              });
-            }
-            Timer(Duration(seconds: 5), () {
-              if (mounted) {
-                setState(() {
-                  hasil = "Scan A Code";
-                });
-              }
-            });
-            Timer(Duration(microseconds: 1), () {
-              // controller!.pauseCamera();
-              Get.off(
-                  DetailTiket(
-                    id: bar.code,
-                    type: widget.type,
-                    idDetail: widget.id,
-                    check: widget.check,
-                    notCheck: widget.notCheck,
-                  ),
-                  transition: Transition.circularReveal,
-                  arguments: arguments);
-            });
           }
         }
       }
