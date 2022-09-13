@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print, must_be_immutable, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, unused_local_variable, unnecessary_this, import_of_legacy_library_into_null_safe, avoid_print, must_be_immutable, prefer_typing_uninitialized_variables, use_key_in_widget_constructors
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_dialogs/material_dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/detail_tiket.dart';
@@ -40,7 +39,7 @@ class _QRState extends State<QR> {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
+        // print('connected');
         if (mounted) {
           setState(() {
             connected = true;
@@ -48,7 +47,7 @@ class _QRState extends State<QR> {
         }
       }
     } on SocketException catch (_) {
-      print('not connected');
+      // print('not connected');
       if (mounted) {
         setState(() {
           connected = false;
@@ -110,7 +109,7 @@ class _QRState extends State<QR> {
           title: Text(
             "Scan Ticket",
             style: TextStyle(
-                color: (hasil == "It's not a ticket" ||
+                color: (hasil == "Invalid Ticket" ||
                         hasil == "Not Ticket For This Event" ||
                         hasil == "No Connection")
                     ? Colors.red
@@ -130,7 +129,7 @@ class _QRState extends State<QR> {
             },
             icon: Icon(
               Iconsax.close_circle5,
-              color: (hasil == "It's not a ticket" ||
+              color: (hasil == "Invalid Ticket" ||
                       hasil == "Not Ticket For This Event" ||
                       hasil == "No Connection")
                   ? Colors.red
@@ -168,7 +167,7 @@ class _QRState extends State<QR> {
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: (hasil == "It's not a ticket" ||
+        color: (hasil == "Invalid Ticket" ||
                 hasil == "Not Ticket For This Event" ||
                 hasil == "No Connection")
             ? Colors.red
@@ -179,7 +178,7 @@ class _QRState extends State<QR> {
                     : greenTheme,
       ),
       child: Text(
-        "$hasil",
+        hasil.toString(),
         style: TextStyle(color: Colors.white),
         maxLines: 3,
       ),
@@ -193,7 +192,7 @@ class _QRState extends State<QR> {
       // padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(8),
-        color: (hasil == "It's not a ticket" ||
+        color: (hasil == "Invalid Ticket" ||
                 hasil == "Not Ticket For This Event" ||
                 hasil == "No Connection")
             ? Colors.red
@@ -279,7 +278,7 @@ class _QRState extends State<QR> {
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-          borderColor: (hasil == "It's not a ticket" ||
+          borderColor: (hasil == "Invalid Ticket" ||
                   hasil == "Not Ticket For This Event" ||
                   hasil == "No Connection")
               ? Colors.red
@@ -294,6 +293,7 @@ class _QRState extends State<QR> {
           cutOutSize: MediaQuery.of(context).size.width * 0.8,
         ),
       );
+
   void onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
@@ -307,7 +307,7 @@ class _QRState extends State<QR> {
             EasyLoading.show(
               status: 'loading...',
             );
-            future(bar);
+            checkingCode(bar);
           } else {
             Timer.periodic(
                 Duration(seconds: 20), (Timer t) => EasyLoading.dismiss());
@@ -333,44 +333,22 @@ class _QRState extends State<QR> {
     });
   }
 
-  // void vibrate() async {
-  //   if (await Vibration.hasVibrator()) {
-  //     //check if device has vibration feature
-  //     Vibration.vibrate(); //500 millisecond vibration
-  //   }
-  // }
-
-  void future(bar) {
+  void checkingCode(bar) {
     controller?.pauseCamera();
+    List vip = [];
     Future ticket;
     ticket = ApiService().singleTicket(bar.code).then((value) {
-      if (value["status"] == "error") {
-        EasyLoading.dismiss();
-
-        if (mounted) {
-          setState(() {
-            hasil = "It's not a ticket";
-            isLoading = false;
-          });
-        }
-        Timer(Duration(seconds: 5), () {
-          if (mounted) {
-            setState(() {
-              hasil = "Scan A Code";
-            });
-          }
-        });
-      } else {
-        if (value["WooCommerceEventsTicketID"]
-            .toString()
-            .contains("4518913980")) {
+      ApiService().vip().then((result) {
+        if (value["status"] == "error") {
           EasyLoading.dismiss();
+
           if (mounted) {
             setState(() {
-              hasil = "Success";
-              isLoading = true;
+              hasil = "Invalid Ticket";
+              isLoading = false;
             });
           }
+
           Timer(Duration(seconds: 5), () {
             if (mounted) {
               setState(() {
@@ -378,138 +356,150 @@ class _QRState extends State<QR> {
               });
             }
           });
-          Timer(Duration(microseconds: 1), () {
-            // controller!.pauseCamera();
-            Get.off(
-                DetailTiket(
-                  id: bar.code,
-                  type: widget.type,
-                  idDetail: widget.id,
-                  check: widget.check,
-                  notCheck: widget.notCheck,
-                ),
-                transition: Transition.circularReveal,
-                arguments: arguments);
-          });
         } else {
-          if (value["data"]["WooCommerceEventsBookingDate"] == null ||
-              value["data"]["WooCommerceEventsBookingDate"] == "") {
-            print(
-                'ini adalah datetime $value["data"]["WooCommerceEventsBookingDate"]');
-            if (widget.type != "single") {
+          EasyLoading.dismiss();
+          result["acf"]["ticket_id_vip_list"].map(((e) => vip.add(e))).toList();
+          var isVip = vip.where((element) => element["ticket_vip_id"] == bar.code).toList();
+           if (isVip.isNotEmpty) {
               EasyLoading.dismiss();
-
-              if (mounted) {
-                setState(() {
-                  hasil = "This Ticket Is Not Valid";
-                  isLoading = true;
-                });
-                Timer(Duration(seconds: 5), () {
-                  if (mounted) {
-                    setState(() {
-                      hasil = "Scan A Code";
+              EasyLoading.dismiss();
+                    if (mounted) {
+                      setState(() {
+                        hasil = "Success";
+                        isLoading = true;
+                      });
+                    }
+                    Timer(Duration(seconds: 5), () {
+                      if (mounted) {
+                        setState(() {
+                          hasil = "Scan A Code";
+                        });
+                      }
                     });
-                  }
-                });
-              }
+                    Timer(Duration(microseconds: 1), () {
+                      Get.off(
+                          DetailTiket(
+                            id: bar.code,
+                            type: "single",
+                            idDetail: widget.id,
+                            check: widget.check,
+                            notCheck: widget.notCheck,
+                          ),
+                          transition: Transition.circularReveal,
+                          arguments: arguments);
+                    });
             } else {
-              // log(value["WooCommerceEventsBookingDate"].toString());
-              EasyLoading.dismiss();
-
-              if (value["data"]["WooCommerceEventsProductID"].toString() !=
-                  widget.id.toString()) {
-                setState(() {
-                  hasil = "Not Ticket For This Event";
-                  isLoading = true;
-                });
-                Timer(Duration(seconds: 5), () {
+              if (value["data"]["WooCommerceEventsBookingDate"] == null ||
+                  value["data"]["WooCommerceEventsBookingDate"] == "") {
+                if (widget.type != "single") {
+                  EasyLoading.dismiss();
                   if (mounted) {
                     setState(() {
-                      hasil = "Scan A Code";
+                      hasil = "This Ticket Is Not Valid";
+                      isLoading = true;
+                    });
+                    Timer(Duration(seconds: 5), () {
+                      if (mounted) {
+                        setState(() {
+                          hasil = "Scan A Code";
+                        });
+                      }
                     });
                   }
-                });
+                } else {
+                  EasyLoading.dismiss();
+                  if (value["data"]["WooCommerceEventsProductID"].toString() !=
+                      widget.id.toString()) {
+                    setState(() {
+                      hasil = "Not Ticket For This Event";
+                      isLoading = true;
+                    });
+                    Timer(Duration(seconds: 5), () {
+                      if (mounted) {
+                        setState(() {
+                          hasil = "Scan A Code";
+                        });
+                      }
+                    });
+                  } else {
+                    EasyLoading.dismiss();
+                    if (mounted) {
+                      setState(() {
+                        hasil = "Success";
+                        isLoading = true;
+                      });
+                    }
+                    Timer(Duration(seconds: 5), () {
+                      if (mounted) {
+                        setState(() {
+                          hasil = "Scan A Code";
+                        });
+                      }
+                    });
+                    Timer(Duration(microseconds: 1), () {
+                      // controller!.pauseCamera();
+                      Get.off(
+                          DetailTiket(
+                            id: bar.code,
+                            type: widget.type,
+                            idDetail: widget.id,
+                            check: widget.check,
+                            notCheck: widget.notCheck,
+                          ),
+                          transition: Transition.circularReveal,
+                          arguments: arguments);
+                    });
+                  }
+                }
               } else {
                 EasyLoading.dismiss();
-                if (mounted) {
+                if (value["data"]["WooCommerceEventsProductID"].toString() !=
+                    widget.id.toString()) {
                   setState(() {
-                    hasil = "Success";
+                    hasil = "Not Ticket For This Event";
                     isLoading = true;
                   });
-                }
-                Timer(Duration(seconds: 5), () {
+                  Timer(Duration(seconds: 5), () {
+                    if (mounted) {
+                      setState(() {
+                        hasil = "Scan A Code";
+                      });
+                    }
+                  });
+                } else {
+                  EasyLoading.dismiss();
+
                   if (mounted) {
                     setState(() {
-                      hasil = "Scan A Code";
+                      hasil = "Success";
+                      isLoading = true;
                     });
                   }
-                });
-                Timer(Duration(microseconds: 1), () {
-                  // controller!.pauseCamera();
-                  Get.off(
-                      DetailTiket(
-                        id: bar.code,
-                        type: widget.type,
-                        idDetail: widget.id,
-                        check: widget.check,
-                        notCheck: widget.notCheck,
-                      ),
-                      transition: Transition.circularReveal,
-                      arguments: arguments);
-                });
-              }
-            }
-          } else {
-            EasyLoading.dismiss();
-
-            log(value["WooCommerceEventsBookingDate"].toString());
-
-            if (value["data"]["WooCommerceEventsProductID"].toString() !=
-                widget.id.toString()) {
-              setState(() {
-                hasil = "Not Ticket For This Event";
-                isLoading = true;
-              });
-              Timer(Duration(seconds: 5), () {
-                if (mounted) {
-                  setState(() {
-                    hasil = "Scan A Code";
+                  Timer(Duration(seconds: 5), () {
+                    if (mounted) {
+                      setState(() {
+                        hasil = "Scan A Code";
+                      });
+                    }
+                  });
+                  Timer(Duration(microseconds: 1), () {
+                    // controller!.pauseCamera();
+                    Get.off(
+                        DetailTiket(
+                          id: bar.code,
+                          type: widget.type,
+                          idDetail: widget.id,
+                          check: widget.check,
+                          notCheck: widget.notCheck,
+                        ),
+                        transition: Transition.circularReveal,
+                        arguments: arguments);
                   });
                 }
-              });
-            } else {
-              EasyLoading.dismiss();
-
-              if (mounted) {
-                setState(() {
-                  hasil = "Success";
-                  isLoading = true;
-                });
               }
-              Timer(Duration(seconds: 5), () {
-                if (mounted) {
-                  setState(() {
-                    hasil = "Scan A Code";
-                  });
-                }
-              });
-              Timer(Duration(microseconds: 1), () {
-                // controller!.pauseCamera();
-                Get.off(
-                    DetailTiket(
-                      id: bar.code,
-                      type: widget.type,
-                      idDetail: widget.id,
-                      check: widget.check,
-                      notCheck: widget.notCheck,
-                    ),
-                    transition: Transition.circularReveal,
-                    arguments: arguments);
-              });
             }
-          }
         }
-      }
+      });
     });
   }
 }

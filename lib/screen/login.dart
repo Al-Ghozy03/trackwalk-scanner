@@ -11,7 +11,6 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:track_walk_admin/colors.dart';
 import 'package:track_walk_admin/screen/events.dart';
 import 'package:track_walk_admin/service/api_service.dart';
-import 'package:track_walk_admin/widget/custom_checkbox.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
@@ -290,23 +289,23 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Widget _rememberSettings(width, username, password) {
-    return Padding(
-      padding: EdgeInsets.only(left: 18.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CustomCheck(
-            password: username,
-            username: password,
-          ),
-          SizedBox(width: width / 30),
-          Text("Remember Settings"),
-        ],
-      ),
-    );
-  }
+  // Widget _rememberSettings(width, username, password) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(left: 18.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: <Widget>[
+  //         CustomCheck(
+  //           password: username,
+  //           username: password,
+  //         ),
+  //         SizedBox(width: width / 30),
+  //         Text("Remember Settings"),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _loginButton(width) {
     return Row(

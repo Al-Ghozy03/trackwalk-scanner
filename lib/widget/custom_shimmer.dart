@@ -9,10 +9,10 @@ class CustomShimmer extends StatelessWidget {
   final height;
   double radius;
   CustomShimmer(
-      {key,
+      {Key key,
        this.height,
        this.width,
-       this.radius});
+       this.radius}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

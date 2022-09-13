@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures, unused_import, unused_element, dead_code, avoid_print, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, unused_local_variable, unused_field, curly_braces_in_flow_control_structures, unused_import, unused_element, dead_code, avoid_print, non_constant_identifier_names, use_key_in_widget_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

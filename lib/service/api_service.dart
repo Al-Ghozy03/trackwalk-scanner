@@ -23,6 +23,17 @@ class ApiService {
   String _param2 = "?param2";
   String _param3 = "?param3";
 
+  Future vip() async {
+    Uri url = Uri.parse(
+        "https://trackwalk.xplorin.id/wp-json/wp/v2/vip-ticket/4582?_fields=acf");
+    final res = await http.get(url);
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      return false;
+    }
+  }
+
   Future ticket(id) async {
     Uri urlApi = Uri.parse(baseUrl + _ticket + "$_param2=$id");
     Map<String, String> requestHeaders = {
