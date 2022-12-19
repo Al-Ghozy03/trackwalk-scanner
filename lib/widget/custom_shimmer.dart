@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:track_walk_admin/colors.dart';
+import 'package:kafegama/colors.dart';
 
 class CustomShimmer extends StatelessWidget {
   final width;

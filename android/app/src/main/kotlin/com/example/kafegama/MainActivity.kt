@@ -1,4 +1,4 @@
-package com.example.track_walk_admin
+package com.example.kafegama
 
 import io.flutter.embedding.android.FlutterActivity
 

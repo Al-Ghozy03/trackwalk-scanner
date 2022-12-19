@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_dialogs/material_dialogs.dart';
-import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/events.dart';
-import 'package:track_walk_admin/service/api_service.dart';
-import 'package:track_walk_admin/widget/custom_checkbox.dart';
+import 'package:kafegama/colors.dart';
+import 'package:kafegama/screen/events.dart';
+import 'package:kafegama/service/api_service.dart';
+import 'package:kafegama/widget/custom_checkbox.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
@@ -31,76 +31,119 @@ class _LoginState extends State<Login> {
     setState(() {
       isLoading = true;
     });
-    final res = await http.post(Uri.parse("${url.text}/wp-json/fooevents/v1/login_status"), headers: {
-      'Content-type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json',
-      "username": username.text,
-      "password": password.text
-    });
-    if (res.statusCode == 400) {
-      setState(() {
-        isLoading = false;
-      });
-      Alert(
-              message: jsonDecode(res.body)["error_description"],
-              shortDuration: true)
-          .show();
-      return false;
-    }
-    if (res.statusCode == 200) {
-      setState(() {
-        isLoading = false;
-      });
-      var message = jsonDecode(res.body)["message"];
-      if (message) {
-        storage.write("auth", {
-          "url": url.text,
-          "username": username.text,
-          "password": password.text
+    if (url.text != "") {
+      final res = await http.post(
+          Uri.parse("${url.text}/wp-json/fooevents/v1/login_status"),
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+            "username": username.text,
+            "password": password.text
+          });
+      if (res.statusCode == 400) {
+        setState(() {
+          isLoading = false;
         });
-        Get.off(Event());
-      } else {
-        if (GetPlatform.isIOS) {
-          showCupertinoDialog(
-            context: context,
-            builder: (context) => CupertinoAlertDialog(
-              title: Text("Sign-in Error"),
-              content: Text("Incorect URL, Username or Password"),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text("Ok"),
-                  onPressed: () => Get.back(),
-                )
-              ],
-            ),
-          );
-        } else {
-          Dialogs.materialDialog(
-              color: Get.isDarkMode ? bgDark : Colors.white,
-              context: context,
-              title: "Sign-in Error",
-              titleAlign: TextAlign.center,
-              titleStyle: TextStyle(
-                fontSize: Get.width / 20,
-                fontFamily: 'popinsemi',
-              ),
-              msg: "Incorect URL, Username or Password",
-              msgStyle: TextStyle(color: grayText),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Ok"))
-              ]);
-        }
+        Alert(
+                message: jsonDecode(res.body)["error_description"],
+                shortDuration: true)
+            .show();
+        return false;
       }
-      return true;
+      if (res.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
+        var message = jsonDecode(res.body)["message"];
+        if (message) {
+          storage.write("auth", {
+            "url": url.text,
+            "username": username.text,
+            "password": password.text
+          });
+          Get.off(Event());
+        } else {
+          if (GetPlatform.isIOS) {
+            showCupertinoDialog(
+              context: context,
+              builder: (context) => CupertinoAlertDialog(
+                title: Text("Sign-in Error"),
+                content: Text("Incorect URL, Username or Password"),
+                actions: [
+                  CupertinoDialogAction(
+                    child: Text("Ok"),
+                    onPressed: () => Get.back(),
+                  )
+                ],
+              ),
+            );
+          } else {
+            Dialogs.materialDialog(
+                color: Get.isDarkMode ? bgDark : Colors.white,
+                context: context,
+                title: "Sign-in Error",
+                titleAlign: TextAlign.center,
+                titleStyle: TextStyle(
+                  fontSize: Get.width / 20,
+                  fontFamily: 'popinsemi',
+                ),
+                msg: "Incorect URL, Username or Password",
+                msgStyle: TextStyle(color: grayText),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Ok"))
+                ]);
+          }
+        }
+        return true;
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        return false;
+      }
     } else {
       setState(() {
         isLoading = false;
       });
-      return false;
+
+      if (GetPlatform.isIOS) {
+        showCupertinoDialog(
+          context: context,
+          builder: (context) => CupertinoAlertDialog(
+            title: Text("Sign-in Error"),
+            content: Text("Please fill your url"),
+            actions: [
+              CupertinoDialogAction(
+                child: Text("Ok"),
+                onPressed: () => Get.back(),
+              )
+            ],
+          ),
+        );
+      } else {
+        Dialogs.materialDialog(
+            color: Get.isDarkMode ? bgDark : Colors.white,
+            context: context,
+            title: "Sign-in Error",
+            titleAlign: TextAlign.center,
+            titleStyle: TextStyle(
+              fontSize: Get.width / 20,
+              fontFamily: 'popinsemi',
+            ),
+            msg: "Please fill your url",
+            msgStyle: TextStyle(color: grayText),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
+            ]);
+      }
     }
   }
 
@@ -114,7 +157,7 @@ class _LoginState extends State<Login> {
             child: Container(
               height: width * 0.3,
               child: Image(
-                image: AssetImage('assets/img/TRACKEWALK.png'),
+                image: AssetImage('assets/img/logo-funwalk.png'),
                 fit: BoxFit.fill,
               ),
             ))
@@ -406,8 +449,8 @@ class _LoginState extends State<Login> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xff02A557),
-                      Color(0xff02A588),
+                      Color(0xffFFFFFF),
+                      Color(0xffFFFFFF),
                     ],
                   ),
                   borderRadius: BorderRadius.only(

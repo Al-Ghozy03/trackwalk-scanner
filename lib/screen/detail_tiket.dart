@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:material_dialogs/material_dialogs.dart';
-import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/service/getx_service.dart';
-import 'package:track_walk_admin/widget/check_icons.dart';
-import 'package:track_walk_admin/widget/custom_shimmer.dart';
-import 'package:track_walk_admin/widget/email.dart';
-import 'package:track_walk_admin/widget/phone.dart';
+import 'package:kafegama/colors.dart';
+import 'package:kafegama/service/getx_service.dart';
+import 'package:kafegama/widget/check_icons.dart';
+import 'package:kafegama/widget/custom_shimmer.dart';
+import 'package:kafegama/widget/email.dart';
+import 'package:kafegama/widget/phone.dart';
 import '../service/api_service.dart';
 import 'package:http/http.dart' as http;
 

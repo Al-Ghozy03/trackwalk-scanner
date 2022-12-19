@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/tickets.dart';
+import 'package:kafegama/colors.dart';
+import 'package:kafegama/screen/tickets.dart';
 
 class Calendar extends StatefulWidget {
   final image;

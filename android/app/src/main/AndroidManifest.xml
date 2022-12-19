@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.track_walk_admin">
+    package="com.example.kafegama">
    <uses-permission android:name="android.permission.VIBRATE"/>
    <!-- Provide required visibility configuration for API level 30 and above -->
 <queries>
@@ -17,7 +17,7 @@
    <uses-permission 
    android:name="android.permission.INTERNET"/>
    <application
-        android:label="Track Walk"
+        android:label="Kafegama"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

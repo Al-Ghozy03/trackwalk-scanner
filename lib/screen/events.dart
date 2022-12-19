@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
-import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/calendar.dart';
-import 'package:track_walk_admin/screen/login.dart';
-import 'package:track_walk_admin/screen/tickets.dart';
-import 'package:track_walk_admin/service/api_service.dart';
-import 'package:track_walk_admin/widget/custom_shimmer.dart';
+import 'package:kafegama/colors.dart';
+import 'package:kafegama/screen/calendar.dart';
+import 'package:kafegama/screen/login.dart';
+import 'package:kafegama/screen/tickets.dart';
+import 'package:kafegama/service/api_service.dart';
+import 'package:kafegama/widget/custom_shimmer.dart';
 
 class Event extends StatefulWidget {
   const Event({key});

@@ -6,7 +6,7 @@ import 'package:alert/alert.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:track_walk_admin/screen/events.dart';
+import 'package:kafegama/screen/events.dart';
 import '../screen/detail_tiket.dart';
 import 'getx_service.dart';
 
@@ -46,6 +46,22 @@ class ApiService {
       "username": storage.read("auth")["username"],
       "password": storage.read("auth")["password"]
     });
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      return false;
+    }
+  }
+
+  Future eventVIP() async {
+    final res = await http.get(
+        Uri.parse(
+            "https://trackwalk.xplorin.id/wp-json/jet-cct/vip_ticket_list/?cct_author_id=1"),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          // "username": storage.read("auth")["username"],
+          // "password": storage.read("auth")["password"]
+        });
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
     } else {

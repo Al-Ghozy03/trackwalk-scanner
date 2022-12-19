@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:track_walk_admin/colors.dart';
-import 'package:track_walk_admin/screen/events.dart';
-import 'package:track_walk_admin/screen/tickets.dart';
-import 'package:track_walk_admin/screen/login.dart';
-import 'package:track_walk_admin/screen/qr_scanner.dart';
-import 'package:track_walk_admin/service/api_service.dart';
+import 'package:kafegama/colors.dart';
+import 'package:kafegama/screen/events.dart';
+import 'package:kafegama/screen/tickets.dart';
+import 'package:kafegama/screen/login.dart';
+import 'package:kafegama/screen/qr_scanner.dart';
+import 'package:kafegama/service/api_service.dart';
 
 void main() async {
   await GetStorage.init();
